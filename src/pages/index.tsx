@@ -1,3 +1,6 @@
+import { Icon } from "@chakra-ui/react";
+import { faHouse } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Head from "next/head";
 
 export default function Home() {
@@ -11,6 +14,12 @@ export default function Home() {
       </Head>
       <main>
         <span>Next.js 시작</span>
+        <Icon
+          as={FontAwesomeIcon}
+          icon={faHouse}
+          color="blue.700"
+          boxSize={50}
+        />
       </main>
     </>
   );
