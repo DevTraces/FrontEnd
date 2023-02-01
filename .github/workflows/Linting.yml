@@ -1,5 +1,7 @@
 name: Lint GitHub Action
+
 run-name: ${{ github.actor }}님의 코드 ESLint 검사 🚀
+
 on:
   pull_request:
     branches:
@@ -9,6 +11,9 @@ jobs:
   ESLint:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "14"
       - run: echo "🔎 ESLint 검사를 시작합니다..."
       - run: yarn lint
-      - run: echo "🎉 ESLint 검사를 통과했습니다! 🎉"
