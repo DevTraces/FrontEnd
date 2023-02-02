@@ -3,7 +3,7 @@ import { faHouse } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Head from "next/head";
 
-export default function Home() {
+export default function Landing() {
   return (
     <>
       <Head>
