@@ -2,7 +2,7 @@ import { Flex, Icon, Text } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { navs } from "../constants/nav";
+import { NAVS } from "../../constants/nav";
 
 export default function SideBar() {
   const router = useRouter();
@@ -11,6 +11,9 @@ export default function SideBar() {
     <Flex
       direction="column"
       bg="white"
+      position="fixed"
+      top={0}
+      left={0}
       display={{
         sm: "none",
         md: "block"
@@ -35,7 +38,7 @@ export default function SideBar() {
             Arterest
           </Text>
         </Flex>
-        {navs.map(({ key, title, icon, href }) => (
+        {NAVS.map(({ key, title, icon, href }) => (
           <Link href={href}>
             <Flex
               pl={10}

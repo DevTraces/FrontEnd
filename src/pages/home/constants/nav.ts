@@ -14,7 +14,7 @@ export interface Nav {
   href: `/${string}`;
 }
 
-export const navs: Nav[] = [
+export const NAVS: Nav[] = [
   { key: "home", icon: faHome, title: "홈", href: "/home" },
   { key: "search", icon: faSearch, title: "검색", href: "/search" },
   { key: "alert", icon: faBell, title: "알림", href: "/alert" },
@@ -23,4 +23,4 @@ export const navs: Nav[] = [
   { key: "profile", icon: faUser, title: "프로필", href: "/profile" }
 ];
 
-export default { navs };
+export default { NAVS };
