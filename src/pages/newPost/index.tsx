@@ -1,4 +1,7 @@
 import NavLayout from "@/components/NavLayout";
+import IconTextButton from "@/components/newPost/IconTextButton";
+import ImageBox from "@/components/newPost/ImageBox";
+import TagButton from "@/components/newPost/TagButton";
 import {
   Button,
   FormControl,
@@ -10,9 +13,6 @@ import {
 import { faHashtag, faImage } from "@fortawesome/free-solid-svg-icons";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import IconTextButton from "./components/IconTextButton";
-import ImageBox from "./components/ImageBox";
-import TagButton from "./components/TagButton";
 
 export default function NewPost() {
   const router = useRouter();

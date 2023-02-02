@@ -1,3 +1,4 @@
+import LabeledInput from "@/components/accounts/edit/LabeledInput";
 import NavLayout from "@/components/NavLayout";
 import {
   Avatar,
@@ -9,7 +10,6 @@ import {
 } from "@chakra-ui/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import LabeledInput from "./components/LabeledInput";
 
 export default function Setting() {
   const router = useRouter();
