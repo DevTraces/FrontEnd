@@ -19,7 +19,7 @@ export const NAVS: Nav[] = [
   { key: "search", icon: faSearch, title: "검색", href: "/search" },
   { key: "alert", icon: faBell, title: "알림", href: "/alert" },
   { key: "like", icon: faHeart, title: "좋아요 목록", href: "/like" },
-  { key: "newPost", icon: faPlus, title: "새 포스트", href: "/newPosts" },
+  { key: "newPost", icon: faPlus, title: "새 포스트", href: "/newPost" },
   { key: "profile", icon: faUser, title: "프로필", href: "/profile" }
 ];
 

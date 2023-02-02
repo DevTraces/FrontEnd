@@ -1,3 +1,4 @@
+import NavLayout from "@/components/NavLayout";
 import {
   Button,
   FormControl,
@@ -17,7 +18,7 @@ export default function NewPost() {
   const router = useRouter();
 
   return (
-    <>
+    <NavLayout>
       <Head>
         <title>Arterest | Upload</title>
       </Head>
@@ -49,6 +50,6 @@ export default function NewPost() {
           게시하기
         </Button>
       </FormControl>
-    </>
+    </NavLayout>
   );
 }

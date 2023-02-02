@@ -1,3 +1,4 @@
+import NavLayout from "@/components/NavLayout";
 import {
   Avatar,
   Button,
@@ -14,7 +15,7 @@ export default function Setting() {
   const router = useRouter();
   const isError = true;
   return (
-    <>
+    <NavLayout>
       <Head>
         <title>Arterest | Setting</title>
       </Head>
@@ -70,6 +71,6 @@ export default function Setting() {
           </HStack>
         </VStack>
       </Container>
-    </>
+    </NavLayout>
   );
 }
