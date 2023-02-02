@@ -2,7 +2,7 @@ import { Box, Button, Center, HStack, Text } from "@chakra-ui/react";
 import Head from "next/head";
 import Link from "next/link";
 
-export default function Landing() {
+export default function Home() {
   return (
     <>
       <Head>
