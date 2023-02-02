@@ -41,7 +41,7 @@ export default function SignIn() {
           ) : (
             <FormErrorMessage>Password is required.</FormErrorMessage>
           )}
-          <Wrap>
+          <Wrap w="full">
             <AuthButton
               bg="red.900"
               color="white"

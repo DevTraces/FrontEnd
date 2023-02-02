@@ -54,7 +54,7 @@ export default function Setting() {
               bg="red.900"
               color="white"
               onClick={() => {
-                router.push("/feed");
+                router.push("/accounts/edit/password");
               }}
             >
               비밀번호 변경
