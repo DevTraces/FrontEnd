@@ -3,14 +3,10 @@ import AuthLayout from "@/components/auth/AuthLayout";
 import AuthTextInput from "@/components/auth/AuthTextInput";
 import {
   Center,
-  Divider,
   FormControl,
-  Flex,
-  FormHelperText,
   FormErrorMessage,
-  Text,
-  VStack,
-  Wrap
+  FormHelperText,
+  VStack
 } from "@chakra-ui/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
