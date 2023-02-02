@@ -7,13 +7,15 @@ import {
   useOutsideClick
 } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useRouter } from "next/router";
 import { useRef, useState } from "react";
-import { Nav, NAVS } from "../../constants/nav";
+import { Nav, NAVS } from "../../../../pages/home/constants/nav";
 import Alert from "./Alert";
 import Like from "./Like";
 import Search from "./Search";
 
 export default function SideBar() {
+  const router = useRouter();
   const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
   const [selectedNav, setSelectedNav] = useState<Nav["key"]>("home");
   const drawerWantedNavs: Nav["key"][] = ["search", "alert", "like"];
@@ -63,7 +65,7 @@ export default function SideBar() {
               </Text>
             )}
           </Flex>
-          {NAVS.map(({ key, title, icon }) => (
+          {NAVS.map(({ key, title, icon, href }) => (
             <Flex
               pl={10}
               h={50}
@@ -84,6 +86,7 @@ export default function SideBar() {
                     onOpen();
                   }
                 } else {
+                  router.push(href);
                   onClose();
                 }
 
@@ -105,10 +108,13 @@ export default function SideBar() {
           ))}
         </Flex>
       </Flex>
-      {drawerWantedNavs.includes(selectedNav) && (
+      {drawerWantedNavs.includes(selectedNav) && isOpen && (
         <Box
           zIndex="modal"
-          display={isOpen ? "block" : "none"}
+          display={{
+            sm: "none",
+            md: "block"
+          }}
           position="fixed"
           left="100px"
           top={0}

@@ -1,7 +1,7 @@
 import { Flex, Icon } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
-import { Nav, NAVS } from "../../constants/nav";
+import { Nav, NAVS } from "../../../../pages/home/constants/nav";
 
 export default function BottomBar() {
   const router = useRouter();
