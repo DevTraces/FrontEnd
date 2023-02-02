@@ -44,7 +44,7 @@ export default function NewPost() {
           bg="red.900"
           color="white"
           onClick={() => {
-            router.push("/home");
+            router.push("/feed");
           }}
         >
           게시하기

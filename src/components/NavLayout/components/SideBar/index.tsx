@@ -9,7 +9,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
 import { useRef, useState } from "react";
-import { Nav, NAVS } from "../../../../pages/home/constants/nav";
+import { Nav, NAVS } from "../../../../pages/feed/constants/nav";
 import Alert from "./Alert";
 import Like from "./Like";
 import Search from "./Search";

@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/no-use-before-define */
 import NavLayout from "@/components/NavLayout";
 import PostCard from "@/components/PostCard";
 import { Center, Flex } from "@chakra-ui/react";
 import Head from "next/head";
 
-export default function Home() {
+export default function Feed() {
   return (
     <>
       <Head>

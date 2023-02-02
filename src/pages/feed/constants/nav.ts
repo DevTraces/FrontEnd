@@ -8,14 +8,14 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 export interface Nav {
-  key: "home" | "search" | "alert" | "like" | "newPost" | "profile";
+  key: "feed" | "search" | "alert" | "like" | "newPost" | "profile";
   icon: typeof faHome;
   title: string;
   href: `/${string}`;
 }
 
 export const NAVS: Nav[] = [
-  { key: "home", icon: faHome, title: "홈", href: "/home" },
+  { key: "feed", icon: faHome, title: "홈", href: "/feed" },
   { key: "search", icon: faSearch, title: "검색", href: "/search" },
   { key: "alert", icon: faBell, title: "알림", href: "/alert" },
   { key: "like", icon: faHeart, title: "좋아요 목록", href: "/like" },

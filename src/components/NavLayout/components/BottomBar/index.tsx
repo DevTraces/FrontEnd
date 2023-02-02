@@ -2,11 +2,11 @@ import { Flex, Icon } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Nav, NAVS } from "../../../../pages/home/constants/nav";
+import { Nav, NAVS } from "../../../../pages/feed/constants/nav";
 
 export default function BottomBar() {
   const router = useRouter();
-  const selectedKeys: Nav["key"][] = ["home", "like", "newPost", "profile"];
+  const selectedKeys: Nav["key"][] = ["feed", "like", "newPost", "profile"];
   const selectedNavs = NAVS.filter(nav => selectedKeys.includes(nav.key));
   return (
     <Flex
