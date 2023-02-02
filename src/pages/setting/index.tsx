@@ -54,7 +54,7 @@ export default function Setting() {
               bg="red.900"
               color="white"
               onClick={() => {
-                router.push("/home");
+                router.push("/feed");
               }}
             >
               비밀번호 변경
@@ -63,7 +63,7 @@ export default function Setting() {
               bg="red.900"
               color="white"
               onClick={() => {
-                router.push("/home");
+                router.push("/feed");
               }}
             >
               저장하기

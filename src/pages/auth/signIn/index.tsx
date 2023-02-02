@@ -46,7 +46,7 @@ export default function SignIn() {
               bg="red.900"
               color="white"
               onClick={() => {
-                router.push("/home");
+                router.push("/feed");
               }}
             >
               로그인

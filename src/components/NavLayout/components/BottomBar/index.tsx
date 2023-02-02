@@ -6,7 +6,7 @@ import { Nav, NAVS } from "../../../../pages/feed/constants/nav";
 
 export default function BottomBar() {
   const router = useRouter();
-  const selectedKeys: Nav["key"][] = ["home", "like", "newPost", "profile"];
+  const selectedKeys: Nav["key"][] = ["feed", "like", "newPost", "profile"];
   const selectedNavs = NAVS.filter(nav => selectedKeys.includes(nav.key));
   return (
     <Flex

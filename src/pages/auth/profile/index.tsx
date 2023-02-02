@@ -49,7 +49,7 @@ export default function Profile() {
             bg="red.900"
             color="white"
             onClick={() => {
-              router.push("/home");
+              router.push("/feed");
             }}
           >
             가입 완료
