@@ -1,3 +1,6 @@
+import AuthButton from "@/components/auth/AuthButton";
+import AuthLayout from "@/components/auth/AuthLayout";
+import AuthTextInput from "@/components/auth/AuthTextInput";
 import {
   Center,
   FormControl,
@@ -9,9 +12,6 @@ import {
 } from "@chakra-ui/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import AuthButton from "../components/AuthButton";
-import AuthLayout from "../components/AuthLayout";
-import AuthTextInput from "../components/AuthTextInput";
 
 export default function SignIn() {
   const router = useRouter();
