@@ -1,5 +1,6 @@
 import { Flex, Icon } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { Nav, NAVS } from "../../../../pages/home/constants/nav";
 
@@ -25,12 +26,14 @@ export default function BottomBar() {
       }}
     >
       {selectedNavs.map(({ icon, href }) => (
-        <Icon
-          as={FontAwesomeIcon}
-          icon={icon}
-          boxSize={6}
-          color={router.pathname === href ? "red.400" : "black"}
-        />
+        <Link href={href}>
+          <Icon
+            as={FontAwesomeIcon}
+            icon={icon}
+            boxSize={6}
+            color={router.pathname === href ? "red.400" : "black"}
+          />
+        </Link>
       ))}
     </Flex>
   );
