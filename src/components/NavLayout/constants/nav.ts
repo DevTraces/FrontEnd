@@ -22,5 +22,3 @@ export const NAVS: Nav[] = [
   { key: "newPost", icon: faPlus, title: "새 포스트", href: "/newPost" },
   { key: "profile", icon: faUser, title: "프로필", href: "/1" }
 ];
-
-export default { NAVS };

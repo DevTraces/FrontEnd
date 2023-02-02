@@ -1,3 +1,5 @@
+import AuthLayout from "@/components/auth/AuthLayout";
+import AuthTextInput from "@/components/auth/AuthTextInput";
 import {
   Button,
   Center,
@@ -10,8 +12,6 @@ import {
 } from "@chakra-ui/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import AuthLayout from "../../components/AuthLayout";
-import AuthTextInput from "../../components/AuthTextInput";
 
 export default function EmailAuth() {
   const router = useRouter();
