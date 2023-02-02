@@ -1,14 +1,6 @@
-import {
-  Flex,
-  InputGroup,
-  InputLeftElement,
-  Icon,
-  Input,
-  Text,
-  Box
-} from "@chakra-ui/react";
-import { faSearch, faBell } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Box, Flex, Text } from "@chakra-ui/react";
+import Alert from "./Alert";
+import SearchBar from "./SearchBar";
 
 export default function TopBar() {
   return (
@@ -32,13 +24,8 @@ export default function TopBar() {
       <Box mr={20}>
         <Text fontSize="3xl">Arterest</Text>
       </Box>
-      <InputGroup mr={10}>
-        <InputLeftElement pointerEvents="none">
-          <Icon as={FontAwesomeIcon} icon={faSearch} color="gray.300" />
-        </InputLeftElement>
-        <Input type="text" bg="gray.200" placeholder="검색" />
-      </InputGroup>
-      <Icon as={FontAwesomeIcon} icon={faBell} color="black" />
+      <SearchBar />
+      <Alert />
     </Flex>
   );
 }
