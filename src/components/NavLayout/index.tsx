@@ -12,7 +12,26 @@ export default function NavLayout({
       <TopBar />
       <SideBar />
       <BottomBar />
-      <Box {...restProps}>{children}</Box>
+      <Box
+        ml={{
+          sm: 0,
+          md: "100px",
+          xl: "250px"
+        }}
+        mb={{
+          sm: "50px",
+          md: 0,
+          xl: 0
+        }}
+        mt={{
+          sm: "30px",
+          md: 0,
+          xl: 0
+        }}
+        {...restProps}
+      >
+        {children}
+      </Box>
     </>
   );
 }
