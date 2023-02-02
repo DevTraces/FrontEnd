@@ -17,10 +17,13 @@ import Search from "./Search";
 export default function SideBar() {
   const router = useRouter();
   const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
-  const [selectedNav, setSelectedNav] = useState<Nav["key"]>("home");
+  const [selectedNav, setSelectedNav] = useState<Nav["key"]>(
+    router.pathname.replace("/", "") as Nav["key"]
+  );
   const drawerWantedNavs: Nav["key"][] = ["search", "alert", "like"];
 
   const drawerRef = useRef(null);
+
   useOutsideClick({
     ref: drawerRef,
     handler: e => {
