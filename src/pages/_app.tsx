@@ -8,6 +8,9 @@ const theme = extendTheme({
         bg: "gray.100"
       }
     }
+  },
+  colors: {
+    primary: "#D32D2F"
   }
 });
 

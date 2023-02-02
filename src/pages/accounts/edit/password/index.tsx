@@ -21,7 +21,9 @@ export default function EditPassword() {
         <title>Arterest | Sign Up</title>
       </Head>
       <AuthLayout>
-        <Center color="black">Arterest</Center>
+        <Center color="black">
+          <span />
+        </Center>
 
         <FormControl as={VStack} isInvalid={isError}>
           <AuthTextInput type="password" placeholder="이전 비밀번호" />
@@ -44,8 +46,6 @@ export default function EditPassword() {
           )}
 
           <AuthButton
-            bg="red.900"
-            color="white"
             onClick={() => {
               router.back();
             }}

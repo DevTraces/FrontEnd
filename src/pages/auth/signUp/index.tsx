@@ -1,6 +1,7 @@
 import AuthButton from "@/components/auth/AuthButton";
 import AuthLayout from "@/components/auth/AuthLayout";
 import AuthTextInput from "@/components/auth/AuthTextInput";
+import KakaoLoginButton from "@/components/auth/KakaoLoginButton";
 import {
   Center,
   Flex,
@@ -23,22 +24,22 @@ export default function SignUp() {
         <title>Arterest | Sign Up</title>
       </Head>
       <AuthLayout>
-        <Center>Arterest</Center>
-        <Text>그림을 좋아하는 사람들과 소통하려면 가입하세요.</Text>
-        <AuthButton bg="yellow.500" color="white">
-          카카오 계정으로 시작하기
-        </AuthButton>
+        <Center>
+          <span />
+        </Center>
+        <Text fontSize="2xl" textAlign="center" wordBreak="keep-all">
+          그림을 좋아하는 사람들과 소통하려면 가입하세요.
+        </Text>
+        <KakaoLoginButton>카카오로 시작하기</KakaoLoginButton>
         <Divider />
-        <FormControl as={Flex} direction="column" isInvalid={isError}>
-          <AuthTextInput type="email" placeholder="이메일 주소" />
+        <FormControl as={Flex} direction="column" isInvalid={isError} gap="5px">
+          <AuthTextInput type="email" placeholder="이메일" />
           {!isError ? (
             <FormHelperText />
           ) : (
             <FormErrorMessage>Email is required.</FormErrorMessage>
           )}
           <AuthButton
-            bg="red.900"
-            color="white"
             onClick={() => {
               router.push("signUp/emailAuth");
             }}

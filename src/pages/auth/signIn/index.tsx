@@ -1,16 +1,19 @@
 import AuthButton from "@/components/auth/AuthButton";
 import AuthLayout from "@/components/auth/AuthLayout";
 import AuthTextInput from "@/components/auth/AuthTextInput";
+import KakaoLoginButton from "@/components/auth/KakaoLoginButton";
 import {
   Center,
+  Divider,
   FormControl,
   FormErrorMessage,
   FormHelperText,
-  Divider,
-  Wrap,
+  HStack,
+  Text,
   VStack
 } from "@chakra-ui/react";
 import Head from "next/head";
+import Link from "next/link";
 import { useRouter } from "next/router";
 
 export default function SignIn() {
@@ -23,13 +26,13 @@ export default function SignIn() {
         <title>Arterest | Sign In</title>
       </Head>
       <AuthLayout>
-        <Center color="black">Arterest</Center>
-        <AuthButton bg="yellow.500" onClick={() => {}}>
-          카카오 계정으로 로그인
-        </AuthButton>
+        <Center color="black">
+          <span />
+        </Center>
+        <KakaoLoginButton />
         <Divider />
         <FormControl as={VStack} isInvalid={isError}>
-          <AuthTextInput type="email" placeholder="이메일 주소" />
+          <AuthTextInput type="email" placeholder="이메일" />
           {!isError ? (
             <FormHelperText />
           ) : (
@@ -41,26 +44,21 @@ export default function SignIn() {
           ) : (
             <FormErrorMessage>Password is required.</FormErrorMessage>
           )}
-          <Wrap w="full">
-            <AuthButton
-              bg="red.900"
-              color="white"
-              onClick={() => {
-                router.push("/feed");
-              }}
-            >
-              로그인
-            </AuthButton>
-            <AuthButton
-              bg="red.900"
-              color="white"
-              onClick={() => {
-                router.push("signUp");
-              }}
-            >
-              가입하기
-            </AuthButton>
-          </Wrap>
+
+          <AuthButton
+            onClick={() => {
+              router.push("/feed");
+            }}
+          >
+            로그인
+          </AuthButton>
+          <Divider />
+          <HStack>
+            <Text>아직 계정이 없으신가요?</Text>
+            <Text color="primary" fontWeight="bold">
+              <Link href="/auth/signUp">계정 만들기</Link>
+            </Text>
+          </HStack>
         </FormControl>
       </AuthLayout>
     </>

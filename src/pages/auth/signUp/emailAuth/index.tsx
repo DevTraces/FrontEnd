@@ -1,15 +1,17 @@
+import AuthButton from "@/components/auth/AuthButton";
 import AuthLayout from "@/components/auth/AuthLayout";
 import AuthTextInput from "@/components/auth/AuthTextInput";
 import {
-  Button,
   Center,
   FormControl,
   FormErrorMessage,
   FormHelperText,
+  Icon,
   Text,
-  Divider,
   VStack
 } from "@chakra-ui/react";
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
@@ -23,15 +25,21 @@ export default function EmailAuth() {
         <title>Arterest | Email Authorization</title>
       </Head>
       <AuthLayout>
-        <Center>Arterest</Center>
-        <Divider />
-        <Text>
-          <Text>codeisneverodd@gmail.com</Text> 주소로 전송된 인증코드를
-          입력하세요.
+        <Center>
+          <Icon
+            as={FontAwesomeIcon}
+            icon={faPaperPlane}
+            color="primary"
+            boxSize="60px"
+          />
+        </Center>
+        <Text textAlign="center" wordBreak="keep-all">
+          codeisneverodd@gmail.com 주소로 전송된 인증코드를 입력하세요.
+          <Text display="inline" color="primary" ml="10px" fontWeight="bold">
+            코드 재전송
+          </Text>
         </Text>
-        <Button bg="none" color="red.900">
-          코드 재전송
-        </Button>
+
         <FormControl as={VStack} isInvalid={isError}>
           <AuthTextInput type="number" placeholder="인증 코드" />
           {!isError ? (
@@ -39,15 +47,13 @@ export default function EmailAuth() {
           ) : (
             <FormErrorMessage>인증코드를 입력해주세요.</FormErrorMessage>
           )}
-          <Button
-            bg="red.900"
-            color="white"
+          <AuthButton
             onClick={() => {
               router.push("/auth/profile");
             }}
           >
             다음
-          </Button>
+          </AuthButton>
         </FormControl>
       </AuthLayout>
     </>

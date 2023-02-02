@@ -3,7 +3,6 @@ import AuthLayout from "@/components/auth/AuthLayout";
 import AuthTextInput from "@/components/auth/AuthTextInput";
 import {
   Avatar,
-  Button,
   FormControl,
   FormErrorMessage,
   FormHelperText,
@@ -22,10 +21,12 @@ export default function Profile() {
         <title>Arterest | Profile</title>
       </Head>
       <AuthLayout>
-        <Avatar m="auto" size="2xl" />
-        <Button bg="none" color="red.900" onClick={() => {}}>
-          사진 업로드
-        </Button>
+        <VStack>
+          <Avatar size="2xl" />
+          <AuthButton bg="none" color="primary" onClick={() => {}}>
+            사진 업로드
+          </AuthButton>
+        </VStack>
         <FormControl as={VStack} isInvalid={isError}>
           <AuthTextInput type="text" placeholder="닉네임" />
           {!isError ? (
@@ -46,8 +47,6 @@ export default function Profile() {
             <FormErrorMessage>Password is required.</FormErrorMessage>
           )}
           <AuthButton
-            bg="red.900"
-            color="white"
             onClick={() => {
               router.push("/feed");
             }}
