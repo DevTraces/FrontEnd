@@ -35,7 +35,7 @@ const post = {
 
 export default function PostCard() {
   return (
-    <Card w="md">
+    <Card w="md" zIndex="base">
       <CardHeader px={0}>
         <Flex alignItems="center" gap={4} px={4}>
           <Avatar boxSize={10} />
