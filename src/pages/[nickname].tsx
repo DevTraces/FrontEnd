@@ -18,6 +18,7 @@ import {
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Head from "next/head";
+import Link from "next/link";
 import { useRouter } from "next/router";
 
 export default function Profile() {
@@ -36,30 +37,25 @@ export default function Profile() {
             <VStack spacing={2}>
               <HStack w="full" spacing={5} alignItems="center">
                 <Text>사용자 이름</Text>
-
-                <Button
-                  bg="gray.400"
-                  fontWeight="bold"
-                  onClick={() => {
-                    router.push("/accounts/edit");
-                  }}
-                  display={{ sm: "none", md: "block", xl: "block" }}
-                >
-                  프로필 편집
-                </Button>
-                <Button
-                  onClick={() => {
-                    router.push("/accounts/edit");
-                  }}
-                  display={{ sm: "block", md: "none", xl: "none" }}
-                >
-                  <Icon
-                    as={FontAwesomeIcon}
-                    icon={faPencil}
-                    color="gray.400"
-                    boxSize={5}
-                  />
-                </Button>
+                <Link href="/accounts/edit">
+                  <Button
+                    bg="gray.400"
+                    fontWeight="bold"
+                    display={{ sm: "none", md: "block", xl: "block" }}
+                  >
+                    프로필 편집
+                  </Button>
+                </Link>
+                <Link href="/accounts/edit">
+                  <Button display={{ sm: "block", md: "none", xl: "none" }}>
+                    <Icon
+                      as={FontAwesomeIcon}
+                      icon={faPencil}
+                      color="gray.400"
+                      boxSize={5}
+                    />
+                  </Button>
+                </Link>
               </HStack>
               <Stack
                 direction={{ sm: "column", md: "row", xl: "row" }}
