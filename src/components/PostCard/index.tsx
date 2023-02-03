@@ -30,7 +30,8 @@ const post = {
     { nickname: "codeisneverodd", content: "내용 1" },
     { nickname: "helloworld", content: "내용 2" },
     { nickname: "chocolate", content: "내용 3" }
-  ]
+  ],
+  date: "2023-02-02"
 };
 
 export default function PostCard() {
@@ -49,6 +50,7 @@ export default function PostCard() {
           like={post.like}
           hashtag={post.hashtag}
           content={post.content}
+          date={post.date}
         />
         <Comment comments={post.comments} />
       </CardBody>
