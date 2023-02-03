@@ -2,7 +2,8 @@ import { Button, Flex, HStack, Icon, Text } from "@chakra-ui/react";
 import { faHeart, faMessage, faShare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import MAX_PREVIEW_LENGTH from "../../constants/posts";
 
 export default function Content({
   like,
@@ -18,9 +19,15 @@ export default function Content({
   date: string;
 }) {
   const [isMoreLoaded, setIsMoreLoaded] = useState(false);
+  const contentPreview = content.slice(0, MAX_PREVIEW_LENGTH);
+  const contentMore = content.slice(MAX_PREVIEW_LENGTH);
+
+  useEffect(() => {
+    if (content.length < MAX_PREVIEW_LENGTH) setIsMoreLoaded(true);
+  }, [setIsMoreLoaded, content]);
 
   return (
-    <Flex bg="white" direction="column" w="100%" gap="4px">
+    <Flex direction="column" bg="white" w="100%" gap="4px">
       <Flex gap={4}>
         <Icon as={FontAwesomeIcon} icon={faHeart} boxSize={6} />
         <Icon as={FontAwesomeIcon} icon={faMessage} boxSize={6} />
@@ -36,8 +43,10 @@ export default function Content({
             </Link>
           ))}
         </HStack>
+        <Text>{contentPreview}</Text>
+
         {isMoreLoaded ? (
-          <Text>{content}</Text>
+          <Text>{contentMore}</Text>
         ) : (
           <Text
             as={Button}
