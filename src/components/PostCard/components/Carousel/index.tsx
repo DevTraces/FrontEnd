@@ -43,6 +43,24 @@ export default function Carousel({ imgs }: { imgs: string[] }) {
           handleArrowClick={handleArrowClick}
         />
       )}
+      <HStack
+        position="absolute"
+        bottom="5px"
+        left="50%"
+        transform="translateX(-50%)"
+      >
+        {imgs.map((img, i) => (
+          <Box
+            key={`index_${img}`}
+            w={2}
+            h={2}
+            bg={i === current ? "gray.700" : "gray.300"}
+            borderRadius="50%"
+            cursor="pointer"
+            onClick={() => setCurrent(i)}
+          />
+        ))}
+      </HStack>
     </Box>
   );
 }
