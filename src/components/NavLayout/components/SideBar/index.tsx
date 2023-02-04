@@ -9,11 +9,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { Nav, NAVS } from "../../constants/nav";
-import Drawer from "./Drawer";
+import Drawer from "../Drawer";
 
 export default function SideBar() {
   const router = useRouter();
-  const { isOpen, onToggle, onClose } = useDisclosure();
+  const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
   const [selectedNav, setSelectedNav] = useState<Nav["key"] | null>(null);
   const drawerRef = useRef(null);
 
@@ -36,7 +36,11 @@ export default function SideBar() {
       case "search":
       case "alert":
       case "like":
-        onToggle();
+        if (selectedNav === key) {
+          onToggle();
+        } else {
+          onOpen();
+        }
         break;
       default:
         router.push(href);
@@ -46,7 +50,16 @@ export default function SideBar() {
 
   return (
     <>
-      {isOpen && <Drawer ref={drawerRef} selectedNav={selectedNav} />}
+      {isOpen && (
+        <Drawer
+          display={{
+            sm: "none",
+            md: "block"
+          }}
+          ref={drawerRef}
+          selectedNav={selectedNav}
+        />
+      )}
       <Flex
         direction="column"
         bg="white"
