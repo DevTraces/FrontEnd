@@ -21,7 +21,11 @@ import Content from "./components/Content";
 
 const post = {
   nickname: "codeisneverodd",
-  imgs: ["", ""],
+  imgs: [
+    "https://images.unsplash.com/photo-1547891654-e66ed7ebb968?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80",
+    "https://images.unsplash.com/photo-1602532305019-3dbbd482dae9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80",
+    "https://images.unsplash.com/photo-1673818855223-da6f705d825f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=627&q=80"
+  ],
   like: 3240,
   content:
     "조카손자, 손녀, 조카손자\n사람 꽃이 최고지!\n엄마로부터 비롯된 자손들.",
