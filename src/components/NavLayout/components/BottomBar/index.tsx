@@ -26,7 +26,7 @@ export default function BottomBar() {
       }}
     >
       {selectedNavs.map(({ icon, href }) => (
-        <Link href={href}>
+        <Link key={href} href={href}>
           <Icon
             as={FontAwesomeIcon}
             icon={icon}
