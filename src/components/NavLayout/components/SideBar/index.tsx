@@ -1,5 +1,4 @@
 import {
-  Box,
   Flex,
   Icon,
   Text,
@@ -8,21 +7,19 @@ import {
 } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Nav, NAVS } from "../../constants/nav";
-import Alert from "./Alert";
-import Like from "./Like";
-import Search from "./Search";
+import Drawer from "./Drawer";
 
 export default function SideBar() {
   const router = useRouter();
-  const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
-  const [selectedNav, setSelectedNav] = useState<Nav["key"]>(
-    router.pathname.replace("/", "") as Nav["key"]
-  );
-  const drawerWantedNavs: Nav["key"][] = ["search", "alert", "like"];
-
+  const { isOpen, onToggle, onClose } = useDisclosure();
+  const [selectedNav, setSelectedNav] = useState<Nav["key"] | null>(null);
   const drawerRef = useRef(null);
+
+  useEffect(() => {
+    if (!isOpen) setSelectedNav(null);
+  }, [isOpen]);
 
   useOutsideClick({
     ref: drawerRef,
@@ -33,8 +30,23 @@ export default function SideBar() {
     }
   });
 
+  const handleNavClick = (key: Nav["key"], href: Nav["href"]) => {
+    setSelectedNav(key);
+    switch (key) {
+      case "search":
+      case "alert":
+      case "like":
+        onToggle();
+        break;
+      default:
+        router.push(href);
+        onClose();
+    }
+  };
+
   return (
     <>
+      {isOpen && <Drawer ref={drawerRef} selectedNav={selectedNav} />}
       <Flex
         direction="column"
         bg="white"
@@ -80,21 +92,8 @@ export default function SideBar() {
                 bg: "red.400",
                 color: "white"
               }}
-              color={selectedNav === key ? "red.400" : "black"}
-              onClick={() => {
-                if (drawerWantedNavs.includes(key)) {
-                  if (key === selectedNav) {
-                    onToggle();
-                  } else {
-                    onOpen();
-                  }
-                } else {
-                  router.push(href);
-                  onClose();
-                }
-
-                setSelectedNav(key);
-              }}
+              color={selectedNav === key ? "primary" : "black"}
+              onClick={() => handleNavClick(key, href)}
             >
               <Icon key={key} as={FontAwesomeIcon} icon={icon} boxSize="20px" />
               {!isOpen && (
@@ -111,27 +110,6 @@ export default function SideBar() {
           ))}
         </Flex>
       </Flex>
-      {drawerWantedNavs.includes(selectedNav) && isOpen && (
-        <Box
-          zIndex="modal"
-          display={{
-            sm: "none",
-            md: "block"
-          }}
-          position="fixed"
-          left="100px"
-          top={0}
-          p="40px"
-          w={300}
-          bg="white"
-          h="100vh"
-          ref={drawerRef}
-        >
-          {selectedNav === "search" && <Search />}
-          {selectedNav === "alert" && <Alert />}
-          {selectedNav === "like" && <Like />}
-        </Box>
-      )}
     </>
   );
 }
