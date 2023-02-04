@@ -70,6 +70,7 @@ export default function SideBar() {
           </Flex>
           {NAVS.map(({ key, title, icon, href }) => (
             <Flex
+              key={key}
               pl={10}
               h={50}
               gap={10}
