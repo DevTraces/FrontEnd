@@ -30,7 +30,7 @@ export default function Search() {
         </InputGroup>
       </Box>
 
-      <Tabs colorScheme="red" isFitted>
+      <Tabs colorScheme="purple" isFitted>
         <TabList>
           <Tab>이름</Tab>
           <Tab>닉네임</Tab>

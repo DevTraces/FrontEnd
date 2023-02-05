@@ -10,7 +10,7 @@ export default function TagResult() {
   return (
     <>
       <Head>
-        <title>Arterest | {tag} 검색 결과</title>
+        <title>ArtBubble | {tag} 검색 결과</title>
       </Head>
       <NavLayout>
         <VStack pt="30px" w="max-content" pb="40px" m="auto">

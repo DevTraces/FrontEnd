@@ -1,6 +1,7 @@
 import AuthButton from "@/components/auth/AuthButton";
 import AuthLayout from "@/components/auth/AuthLayout";
 import AuthTextInput from "@/components/auth/AuthTextInput";
+import Logo from "@/components/Logo";
 import {
   Center,
   FormControl,
@@ -18,11 +19,11 @@ export default function EditPassword() {
   return (
     <>
       <Head>
-        <title>Arterest | Sign Up</title>
+        <title>ArtBubble | Sign Up</title>
       </Head>
       <AuthLayout>
         <Center color="black">
-          <span />
+          <Logo type="full" height={50} />
         </Center>
 
         <FormControl as={VStack} isInvalid={isError}>

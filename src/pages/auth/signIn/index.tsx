@@ -2,6 +2,7 @@ import AuthButton from "@/components/auth/AuthButton";
 import AuthLayout from "@/components/auth/AuthLayout";
 import AuthTextInput from "@/components/auth/AuthTextInput";
 import KakaoLoginButton from "@/components/auth/KakaoLoginButton";
+import Logo from "@/components/Logo";
 import {
   Center,
   Divider,
@@ -23,11 +24,11 @@ export default function SignIn() {
   return (
     <>
       <Head>
-        <title>Arterest | Sign In</title>
+        <title>ArtBubble | Sign In</title>
       </Head>
       <AuthLayout>
         <Center color="black">
-          <span />
+          <Logo type="full" height={50} />
         </Center>
         <KakaoLoginButton />
         <Divider />

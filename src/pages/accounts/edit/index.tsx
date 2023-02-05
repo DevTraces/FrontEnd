@@ -23,7 +23,7 @@ export default function Setting() {
   return (
     <NavLayout>
       <Head>
-        <title>Arterest | Setting</title>
+        <title>ArtBubble | Setting</title>
       </Head>
       <Container pt={{ sm: "40px", md: "none" }}>
         <VStack padding={10} w="full">
