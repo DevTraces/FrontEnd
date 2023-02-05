@@ -34,7 +34,7 @@ export default function Saved() {
                 >
                   {post.postContent}
                 </Text>
-                <Icon as={FontAwesomeIcon} icon={faHeart} color="red" />
+                <Icon as={FontAwesomeIcon} icon={faHeart} color="primary" />
               </>
             </Flex>
           );

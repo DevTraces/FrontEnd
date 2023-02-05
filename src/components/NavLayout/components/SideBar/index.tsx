@@ -1,6 +1,9 @@
+import Logo from "@/components/Logo";
 import {
+  Box,
   Flex,
   Icon,
+  Show,
   Text,
   useDisclosure,
   useOutsideClick
@@ -79,20 +82,20 @@ export default function SideBar() {
         pt={10}
       >
         <Flex as="nav" direction="column" gap="50px" data-type="navItem">
-          <Flex pl={10} gap={5}>
-            <Text color="red" fontSize="3xl" fontFamily="cursive">
-              A
-            </Text>
-            {!isOpen && (
-              <Text
-                gap={10}
-                fontSize="3xl"
-                display={{ md: "none", xl: "inline-block" }}
-              >
-                Arterest
-              </Text>
-            )}
+          <Flex pl="32px" height="44px" alignItems="center">
+            <Show below="xl">
+              <Logo type="icon" height={44} />
+            </Show>
+            <Show above="xl">
+              <Box pl={isOpen ? 0 : "8px"}>
+                <Logo
+                  type={isOpen ? "icon" : "text"}
+                  height={isOpen ? 44 : 22}
+                />
+              </Box>
+            </Show>
           </Flex>
+
           {NAVS.map(({ key, title, icon, href }) => (
             <Flex
               key={key}
@@ -103,7 +106,7 @@ export default function SideBar() {
               cursor="pointer"
               fontWeight="bold"
               _hover={{
-                bg: "red.400",
+                bg: "primary",
                 color: "white"
               }}
               color={selectedNav === key ? "primary" : "black"}

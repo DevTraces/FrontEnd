@@ -1,3 +1,4 @@
+import Logo from "@/components/Logo";
 import {
   Box,
   Button,
@@ -6,7 +7,6 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
-  Text,
   useDisclosure,
   useOutsideClick
 } from "@chakra-ui/react";
@@ -63,8 +63,8 @@ export default function TopBar() {
           md: "none"
         }}
       >
-        <Box mr={20}>
-          <Text fontSize="3xl">Arterest</Text>
+        <Box mr={20} w="200px" h="100px" position="relative">
+          <Logo type="text" fill />
         </Box>
         <InputGroup mr={10} data-type="navItem">
           <InputLeftElement pointerEvents="none">

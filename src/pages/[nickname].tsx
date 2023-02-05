@@ -24,7 +24,7 @@ export default function Profile() {
   return (
     <>
       <Head>
-        <title>Arterest | Profile</title>
+        <title>ArtBubble | Profile</title>
       </Head>
       <NavLayout>
         <Flex direction="column" pt="100px" w="max-content" pb="40px" m="auto">
@@ -79,7 +79,7 @@ export default function Profile() {
           </Flex>
         </Flex>
 
-        <Tabs variant="line" align="center" colorScheme="red">
+        <Tabs variant="line" align="center" colorScheme="purple">
           <TabList>
             <Tab>게시물</Tab>
             <Tab>좋아요</Tab>

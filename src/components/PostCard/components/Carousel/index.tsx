@@ -18,7 +18,7 @@ export default function Carousel({ imgs }: { imgs: string[] }) {
 
   return (
     <Box bg="white" position="relative">
-      <HStack height="500px" spacing="0px" overflow="hidden">
+      <HStack height="500px" spacing="0px" overflow="hidden" bg="gray.100">
         {imgs.map((img, i) => (
           <Image
             key={img}
