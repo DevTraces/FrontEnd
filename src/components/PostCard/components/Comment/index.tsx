@@ -7,27 +7,29 @@ import {
   Flex,
   Text
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { ComponentProps, useState } from "react";
 
-export default function Comment({ comments }: { comments: any[] }) {
+type CommentProps = { comments: any[] } & ComponentProps<typeof Accordion>;
+
+export default function Comment({ comments, ...restProps }: CommentProps) {
   const [isCommentOpen, setIsCommentOpen] = useState(false);
 
   return (
-    <Accordion allowToggle>
-      <AccordionItem>
+    <Accordion allowToggle {...restProps}>
+      <AccordionItem border="none">
         <AccordionButton
           p={0}
           onClick={() => {
             setIsCommentOpen(prev => !prev);
           }}
         >
-          <Box>
+          <Box py="8px" color="gray">
             댓글 {isCommentOpen ? "숨기기" : `${comments.length}개 모두 보기`}
           </Box>
         </AccordionButton>
         {comments.map(({ nickname, content }) => (
           <AccordionPanel p={0} pb={4}>
-            <Flex>
+            <Flex direction="column">
               <Text mr={2} fontWeight="bold">
                 {nickname}
               </Text>
