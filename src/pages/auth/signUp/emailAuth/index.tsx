@@ -8,6 +8,7 @@ import {
   FormHelperText,
   Icon,
   Text,
+  useToast,
   VStack
 } from "@chakra-ui/react";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
@@ -17,6 +18,7 @@ import { useRouter } from "next/router";
 
 export default function EmailAuth() {
   const router = useRouter();
+  const toast = useToast();
   const isError = false;
 
   return (
@@ -35,7 +37,20 @@ export default function EmailAuth() {
         </Center>
         <Text textAlign="center" wordBreak="keep-all">
           codeisneverodd@gmail.com 주소로 전송된 인증코드를 입력하세요.
-          <Text display="inline" color="primary" ml="10px" fontWeight="bold">
+          <Text
+            display="inline"
+            color="primary"
+            ml="10px"
+            fontWeight="bold"
+            cursor="pointer"
+            onClick={() => {
+              toast({
+                title: "인증코드가 전송되었습니다.",
+                status: "success",
+                duration: 3000
+              });
+            }}
+          >
             코드 재전송
           </Text>
         </Text>
