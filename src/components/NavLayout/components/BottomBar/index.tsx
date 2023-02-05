@@ -31,7 +31,7 @@ export default function BottomBar() {
             as={FontAwesomeIcon}
             icon={icon}
             boxSize={6}
-            color={router.pathname === href ? "red.400" : "black"}
+            color={router.pathname === href ? "primary" : "black"}
           />
         </Link>
       ))}
