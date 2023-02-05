@@ -38,7 +38,7 @@ export default function Content({
         <Text fontWeight="bold">{nickname}</Text>
         <HStack>
           {hashtag.map(tag => (
-            <Link href={`/search/tag/${tag}`} key={tag}>
+            <Link href={`/explore/tags/${tag}`} key={tag}>
               <Text color="blue.700">#{tag}</Text>
             </Link>
           ))}
