@@ -22,7 +22,7 @@ export default function EmailAuth() {
   return (
     <>
       <Head>
-        <title>Arterest | Email Authorization</title>
+        <title>ArtBubble | Email Authorization</title>
       </Head>
       <AuthLayout>
         <Center>

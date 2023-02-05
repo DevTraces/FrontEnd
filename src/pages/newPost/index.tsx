@@ -26,7 +26,7 @@ export default function NewPost() {
   return (
     <NavLayout>
       <Head>
-        <title>Arterest | Upload</title>
+        <title>ArtBubble | Upload</title>
       </Head>
       <FormControl as={VStack} spacing="16px" p="40px" pt="80px">
         <HStack w="full" justifyContent="end">
@@ -49,7 +49,7 @@ export default function NewPost() {
             <Button
               bg="primary"
               color="white"
-              colorScheme="red"
+              colorScheme="purple"
               onClick={() => {
                 router.push("/feed");
               }}

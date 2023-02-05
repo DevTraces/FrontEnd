@@ -18,7 +18,7 @@ export default function Profile() {
   return (
     <>
       <Head>
-        <title>Arterest | Profile</title>
+        <title>ArtBubble | Profile</title>
       </Head>
       <AuthLayout>
         <VStack>

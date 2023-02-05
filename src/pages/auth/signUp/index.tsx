@@ -2,6 +2,7 @@ import AuthButton from "@/components/auth/AuthButton";
 import AuthLayout from "@/components/auth/AuthLayout";
 import AuthTextInput from "@/components/auth/AuthTextInput";
 import KakaoLoginButton from "@/components/auth/KakaoLoginButton";
+import Logo from "@/components/Logo";
 import {
   Center,
   Flex,
@@ -21,11 +22,11 @@ export default function SignUp() {
   return (
     <>
       <Head>
-        <title>Arterest | Sign Up</title>
+        <title>ArtBubble | Sign Up</title>
       </Head>
       <AuthLayout>
         <Center>
-          <span />
+          <Logo type="full" height={50} />
         </Center>
         <Text fontSize="2xl" textAlign="center" wordBreak="keep-all">
           그림을 좋아하는 사람들과 소통하려면 가입하세요.
