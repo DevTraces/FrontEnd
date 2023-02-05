@@ -35,7 +35,7 @@ export default function SideBar() {
     switch (key) {
       case "search":
       case "alert":
-      case "like":
+      case "saved":
         if (selectedNav === key) {
           onToggle();
         } else {
