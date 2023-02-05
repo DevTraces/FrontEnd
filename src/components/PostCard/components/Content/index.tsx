@@ -1,4 +1,4 @@
-import { Button, Flex, HStack, Icon, Text } from "@chakra-ui/react";
+import { Button, Flex, HStack, Icon, Text, useToast } from "@chakra-ui/react";
 import {
   faBookmark as faBookmarkBlank,
   faComment,
@@ -33,6 +33,8 @@ export default function Content({
   const contentPreview = content.slice(0, MAX_PREVIEW_LENGTH);
   const contentMore = content.slice(MAX_PREVIEW_LENGTH);
 
+  const toast = useToast();
+
   useEffect(() => {
     if (content.length < MAX_PREVIEW_LENGTH) setIsMoreLoaded(true);
   }, [setIsMoreLoaded, content]);
@@ -60,6 +62,14 @@ export default function Content({
             as={FontAwesomeIcon}
             icon={faLink}
             boxSize={6}
+            onClick={() => {
+              navigator.clipboard.writeText("주소/post/1");
+              toast({
+                title: "링크가 복사되었어요.",
+                status: "success",
+                duration: 1000
+              });
+            }}
           />
         </HStack>
         <Icon
@@ -67,8 +77,17 @@ export default function Content({
           icon={isSaved ? faBookmarkFilled : faBookmarkBlank}
           color={isSaved ? "primary" : "black"}
           boxSize={6}
-          onClick={() => setIsSaved(prev => !prev)}
           cursor="pointer"
+          onClick={() => {
+            setIsSaved(prev => !prev);
+            toast({
+              title: isSaved
+                ? "저장 목록에서 삭제했어요."
+                : "저장 목록에 추가했어요.",
+              status: "success",
+              duration: 1000
+            });
+          }}
         />
       </Flex>
       <Text fontWeight="bold">좋아요 {like}개</Text>
