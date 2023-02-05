@@ -56,6 +56,7 @@ export default function Carousel({ imgs }: { imgs: string[] }) {
               w={2}
               h={2}
               bg={i === current ? "gray.700" : "gray.300"}
+              _hover={{ bg: "white" }}
               borderRadius="50%"
               cursor="pointer"
               onClick={() => setCurrent(i)}
