@@ -1,7 +1,7 @@
 import { Button, Icon } from "@chakra-ui/react";
 import {
-  faCircleArrowLeft,
-  faCircleArrowRight
+  faChevronCircleLeft,
+  faChevronCircleRight
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -20,14 +20,16 @@ export default function ArrowIconButton({
       top="50%"
       translateY="-50%"
       style={direction === "left" ? { left: 5 } : { right: 5 }}
-      color="gray.300"
-      bg="none"
       _hover={{ bg: "none" }}
+      bg="none"
       onClick={() => handleArrowClick(direction)}
     >
       <Icon
         as={FontAwesomeIcon}
-        icon={direction === "left" ? faCircleArrowLeft : faCircleArrowRight}
+        color="gray.300"
+        _hover={{ color: "white" }}
+        fill="white"
+        icon={direction === "left" ? faChevronCircleLeft : faChevronCircleRight}
         w={5}
         h={5}
       />
