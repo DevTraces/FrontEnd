@@ -18,7 +18,7 @@ export default function Carousel({ imgs }: { imgs: string[] }) {
 
   return (
     <Box bg="white" position="relative">
-      <HStack height="500px" spacing="0px" overflow="hidden" bg="gray.100">
+      <HStack height="500px" spacing="0px" overflow="hidden" bg="gray.900">
         {imgs.map((img, i) => (
           <Image
             key={img}
@@ -56,6 +56,7 @@ export default function Carousel({ imgs }: { imgs: string[] }) {
               w={2}
               h={2}
               bg={i === current ? "gray.700" : "gray.300"}
+              _hover={{ bg: "white" }}
               borderRadius="50%"
               cursor="pointer"
               onClick={() => setCurrent(i)}

@@ -1,9 +1,13 @@
 import { Button, Flex, HStack, Icon, Text } from "@chakra-ui/react";
 import {
-  faBookmark,
-  faHeart,
-  faMessage,
-  faShare
+  faBookmark as faBookmarkBlank,
+  faComment,
+  faHeart as faHeartBlank
+} from "@fortawesome/free-regular-svg-icons";
+import {
+  faBookmark as faBookmarkFilled,
+  faHeart as faHeartFilled,
+  faLink
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
@@ -23,6 +27,8 @@ export default function Content({
   hashtag: any[];
   date: string;
 }) {
+  const [isLiked, setIsLiked] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
   const [isMoreLoaded, setIsMoreLoaded] = useState(false);
   const contentPreview = content.slice(0, MAX_PREVIEW_LENGTH);
   const contentMore = content.slice(MAX_PREVIEW_LENGTH);
@@ -35,11 +41,35 @@ export default function Content({
     <Flex direction="column" bg="white" w="100%" gap="4px">
       <Flex gap={4} justifyContent="space-between">
         <HStack spacing="15px">
-          <Icon as={FontAwesomeIcon} icon={faHeart} boxSize={6} />
-          <Icon as={FontAwesomeIcon} icon={faMessage} boxSize={6} />
-          <Icon as={FontAwesomeIcon} icon={faShare} boxSize={6} />
+          <Icon
+            as={FontAwesomeIcon}
+            icon={isLiked ? faHeartFilled : faHeartBlank}
+            color={isLiked ? "red" : "black"}
+            boxSize={6}
+            onClick={() => setIsLiked(prev => !prev)}
+            cursor="pointer"
+          />
+          <Icon
+            cursor="pointer"
+            as={FontAwesomeIcon}
+            icon={faComment}
+            boxSize={6}
+          />
+          <Icon
+            cursor="pointer"
+            as={FontAwesomeIcon}
+            icon={faLink}
+            boxSize={6}
+          />
         </HStack>
-        <Icon as={FontAwesomeIcon} icon={faBookmark} boxSize={6} />
+        <Icon
+          as={FontAwesomeIcon}
+          icon={isSaved ? faBookmarkFilled : faBookmarkBlank}
+          color={isSaved ? "primary" : "black"}
+          boxSize={6}
+          onClick={() => setIsSaved(prev => !prev)}
+          cursor="pointer"
+        />
       </Flex>
       <Text fontWeight="bold">좋아요 {like}개</Text>
       <Flex direction="column" gap="10px">

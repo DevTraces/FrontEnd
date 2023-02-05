@@ -1,6 +1,5 @@
 import {
   Avatar,
-  Button,
   Card,
   CardBody,
   CardFooter,
@@ -13,7 +12,7 @@ import {
   InputRightElement,
   Text
 } from "@chakra-ui/react";
-import { faSmile } from "@fortawesome/free-solid-svg-icons";
+import { faPaperPlane, faSmile } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Carousel from "./components/Carousel";
 import Comment from "./components/Comment";
@@ -31,9 +30,16 @@ const post = {
     "조카손자, 손녀, 조카손자\n사람 꽃이 최고지!\n엄마로부터 비롯된 자손들.",
   hashtag: ["양희은", "그러라그래", "베스트셀러", "MBC여성시대"],
   comments: [
-    { nickname: "codeisneverodd", content: "내용 1" },
-    { nickname: "helloworld", content: "내용 2" },
-    { nickname: "chocolate", content: "내용 3" }
+    {
+      nickname: "codeisneverodd",
+      content: "너무 멋져요!! 조카손자 분들이 너무 사랑스럽네요~"
+    },
+    { nickname: "js16_0921", content: "저희 집 아이들이 생각나네요 ㅎㅎ" },
+    {
+      nickname: "ill0o0lli",
+      content:
+        "오랜 시간 활동하시는 것이 너무 멋져요! 앞으로도 쭉 좋은 활동 부탁드립니다 "
+    }
   ],
   date: "2023-02-02"
 };
@@ -44,11 +50,11 @@ export default function PostCard() {
       <CardHeader px={0}>
         <Flex alignItems="center" gap={4} px={4}>
           <Avatar boxSize={10} />
-          <Text>{post.nickname}</Text>
+          <Text fontWeight="bold">{post.nickname}</Text>
         </Flex>
       </CardHeader>
       <Carousel imgs={post.imgs} />
-      <CardBody px={2}>
+      <CardBody px="12px">
         <Content
           nickname={post.nickname}
           like={post.like}
@@ -56,7 +62,7 @@ export default function PostCard() {
           content={post.content}
           date={post.date}
         />
-        <Comment comments={post.comments} />
+        <Comment comments={post.comments} mt="12px" />
       </CardBody>
       <CardFooter p="0">
         <InputGroup>
@@ -68,11 +74,10 @@ export default function PostCard() {
             focusBorderColor="white"
             bg="white"
             placeholder="댓글 달기..."
+            _hover={{ bg: "none" }}
           />
           <InputRightElement>
-            <Button variant="ghost" color="blue">
-              게시
-            </Button>
+            <Icon as={FontAwesomeIcon} icon={faPaperPlane} color="gray.300" />
           </InputRightElement>
         </InputGroup>
       </CardFooter>
