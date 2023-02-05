@@ -1,5 +1,10 @@
 import { Button, Flex, HStack, Icon, Text } from "@chakra-ui/react";
-import { faHeart, faMessage, faShare } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBookmark,
+  faHeart,
+  faMessage,
+  faShare
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -28,10 +33,13 @@ export default function Content({
 
   return (
     <Flex direction="column" bg="white" w="100%" gap="4px">
-      <Flex gap={4}>
-        <Icon as={FontAwesomeIcon} icon={faHeart} boxSize={6} />
-        <Icon as={FontAwesomeIcon} icon={faMessage} boxSize={6} />
-        <Icon as={FontAwesomeIcon} icon={faShare} boxSize={6} />
+      <Flex gap={4} justifyContent="space-between">
+        <HStack spacing="15px">
+          <Icon as={FontAwesomeIcon} icon={faHeart} boxSize={6} />
+          <Icon as={FontAwesomeIcon} icon={faMessage} boxSize={6} />
+          <Icon as={FontAwesomeIcon} icon={faShare} boxSize={6} />
+        </HStack>
+        <Icon as={FontAwesomeIcon} icon={faBookmark} boxSize={6} />
       </Flex>
       <Text fontWeight="bold">좋아요 {like}개</Text>
       <Flex direction="column" gap="10px">
