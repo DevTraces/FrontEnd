@@ -10,10 +10,9 @@ const posts = [
       "집에 잘 들어가는 방법은 여러가지가 있는데 택시를 탈 수도, 버스를 탈 수도, 비행기를 탈 수도 있다."
   }
 ];
-export default function Like() {
+export default function Saved() {
   return (
     <Flex direction="column" gap="10px">
-      좋아요 목록
       <Flex direction="column" gap="20px">
         {posts.map(post => {
           return (

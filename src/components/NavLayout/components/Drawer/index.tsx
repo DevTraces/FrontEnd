@@ -2,7 +2,7 @@ import { Nav } from "@/components/NavLayout/constants/nav";
 import { Box, Text } from "@chakra-ui/react";
 import { ComponentProps, forwardRef } from "react";
 import Alert from "./components/Alert";
-import Like from "./components/Like";
+import Saved from "./components/Saved";
 import Search from "./components/Search";
 
 type DrawerProps = {
@@ -15,7 +15,7 @@ export default forwardRef<HTMLDivElement, DrawerProps>(
       [
         { key: "search", Component: <Search />, title: "검색" },
         { key: "alert", Component: <Alert />, title: "알림" },
-        { key: "like", Component: <Like />, title: "좋아요 목록" }
+        { key: "saved", Component: <Saved />, title: "저장한 목록" }
       ];
 
     const currentCase = cases.find(({ key }) => key === selectedNav);
