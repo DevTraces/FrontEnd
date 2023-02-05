@@ -25,5 +25,10 @@ export const NAVS: Nav[] = [
     href: "/someone/saved"
   },
   { key: "newPost", icon: faPlus, title: "새 포스트", href: "/newPost" },
-  { key: "profile", icon: faUser, title: "프로필", href: "/codeisneverodd" }
+  {
+    key: "profile",
+    icon: faUser,
+    title: "프로필",
+    href: "/codeisneverodd/posts"
+  }
 ];
