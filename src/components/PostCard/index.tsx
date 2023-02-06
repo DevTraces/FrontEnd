@@ -32,13 +32,36 @@ const post = {
   comments: [
     {
       nickname: "codeisneverodd",
-      content: "너무 멋져요!! 조카손자 분들이 너무 사랑스럽네요~"
+      content: "너무 멋져요!! 조카손자 분들이 너무 사랑스럽네요~",
+      nestedComments: [
+        {
+          nickname: "nest1",
+          content: "nestedcomment1"
+        },
+        {
+          nickname: "nest2",
+          content: "nestedcomment2"
+        }
+      ]
     },
-    { nickname: "js16_0921", content: "저희 집 아이들이 생각나네요 ㅎㅎ" },
+    {
+      nickname: "js16_0921",
+      content: "저희 집 아이들이 생각나네요 ㅎㅎ"
+    },
     {
       nickname: "ill0o0lli",
       content:
-        "오랜 시간 활동하시는 것이 너무 멋져요! 앞으로도 쭉 좋은 활동 부탁드립니다 "
+        "오랜 시간 활동하시는 것이 너무 멋져요! 앞으로도 쭉 좋은 활동 부탁드립니다 ",
+      nestedComments: [
+        {
+          nickname: "nest1",
+          content: "nestedcomment3"
+        },
+        {
+          nickname: "nest2",
+          content: "nestedcomment4"
+        }
+      ]
     }
   ],
   date: "2023-02-02"
