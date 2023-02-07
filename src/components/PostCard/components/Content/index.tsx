@@ -40,7 +40,7 @@ export default function Content({
   }, [setIsMoreLoaded, content]);
 
   return (
-    <Flex direction="column" bg="white" w="100%" gap="4px">
+    <Flex direction="column" alignItems="flex-start" bg="white" gap="4px">
       <Flex gap={4} justifyContent="space-between">
         <HStack spacing="15px">
           <Icon
@@ -91,7 +91,7 @@ export default function Content({
         />
       </Flex>
       <Text fontWeight="bold">좋아요 {like}개</Text>
-      <Flex direction="column" gap="10px">
+      <Flex direction="column" alignItems="flex-start" w="full">
         <Text fontWeight="bold">{nickname}</Text>
         <HStack>
           {hashtag.map(tag => (
@@ -107,6 +107,7 @@ export default function Content({
         ) : (
           <Text
             as={Button}
+            width="full"
             color="blue.700"
             onClick={() => setIsMoreLoaded(!isMoreLoaded)}
           >
