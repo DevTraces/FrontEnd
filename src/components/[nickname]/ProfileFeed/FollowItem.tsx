@@ -1,4 +1,5 @@
 import { Text, Avatar, VStack, HStack, Button, Circle } from "@chakra-ui/react";
+import { useMutation } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -20,18 +21,34 @@ export default function FollowItem({
 }: FollowItemProps) {
   const [isCurrentFollowing, setIsCurrentFollowing] = useState(isFollowing);
 
-  const handleFollowClick = async () => {
-    const res = await fetch(`/api/follow/${nickname}`, {
-      method: "POST"
-    });
-    if (res.status === 200) setIsCurrentFollowing(true);
+  const follow = useMutation({
+    mutationFn: () => {
+      return fetch(`/api/follow/${nickname}`, {
+        method: "POST"
+      });
+    },
+    onSuccess: () => {
+      setIsCurrentFollowing(true);
+    }
+  });
+
+  const unfollow = useMutation({
+    mutationFn: () => {
+      return fetch(`/api/follow/${nickname}`, {
+        method: "DELETE"
+      });
+    },
+    onSuccess: () => {
+      setIsCurrentFollowing(false);
+    }
+  });
+
+  const handleFollowClick = () => {
+    follow.mutate();
   };
 
-  const handleUnfollowClick = async () => {
-    const res = await fetch(`/api/follow/${nickname}`, {
-      method: "DELETE"
-    });
-    if (res.status === 200) setIsCurrentFollowing(false);
+  const handleUnfollowClick = () => {
+    unfollow.mutate();
   };
 
   return (
