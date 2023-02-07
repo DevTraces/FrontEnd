@@ -5,7 +5,7 @@ import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import UserList from "@/components/[nickname]/ProfileFeed/UserList";
+import FollowList from "@/components/[nickname]/ProfileFeed/FollowList";
 
 type Selected = "posts" | "saved" | "following" | "follower";
 const selectedList: Selected[] = ["posts", "saved", "following", "follower"];
@@ -93,10 +93,10 @@ export default function Profile() {
                 <PostList />
               </TabPanel>
               <TabPanel>
-                <UserList />
+                <FollowList />
               </TabPanel>
               <TabPanel>
-                <UserList />
+                <FollowList />
               </TabPanel>
             </TabPanels>
           </Tabs>
