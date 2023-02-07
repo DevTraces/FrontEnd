@@ -17,7 +17,7 @@ export default function Profile() {
   const isMyProfile = nickname === "choonsik";
 
   const getProfile = async () => {
-    const res = await fetch("/api/users/profile");
+    const res = await fetch(`/api/users/profile/${nickname}`);
     const data = await res.json();
     return data;
   };
@@ -41,6 +41,9 @@ export default function Profile() {
           followerNumber={query.data?.followerNumber}
           followingNumber={query.data?.followingNumber}
           profileImageLink={query.data?.profileImageLink}
+          maxW="780px"
+          p="20px"
+          pt="100px"
         />
         {selected && (
           <Tabs

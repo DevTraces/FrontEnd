@@ -18,7 +18,7 @@ type ProfileProps = {
   followerNumber: number;
   followingNumber: number;
   profileImageLink: string;
-};
+} & React.ComponentProps<typeof VStack>;
 
 export default function ProfileInfo({
   nickname,
@@ -27,12 +27,13 @@ export default function ProfileInfo({
   totalFeedNumber,
   followerNumber,
   followingNumber,
-  profileImageLink
+  profileImageLink,
+  ...restProps
 }: ProfileProps) {
   const isMyProfile = nickname === "choonsik";
 
   return (
-    <VStack maxW="780px" p="20px" pt="100px" m="auto" gap="20px">
+    <VStack gap="20px" m="auto" {...restProps}>
       <HStack gap="20px">
         {profileImageLink ? (
           <Circle size="80px" position="relative" overflow="hidden">
