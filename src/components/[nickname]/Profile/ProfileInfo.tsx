@@ -33,7 +33,7 @@ export default function ProfileInfo({
   const isMyProfile = nickname === "choonsik";
 
   return (
-    <VStack gap="20px" m="auto" {...restProps}>
+    <VStack gap="20px" {...restProps}>
       <HStack gap="20px">
         {profileImageLink ? (
           <Circle size="80px" position="relative" overflow="hidden">

@@ -8,7 +8,7 @@ export default function NavLayout({
   ...restProps
 }: React.ComponentProps<typeof Center>) {
   return (
-    <>
+    <Center>
       <TopBar />
       <SideBar />
       <BottomBar />
@@ -32,6 +32,6 @@ export default function NavLayout({
       >
         {children}
       </Box>
-    </>
+    </Center>
   );
 }
