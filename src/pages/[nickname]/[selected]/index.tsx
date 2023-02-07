@@ -50,7 +50,7 @@ export default function Profile() {
             variant="line"
             align="center"
             colorScheme="red"
-            defaultIndex={selectedList.findIndex(item => item === selected)}
+            index={selectedList.findIndex(item => item === selected)}
           >
             <TabList>
               <Tab
