@@ -10,8 +10,8 @@ export default function AuthButton({ children, ...props }: AuthButtonProps) {
       colorScheme="none"
       bg="primary"
       color="white"
-      {...props}
       _hover={{ transform: "scale(1.1)" }}
+      {...props}
     >
       {children}
     </Button>
