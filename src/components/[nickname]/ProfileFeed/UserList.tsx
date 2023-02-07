@@ -1,12 +1,42 @@
 import { VStack } from "@chakra-ui/react";
-import UserItem from "./UserItem";
+import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/router";
+import UserItem, { UserItemProps } from "./UserItem";
 
 export default function UserList() {
+  const router = useRouter();
+  const { nickname, selected } = router.query;
+
+  const getFollowList = async () => {
+    const res = await fetch(`/api/users/${selected}?userId=${nickname}`);
+    const data = await res.json();
+
+    return data;
+  };
+
+  const query = useQuery({
+    queryKey: ["userList", nickname, selected],
+    queryFn: getFollowList
+  });
+
   return (
     <VStack>
-      <UserItem isFollowing={false} username="유저이름" nickname="닉네임" />
-      <UserItem isFollowing username="유저이름" nickname="닉네임" />
-      <UserItem isFollowing={false} username="유저이름" nickname="닉네임" />
+      {query.data?.map(
+        ({
+          nickname: userNickname,
+          profileImageLink,
+          userName,
+          isFollowing
+        }: UserItemProps) => (
+          <UserItem
+            key={userNickname}
+            userName={userName}
+            nickname={userNickname}
+            profileImageLink={profileImageLink}
+            isFollowing={isFollowing}
+          />
+        )
+      )}
     </VStack>
   );
 }

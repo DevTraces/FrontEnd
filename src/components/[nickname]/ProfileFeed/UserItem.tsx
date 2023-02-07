@@ -1,21 +1,35 @@
-import { Text, Avatar, VStack, HStack, Button } from "@chakra-ui/react";
+import { Text, Avatar, VStack, HStack, Button, Circle } from "@chakra-ui/react";
+import Image from "next/image";
 
-type UserItemProps = {
-  username: string;
+export type UserItemProps = {
+  userName: string;
   nickname: string;
+  profileImageLink: string;
   isFollowing: boolean;
 };
 
 export default function UserItem({
-  username,
+  userName,
   nickname,
+  profileImageLink,
   isFollowing
 }: UserItemProps) {
   return (
     <HStack w="300px" justifyContent="space-between">
-      <Avatar boxSize={10} />
+      {profileImageLink ? (
+        <Circle size={10} position="relative" overflow="hidden">
+          <Image
+            src={profileImageLink}
+            alt="프로필 이미지"
+            fill
+            style={{ objectFit: "cover" }}
+          />
+        </Circle>
+      ) : (
+        <Avatar boxSize={10} src={profileImageLink} />
+      )}
       <VStack flex="1" alignItems="flex-start">
-        <Text fontWeight="bold">{username}</Text>
+        <Text fontWeight="bold">{userName}</Text>
         <Text color="gray">@{nickname}</Text>
       </VStack>
       {isFollowing ? (
