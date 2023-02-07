@@ -46,10 +46,11 @@ export default function FollowItem({
         }}
       >
         {profileImageLink ? (
-          <Circle size={10} position="relative" overflow="hidden">
+          <Circle size="50px" position="relative" overflow="hidden">
             <Image
               src={profileImageLink}
               alt="프로필 이미지"
+              sizes="50px"
               fill
               style={{ objectFit: "cover" }}
             />

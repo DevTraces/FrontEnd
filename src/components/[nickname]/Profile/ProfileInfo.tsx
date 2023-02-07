@@ -39,6 +39,7 @@ export default function ProfileInfo({
           <Circle size="80px" position="relative" overflow="hidden">
             <Image
               alt="프로필 이미지"
+              sizes="80px"
               fill
               src={profileImageLink}
               style={{ objectFit: "cover" }}
