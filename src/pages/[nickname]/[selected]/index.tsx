@@ -1,32 +1,46 @@
 import NavLayout from "@/components/NavLayout";
-import PostList from "@/components/[nickname]/PostList";
-import ProfileInfo from "@/components/[nickname]/ProfileInfo";
-import UserList from "@/components/[nickname]/UserList";
+import PostList from "@/components/[nickname]/ProfileFeed/PostList";
+import ProfileInfo from "@/components/[nickname]/Profile/ProfileInfo";
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import UserList from "@/components/[nickname]/ProfileFeed/UserList";
 
 type Selected = "posts" | "saved" | "following" | "follower";
 const selectedList: Selected[] = ["posts", "saved", "following", "follower"];
 
-const username = "김경현";
 export default function Profile() {
   const router = useRouter();
   const { nickname, selected } = router.query;
 
+  const isMyProfile = nickname === "choonsik";
+
+  const getProfile = async () => {
+    const res = await fetch("/api/users/profile");
+    const data = await res.json();
+    return data;
+  };
+
+  const query = useQuery({
+    queryKey: ["profile", nickname],
+    queryFn: getProfile
+  });
+
   return (
     <>
       <Head>
-        <title>Arterest | Profile</title>
+        <title>Arterest | {nickname}님의 프로필</title>
       </Head>
       <NavLayout>
         <ProfileInfo
           nickname={nickname as string}
-          username={username}
-          postCount={0}
-          followerCount={0}
-          followingCount={0}
-          imgURL=""
+          userName={query.data?.userName}
+          description={query.data?.description}
+          totalFeedNumber={query.data?.totalFeedNumber}
+          followerNumber={query.data?.followerNumber}
+          followingNumber={query.data?.followingNumber}
+          profileImageLink={query.data?.profileImageLink}
         />
         {selected && (
           <Tabs
@@ -43,13 +57,16 @@ export default function Profile() {
               >
                 게시물
               </Tab>
-              <Tab
-                onClick={() => {
-                  router.push(`/${nickname}/saved`);
-                }}
-              >
-                저장한 목록
-              </Tab>
+              {isMyProfile && (
+                <Tab
+                  onClick={() => {
+                    router.push(`/${nickname}/saved`);
+                  }}
+                >
+                  저장한 목록
+                </Tab>
+              )}
+
               <Tab
                 onClick={() => {
                   router.push(`/${nickname}/following`);
