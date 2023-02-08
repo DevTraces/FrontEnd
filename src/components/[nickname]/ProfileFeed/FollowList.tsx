@@ -8,7 +8,7 @@ export default function FollowList() {
   const { nickname, selected } = router.query;
 
   const getFollowList = async () => {
-    const res = await fetch(`/api/users/${selected}?userId=${nickname}`);
+    const res = await fetch(`/api/users/${selected}/${nickname}`);
     const data = await res.json();
 
     return data;
