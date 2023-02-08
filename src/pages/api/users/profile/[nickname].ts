@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
 type Data = {
-  userName: string;
+  username: string;
   nickname: string;
   description: string;
   profileImageLink: string;
@@ -16,7 +16,7 @@ export default function handler(
 ) {
   if (req.method === "GET") {
     res.status(200).json({
-      userName: "춘시깅",
+      username: "춘시깅",
       nickname: "choonsik",
       description:
         "안녕하세요. 자기소개입니당. :)안녕하세요. 자기소개입니당. :)안녕하세요. 자기소개입니당. :) ",
