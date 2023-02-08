@@ -1,7 +1,7 @@
 import { VStack } from "@chakra-ui/react";
-import PostCard from "../PostCard";
+import PostCard from "../../PostCard";
 
-export default function PostList() {
+export default function Posts() {
   return (
     <VStack>
       <PostCard />
