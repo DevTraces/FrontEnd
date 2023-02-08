@@ -1,4 +1,4 @@
-import { Avatar, Flex, HStack, Text } from "@chakra-ui/react";
+import { Avatar, HStack, Text, VStack } from "@chakra-ui/react";
 
 export type CommentItemProps = {
   nickname: string;
@@ -9,12 +9,12 @@ export default function CommentItem({ nickname, content }: CommentItemProps) {
   return (
     <HStack alignItems="flex-start" spacing="10px">
       <Avatar boxSize="40px" />
-      <Flex direction="column">
+      <VStack alignItems="flex-start">
         <Text mr={2} fontWeight="bold">
           {nickname}
         </Text>
-        <Text>{content}</Text>
-      </Flex>
+        <Text textAlign="left">{content}</Text>
+      </VStack>
     </HStack>
   );
 }

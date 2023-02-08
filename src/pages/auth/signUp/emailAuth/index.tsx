@@ -38,6 +38,7 @@ export default function EmailAuth() {
         <Text textAlign="center" wordBreak="keep-all">
           codeisneverodd@gmail.com 주소로 전송된 인증코드를 입력하세요.
           <Text
+            as="span"
             display="inline"
             color="primary"
             ml="10px"

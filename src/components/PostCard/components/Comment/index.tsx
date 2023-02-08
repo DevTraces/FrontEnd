@@ -3,6 +3,8 @@ import {
   AccordionButton,
   AccordionItem,
   AccordionPanel,
+  Box,
+  Button,
   Divider,
   Flex,
   HStack,
@@ -44,22 +46,24 @@ export default function Comment({
         >
           <HStack py="8px" color="gray">
             {isNested && <Divider w="50px" borderColor="gray" />}
-            <Icon as={FontAwesomeIcon} icon={faComment} />
-            <Text>
-              {isNested ? "답글 " : "댓글 "}
-              {isCommentOpen ? "숨기기" : `${comments.length}개 모두 보기`}
-            </Text>
+            <Button as={HStack} bg="none" w="fit-content">
+              <Icon as={FontAwesomeIcon} icon={faComment} />
+              <Text>
+                {isNested ? "답글 " : "댓글 "}
+                {isCommentOpen ? "숨기기" : `${comments.length}개 모두 보기`}
+              </Text>
+            </Button>
           </HStack>
         </AccordionButton>
         <AccordionPanel p={0} ml={isNested ? "50px" : "0"}>
           <Flex direction="column">
             {comments.map(({ nickname, content, nestedComments = [] }) => (
-              <>
+              <Box key={nickname}>
                 <CommentItem nickname={nickname} content={content} />
                 {nestedComments.length > 0 && (
                   <Comment comments={nestedComments} step={1} />
                 )}
-              </>
+              </Box>
             ))}
           </Flex>
         </AccordionPanel>

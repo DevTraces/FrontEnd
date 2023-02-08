@@ -14,5 +14,7 @@ export default function Logo({ type, ...restProps }: LogoProps) {
     icon: IconLogo,
     text: TextLogo
   };
-  return <Image src={ImgSrcs[type]} alt="ArtBubble Logo" {...restProps} />;
+  return (
+    <Image src={ImgSrcs[type]} alt="ArtBubble Logo" {...restProps} priority />
+  );
 }
