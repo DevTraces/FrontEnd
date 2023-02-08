@@ -1,7 +1,8 @@
 import { Input } from "@chakra-ui/react";
+import { ComponentProps, forwardRef } from "react";
 
-type AuthTextInputProps = React.ComponentProps<typeof Input>;
+type AuthTextInputProps = ComponentProps<typeof Input>;
 
-export default function AuthTextInput({ ...props }: AuthTextInputProps) {
-  return <Input bg="white" size="lg" {...props} />;
-}
+export default forwardRef<HTMLInputElement, AuthTextInputProps>(
+  (props, ref) => <Input ref={ref} bg="white" size="lg" {...props} />
+);
