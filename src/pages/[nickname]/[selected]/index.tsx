@@ -1,6 +1,8 @@
 import NavLayout from "@/components/NavLayout";
 import Posts from "@/components/[nickname]/ProfileFeed/Posts";
-import ProfileInfo from "@/components/[nickname]/Profile/ProfileInfo";
+import ProfileInfo, {
+  ProfileData
+} from "@/components/[nickname]/Profile/ProfileInfo";
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import Head from "next/head";
@@ -23,7 +25,7 @@ export default function Profile() {
     return data;
   };
 
-  const query = useQuery({
+  const query = useQuery<ProfileData>({
     queryKey: ["profile", nickname],
     queryFn: getProfile
   });
@@ -34,17 +36,7 @@ export default function Profile() {
         <title>Arterest | {nickname}님의 프로필</title>
       </Head>
       <NavLayout maxW="750px">
-        <ProfileInfo
-          nickname={nickname as string}
-          userName={query.data?.userName}
-          description={query.data?.description}
-          totalFeedNumber={query.data?.totalFeedNumber}
-          followerNumber={query.data?.followerNumber}
-          followingNumber={query.data?.followingNumber}
-          profileImageLink={query.data?.profileImageLink}
-          p="20px"
-          pt="100px"
-        />
+        {query.data && <ProfileInfo {...query.data} p="20px" pt="100px" />}
         {selected && (
           <Tabs
             variant="line"

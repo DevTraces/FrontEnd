@@ -10,19 +10,21 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 
-type ProfileProps = {
+export type ProfileData = {
+  username: string;
   nickname: string;
-  userName: string;
   description: string;
+  profileImageLink: string;
   totalFeedNumber: number;
   followerNumber: number;
   followingNumber: number;
-  profileImageLink: string;
-} & React.ComponentProps<typeof VStack>;
+};
+
+type ProfileProps = ProfileData & React.ComponentProps<typeof VStack>;
 
 export default function ProfileInfo({
   nickname,
-  userName,
+  username,
   description,
   totalFeedNumber,
   followerNumber,
@@ -51,7 +53,7 @@ export default function ProfileInfo({
         <Box>
           <HStack h="50px">
             <Text fontWeight="bold" fontSize="xl">
-              {userName}
+              {username}
             </Text>
             {isMyProfile && (
               <Link href="/accounts/edit">

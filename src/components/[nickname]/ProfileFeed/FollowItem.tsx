@@ -4,16 +4,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
-export type FollowItemProps = {
-  userName: string;
+export type FollowItemData = {
+  username: string;
   nickname: string;
   profileImageLink: string;
   isFollowing: boolean;
+};
+
+type FollowItemProps = FollowItemData & {
   isPending?: boolean;
 };
 
 export default function FollowItem({
-  userName,
+  username,
   nickname,
   profileImageLink,
   isFollowing,
@@ -76,7 +79,7 @@ export default function FollowItem({
           <Avatar boxSize={10} src={profileImageLink} />
         )}
         <VStack alignItems="flex-start">
-          <Text fontWeight="bold">{userName}</Text>
+          <Text fontWeight="bold">{username}</Text>
           <Text color="gray">@{nickname}</Text>
         </VStack>
       </Link>

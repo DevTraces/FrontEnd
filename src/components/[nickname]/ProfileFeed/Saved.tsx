@@ -3,6 +3,11 @@ import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 
+type SavedData = {
+  feedId: string;
+  imageLink: string;
+};
+
 export default function Saved() {
   const getSaved = async () => {
     const res = await fetch("/api/bookmark");
@@ -10,19 +15,14 @@ export default function Saved() {
     return data;
   };
 
-  const query = useQuery({
+  const query = useQuery<SavedData[]>({
     queryKey: ["saved"],
     queryFn: getSaved
   });
 
-  type Saved = {
-    feedId: string;
-    imageLink: string;
-  };
-
   return (
     <Grid w="full" templateColumns="repeat(3, 1fr)" gap="10px">
-      {query.data?.map(({ feedId, imageLink }: Saved) => (
+      {query.data?.map(({ feedId, imageLink }) => (
         <GridItem key={feedId} position="relative">
           <Link href={`/post/${feedId}`}>
             <AspectRatio ratio={1 / 1}>

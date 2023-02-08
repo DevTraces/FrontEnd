@@ -1,7 +1,7 @@
 import { VStack } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
-import FollowItem, { FollowItemProps } from "./FollowItem";
+import FollowItem, { FollowItemData } from "./FollowItem";
 
 export default function FollowList() {
   const router = useRouter();
@@ -14,29 +14,16 @@ export default function FollowList() {
     return data;
   };
 
-  const query = useQuery({
+  const query = useQuery<FollowItemData[]>({
     queryKey: ["followList", nickname, selected],
     queryFn: getFollowList
   });
 
   return (
     <VStack>
-      {query.data?.map(
-        ({
-          nickname: userNickname,
-          profileImageLink,
-          userName,
-          isFollowing
-        }: FollowItemProps) => (
-          <FollowItem
-            key={userNickname}
-            userName={userName}
-            nickname={userNickname}
-            profileImageLink={profileImageLink}
-            isFollowing={isFollowing}
-          />
-        )
-      )}
+      {query.data?.map(d => (
+        <FollowItem key={d.nickname} {...d} />
+      ))}
     </VStack>
   );
 }
