@@ -2,7 +2,11 @@ import { Button } from "@chakra-ui/react";
 
 type AuthButtonProps = React.ComponentProps<typeof Button>;
 
-export default function AuthButton({ children, ...props }: AuthButtonProps) {
+export default function AuthButton({
+  children,
+  isDisabled = false,
+  ...props
+}: AuthButtonProps) {
   return (
     <Button
       w="full"
@@ -10,7 +14,8 @@ export default function AuthButton({ children, ...props }: AuthButtonProps) {
       colorScheme="none"
       bg="primary"
       color="white"
-      _hover={{ transform: "scale(1.1)" }}
+      _hover={{ transform: isDisabled ? "none" : "scale(1.03)" }}
+      isDisabled={isDisabled}
       {...props}
     >
       {children}

@@ -28,8 +28,8 @@ export default function SignUp() {
   const {
     handleSubmit,
     register,
-    formState: { errors, isSubmitting }
-  } = useForm<FormData>();
+    formState: { errors, isSubmitting, isValid, isDirty }
+  } = useForm<FormData>({ mode: "onChange" });
 
   const mutation = useMutation({
     mutationFn: ({ email }: FormData) => {
@@ -87,7 +87,11 @@ export default function SignUp() {
             ) : (
               <FormErrorMessage>{errors.email.message}</FormErrorMessage>
             )}
-            <AuthButton isLoading={isSubmitting} type="submit">
+            <AuthButton
+              isLoading={isSubmitting}
+              isDisabled={!isValid || !isDirty}
+              type="submit"
+            >
               가입하기
             </AuthButton>
           </FormControl>
