@@ -11,7 +11,7 @@ import FollowList from "@/components/[nickname]/ProfileFeed/FollowList";
 import Saved from "@/components/[nickname]/ProfileFeed/Saved";
 
 type Selected = "posts" | "saved" | "following" | "follower";
-const selectedList: Selected[] = ["posts", "saved", "following", "follower"];
+const selectedList: Selected[] = ["posts", "following", "follower", "saved"];
 
 export default function Profile() {
   const router = useRouter();
@@ -52,15 +52,6 @@ export default function Profile() {
               >
                 게시물
               </Tab>
-              {isMyProfile && (
-                <Tab
-                  onClick={() => {
-                    router.push(`/${nickname}/saved`);
-                  }}
-                >
-                  저장한 목록
-                </Tab>
-              )}
 
               <Tab
                 onClick={() => {
@@ -76,6 +67,15 @@ export default function Profile() {
               >
                 팔로워
               </Tab>
+              {isMyProfile && (
+                <Tab
+                  onClick={() => {
+                    router.push(`/${nickname}/saved`);
+                  }}
+                >
+                  저장한 목록
+                </Tab>
+              )}
             </TabList>
             <TabPanels>
               <TabPanel>{selected === "posts" && <Posts />}</TabPanel>
