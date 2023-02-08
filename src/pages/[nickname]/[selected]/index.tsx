@@ -79,9 +79,9 @@ export default function Profile() {
             </TabList>
             <TabPanels>
               <TabPanel>{selected === "posts" && <Posts />}</TabPanel>
-              <TabPanel>{selected === "saved" && <Saved />}</TabPanel>
               <TabPanel>{selected === "following" && <FollowList />}</TabPanel>
               <TabPanel>{selected === "follower" && <FollowList />}</TabPanel>
+              <TabPanel>{selected === "saved" && <Saved />}</TabPanel>
             </TabPanels>
           </Tabs>
         )}
