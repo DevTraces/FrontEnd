@@ -14,7 +14,7 @@ export type ProfileData = {
   username: string;
   nickname: string;
   description: string;
-  profileImageLink: string;
+  profileImageUrl: string;
   totalFeedNumber: number;
   followerNumber: number;
   followingNumber: number;
@@ -29,7 +29,7 @@ export default function ProfileInfo({
   totalFeedNumber,
   followerNumber,
   followingNumber,
-  profileImageLink,
+  profileImageUrl,
   ...restProps
 }: ProfileProps) {
   const isMyProfile = nickname === "choonsik";
@@ -37,13 +37,13 @@ export default function ProfileInfo({
   return (
     <VStack gap="20px" {...restProps}>
       <HStack gap="20px">
-        {profileImageLink ? (
+        {profileImageUrl ? (
           <Circle size="80px" position="relative" overflow="hidden">
             <Image
               alt="프로필 이미지"
               sizes="80px"
               fill
-              src={profileImageLink}
+              src={profileImageUrl}
               style={{ objectFit: "cover" }}
             />
           </Circle>

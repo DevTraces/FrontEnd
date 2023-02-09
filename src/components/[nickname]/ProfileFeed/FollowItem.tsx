@@ -7,7 +7,7 @@ import { useState } from "react";
 export type FollowItemData = {
   username: string;
   nickname: string;
-  profileImageLink: string;
+  profileImageUrl: string;
   isFollowing: boolean;
 };
 
@@ -18,7 +18,7 @@ type FollowItemProps = FollowItemData & {
 export default function FollowItem({
   username,
   nickname,
-  profileImageLink,
+  profileImageUrl,
   isFollowing,
   isPending = false
 }: FollowItemProps) {
@@ -65,10 +65,10 @@ export default function FollowItem({
           width: "100%"
         }}
       >
-        {profileImageLink ? (
+        {profileImageUrl ? (
           <Circle size="50px" position="relative" overflow="hidden">
             <Image
-              src={profileImageLink}
+              src={profileImageUrl}
               alt="프로필 이미지"
               sizes="50px"
               fill
@@ -76,7 +76,7 @@ export default function FollowItem({
             />
           </Circle>
         ) : (
-          <Avatar boxSize={10} src={profileImageLink} />
+          <Avatar boxSize={10} src={profileImageUrl} />
         )}
         <VStack alignItems="flex-start">
           <Text fontWeight="bold">{username}</Text>

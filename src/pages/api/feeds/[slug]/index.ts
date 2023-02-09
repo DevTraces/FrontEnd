@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 type FeedData = {
   feedId: number;
   authorId: string;
-  authorProfileImageLink: string;
+  authorProfileImageUrl: string;
   authorNickname: string;
   content: string;
   imageUrls: string[];
@@ -26,7 +26,7 @@ export default function handler(
       {
         feedId: 1,
         authorId: "1",
-        authorProfileImageLink:
+        authorProfileImageUrl:
           "https://images.unsplash.com/photo-1606312619070-d48b4c652a52?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
         authorNickname: "김철수",
         content: "첫번째 피드입니다.",
@@ -50,7 +50,7 @@ export default function handler(
     res.status(200).json({
       feedId: 1,
       authorId: "1",
-      authorProfileImageLink:
+      authorProfileImageUrl:
         "https://images.unsplash.com/photo-1606312619070-d48b4c652a52?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
       authorNickname: "김철수",
       content: "첫번째 피드입니다.",
@@ -73,7 +73,7 @@ export default function handler(
     res.status(200).json({
       feedId: 1,
       authorId: "1",
-      authorProfileImageLink:
+      authorProfileImageUrl:
         "https://images.unsplash.com/photo-1606312619070-d48b4c652a52?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
       authorNickname: "김철수",
       content: "첫번째 피드입니다.",
