@@ -56,7 +56,7 @@ export default function ProfileInfo({
               {username}
             </Text>
             {isMyProfile && (
-              <Link href="/accounts/edit">
+              <Link href={`/accounts/edit?nickname=${nickname}`}>
                 <Button
                   bg="gray.200"
                   colorScheme="gray"
