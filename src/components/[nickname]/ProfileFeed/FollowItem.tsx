@@ -26,7 +26,7 @@ export default function FollowItem({
 
   const follow = useMutation({
     mutationFn: () => {
-      return fetch(`/api/follow/${nickname}`, {
+      return fetch(`/api/follows/${nickname}`, {
         method: "POST"
       });
     },
@@ -37,7 +37,7 @@ export default function FollowItem({
 
   const unfollow = useMutation({
     mutationFn: () => {
-      return fetch(`/api/follow/${nickname}`, {
+      return fetch(`/api/follows/${nickname}`, {
         method: "DELETE"
       });
     },

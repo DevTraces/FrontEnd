@@ -5,7 +5,7 @@ import Link from "next/link";
 
 type SavedData = {
   feedId: string;
-  imageLink: string;
+  imageUrl: string;
 };
 
 export default function Saved() {
@@ -22,12 +22,12 @@ export default function Saved() {
 
   return (
     <Grid w="full" templateColumns="repeat(3, 1fr)" gap="10px">
-      {query.data?.map(({ feedId, imageLink }) => (
+      {query.data?.map(({ feedId, imageUrl }) => (
         <GridItem key={feedId} position="relative">
           <Link href={`/post/${feedId}`}>
             <AspectRatio ratio={1 / 1}>
               <Image
-                src={imageLink}
+                src={imageUrl}
                 alt="미리보기 이미지"
                 sizes="100%"
                 fill
