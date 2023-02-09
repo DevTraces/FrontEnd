@@ -51,7 +51,7 @@ export default function SignUp() {
     register,
     setError,
     formState: { errors, isSubmitting, isValid, isDirty }
-  } = useForm<FormData>();
+  } = useForm<FormData>({ mode: "onChange" });
 
   const handleFormSubmit: FormEventHandler<HTMLFormElement> = handleSubmit(
     async formData => {
