@@ -1,7 +1,22 @@
 import { VStack } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
-import PostCard, { FeedData } from "../../PostCard";
+import PostCard from "../../PostCard";
+
+type FeedData = {
+  feedId: number;
+  authorNickname: string;
+  content: string;
+  authorProfileImageUrl: string;
+  numberOfReply: number;
+  createdAt: Date;
+  modifiedAt: Date;
+  imageUrls: string[];
+  hashtags: string[];
+  numberOfLike: number;
+  liked: boolean;
+  saved: boolean;
+};
 
 export default function Posts() {
   const router = useRouter();
