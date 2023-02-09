@@ -15,7 +15,7 @@ import {
 import { faPaperPlane, faSmile } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Carousel from "./components/Carousel";
-import Comment from "./components/Comment";
+import ReplyList from "./components/Reply";
 import Content from "./components/Content";
 
 type PostCardProps = {
@@ -62,7 +62,7 @@ export default function PostCard({
           content={content}
           date={createdAt}
         />
-        <Comment feedId={feedId} />
+        <ReplyList feedId={feedId} />
       </CardBody>
       <CardFooter p="0">
         <InputGroup>

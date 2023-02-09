@@ -15,9 +15,9 @@ import { faComment } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import CommentItem from "./CommentItem";
+import ReplyItem from "./ReplyItem";
 
-type CommentData = {
+type ReplyData = {
   replyId: number;
   feedId: number;
   authorNickname: string;
@@ -28,13 +28,13 @@ type CommentData = {
   modifiedAt: Date;
 };
 
-type CommentProps = {
+type ReplyListProps = {
   feedId: number;
   replyId?: number | null;
 };
 
-export default function Comment({ feedId, replyId = null }: CommentProps) {
-  const [isCommentOpen, setIsCommentOpen] = useState(false);
+export default function ReplyList({ feedId, replyId = null }: ReplyListProps) {
+  const [isReplyListOpen, setIsReplyListOpen] = useState(false);
   const isRereply = replyId !== null;
   const REPLY_API = isRereply
     ? `/api/feeds/${feedId}/replies/${replyId}/rereplies`
@@ -47,7 +47,7 @@ export default function Comment({ feedId, replyId = null }: CommentProps) {
     return data;
   };
 
-  const query = useQuery<CommentData[]>(
+  const query = useQuery<ReplyData[]>(
     ["comments", feedId, replyId],
     getReplies
   );
@@ -58,7 +58,7 @@ export default function Comment({ feedId, replyId = null }: CommentProps) {
         <AccordionButton
           p={0}
           onClick={() => {
-            setIsCommentOpen(prev => !prev);
+            setIsReplyListOpen(i => !i);
           }}
         >
           <HStack py="8px" color="gray">
@@ -67,7 +67,7 @@ export default function Comment({ feedId, replyId = null }: CommentProps) {
               <Icon as={FontAwesomeIcon} icon={faComment} />
               <Text>
                 {isRereply ? "답글" : "댓글"}
-                {isCommentOpen
+                {isReplyListOpen
                   ? " 숨기기"
                   : ` ${query.data && query.data.length}개 모두 보기`}
               </Text>
@@ -84,9 +84,9 @@ export default function Comment({ feedId, replyId = null }: CommentProps) {
                 numberOfRereply
               }) => (
                 <Box key={authorNickname}>
-                  <CommentItem nickname={authorNickname} content={content} />
+                  <ReplyItem nickname={authorNickname} content={content} />
                   {numberOfRereply > 0 && !isRereply && (
-                    <Comment feedId={feedId} replyId={referenceReplyId} />
+                    <ReplyList feedId={feedId} replyId={referenceReplyId} />
                   )}
                 </Box>
               )
