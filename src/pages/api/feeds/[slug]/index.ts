@@ -4,13 +4,13 @@ type FeedData = {
   feedId: number;
   authorNickname: string;
   authorProfileImageUrl: string;
-  authorNickname: string;
   content: string;
   imageUrls: string[];
   hashtags: string[];
   numberOfLike: number;
   numberOfReply: number;
   liked: boolean;
+  saved: boolean;
   createdAt: Date;
   modifiedAt: Date;
 };
@@ -25,7 +25,6 @@ export default function handler(
     res.status(200).json([
       {
         feedId: 1,
-        authorNickname: "1",
         authorProfileImageUrl:
           "https://images.unsplash.com/photo-1606312619070-d48b4c652a52?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
         authorNickname: "김철수",
@@ -40,6 +39,7 @@ export default function handler(
         numberOfLike: 1,
         numberOfReply: 1,
         liked: true,
+        saved: true,
         createdAt: new Date(),
         modifiedAt: new Date()
       }
@@ -49,7 +49,6 @@ export default function handler(
   if (!Number.isNaN(Number(slug)) && req.method === "GET") {
     res.status(200).json({
       feedId: 1,
-      authorNickname: "1",
       authorProfileImageUrl:
         "https://images.unsplash.com/photo-1606312619070-d48b4c652a52?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
       authorNickname: "김철수",
@@ -64,6 +63,7 @@ export default function handler(
       numberOfLike: 1,
       numberOfReply: 1,
       liked: true,
+      saved: false,
       createdAt: new Date(),
       modifiedAt: new Date()
     });
@@ -72,7 +72,6 @@ export default function handler(
   if (slug === "feedId" && req.method === "PUT") {
     res.status(200).json({
       feedId: 1,
-      authorNickname: "1",
       authorProfileImageUrl:
         "https://images.unsplash.com/photo-1606312619070-d48b4c652a52?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
       authorNickname: "김철수",
@@ -87,6 +86,7 @@ export default function handler(
       numberOfLike: 1,
       numberOfReply: 1,
       liked: true,
+      saved: true,
       createdAt: new Date(),
       modifiedAt: new Date()
     });
