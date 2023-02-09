@@ -12,8 +12,17 @@ export default function Feed() {
       <NavLayout>
         <Center>
           <Flex direction="column" pt={20} gap={10} m="auto" mb={20}>
-            <PostCard />
-            <PostCard />
+            <PostCard
+              feedId={0}
+              authorNickname=""
+              imageUrls={[]}
+              numberOfLike={0}
+              hashtags={[]}
+              content=""
+              createdAt={new Date()}
+              liked={false}
+              saved={false}
+            />
           </Flex>
         </Center>
       </NavLayout>
