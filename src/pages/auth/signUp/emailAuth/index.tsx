@@ -1,4 +1,4 @@
-import { signUpUserAtom } from "@/atoms/auth/signUpUser";
+import { SignUpUser, signUpUserAtom } from "@/atoms/auth/signUpUser";
 import AuthButton from "@/components/auth/AuthButton";
 import AuthLayout from "@/components/auth/AuthLayout";
 import AuthTextInput from "@/components/auth/AuthTextInput";
@@ -14,7 +14,6 @@ import {
 } from "@chakra-ui/react";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useMutation } from "@tanstack/react-query";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -24,6 +23,36 @@ import { useRecoilValue } from "recoil";
 interface FormData {
   authKey: string;
 }
+
+const sendAuthKey = async (email: SignUpUser["email"]) => {
+  const res = await fetch("/api/auth/email/auth-key", {
+    method: "POST",
+    body: JSON.stringify({
+      email
+    })
+  });
+
+  if (!res.ok) throw Error((await res.json()).errorMessage);
+
+  return res.json() as Promise<{ data: null }>;
+};
+
+const checkAuthKey = async ({
+  email,
+  authKey
+}: Pick<SignUpUser, "email"> & FormData) => {
+  const res = await fetch("/api/auth/email/auth-key/check", {
+    method: "POST",
+    body: JSON.stringify({
+      email,
+      authKey
+    })
+  });
+
+  if (!res.ok) throw Error((await res.json()).errorMessage);
+
+  return res.json() as Promise<{ isCorrect: boolean }>;
+};
 
 export default function EmailAuth() {
   const [isClient, setIsClient] = useState(false);
@@ -38,30 +67,46 @@ export default function EmailAuth() {
     formState: { errors, isSubmitting }
   } = useForm<FormData>();
 
-  const emailMutation = useMutation({
-    mutationFn: ({ authKey }: FormData) => {
-      return fetch("/api/auth/email/auth-key/check", {
-        method: "POST",
-        body: JSON.stringify({
-          email: user.email,
-          authKey
-        })
-      });
-    },
-    onSuccess: async res => {
-      if (res.status !== 200 && !errors?.authKey) {
-        setError("authKey", { message: (await res.json()).errorMessage });
-      } else {
-        router.push("/auth/profile");
-      }
-    }
-  });
-
   useEffect(() => {
     setIsClient(true);
   }, []);
 
   if (!isClient) return null;
+
+  const handleResendClick = async () => {
+    try {
+      await sendAuthKey(user.email);
+      toast({
+        title: "인증코드가 전송되었습니다.",
+        status: "success",
+        duration: 3000
+      });
+    } catch (e) {
+      let message = "Unknown Error";
+      if (e instanceof Error) message = e.message;
+      toast({
+        title: message,
+        status: "warning",
+        duration: 3000
+      });
+    }
+  };
+
+  const handleFormSubmit = handleSubmit(async formData => {
+    const { authKey } = formData;
+    try {
+      const res = await checkAuthKey({ email: user.email, authKey });
+      if (res.isCorrect) {
+        router.push("/auth/profile");
+      } else {
+        setError("authKey", { message: "인증코드가 올바르지 않습니다" });
+      }
+    } catch (e) {
+      let message = "Unknown Error";
+      if (e instanceof Error) message = e.message;
+      setError("authKey", { message });
+    }
+  });
 
   return (
     <>
@@ -86,23 +131,12 @@ export default function EmailAuth() {
             ml="10px"
             fontWeight="bold"
             cursor="pointer"
-            onClick={() => {
-              toast({
-                title: "인증코드가 전송되었습니다.",
-                status: "success",
-                duration: 3000
-              });
-            }}
+            onClick={handleResendClick}
           >
             코드 재전송
           </Text>
         </Text>
-        <form
-          onSubmit={handleSubmit(value => {
-            emailMutation.mutate({ authKey: value.authKey });
-          })}
-          style={{ width: "100%" }}
-        >
+        <form onSubmit={handleFormSubmit} style={{ width: "100%" }}>
           <FormControl as={VStack} isInvalid={!!errors.authKey}>
             <AuthTextInput
               type="text"
