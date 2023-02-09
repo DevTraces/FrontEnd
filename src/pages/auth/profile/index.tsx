@@ -11,6 +11,7 @@ import {
   Input,
   InputGroup,
   InputLeftAddon,
+  useToast,
   VStack
 } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
@@ -24,18 +25,28 @@ type FormData = Pick<SignUpUser, "nickname" | "username" | "password"> & {
   profileImages: FileList;
 };
 
+const requestSignUp = async (signUpUser: SignUpUser) => {
+  const res = await fetch("/api/auth/sign-up", {
+    method: "POST",
+    body: JSON.stringify(signUpUser)
+  });
+  if (!res.ok) throw Error((await res.json()).errorMessage);
+  return res.json();
+};
+
 export default function Profile() {
   const router = useRouter();
   const signUpUser = useRecoilValue(signUpUserAtom);
   const imgRef = useRef<HTMLInputElement | null>(null);
   const [previewImg, setPreviewImg] = useState("");
+  const toast = useToast();
 
   const {
     handleSubmit,
     register,
     setError,
     watch,
-    formState: { errors, isSubmitting }
+    formState: { errors, isSubmitting, isValid, isDirty }
   } = useForm<FormData>({
     mode: "onChange"
   });
@@ -49,42 +60,35 @@ export default function Profile() {
   }, [profileImages]);
 
   const nicknameMutation = useMutation({
-    mutationFn: ({ nickname }: Pick<FormData, "nickname">) => {
-      return fetch(`/api/users/nickname/check?nickname=${nickname}`);
+    mutationFn: async ({ nickname }: Pick<FormData, "nickname">) => {
+      const res = await fetch(`/api/users/nickname/check?nickname=${nickname}`);
+      if (!res.ok) throw Error((await res.json()).errorMessage);
+      return res.json() as Promise<{ isDuplicated: boolean }>;
     },
     onSuccess: async res => {
-      if (res.status !== 200 && !errors?.nickname)
-        setError("nickname", { message: (await res.json()).errorMessage });
-    }
-  });
-
-  const signUpMutation = useMutation({
-    mutationFn: (formData: FormData) => {
-      const { email } = signUpUser;
-      const { password, username, nickname } = formData;
-
-      const reqBody: SignUpUser = {
-        email,
-        password,
-        username,
-        nickname,
-        profileImage: profileImages[0]
-      };
-
-      return fetch("/api/auth/sign-up", {
-        method: "POST",
-        body: JSON.stringify(reqBody)
-      });
-    },
-    onSuccess: res => {
-      if (res.status === 201) {
-        router.push("/feed");
-      }
+      if (res.isDuplicated)
+        setError("nickname", { message: "이미 가입된 닉네임이에요" });
     }
   });
 
   const { ref: profileImagesRef, ...profileImagesRegisterRest } =
     register("profileImages");
+
+  const handleFormSubmit = handleSubmit(async formData => {
+    try {
+      await requestSignUp({ ...signUpUser, ...formData });
+      router.push("/auth/signIn");
+      toast({
+        title: "성공적으로 가입되었습니다.",
+        status: "success",
+        duration: 3000
+      });
+    } catch (e) {
+      let errorMsg = "Unknown error";
+      if (e instanceof Error) errorMsg = e.message;
+      setError("root", { message: errorMsg });
+    }
+  });
 
   return (
     <>
@@ -93,12 +97,7 @@ export default function Profile() {
       </Head>
 
       <AuthLayout>
-        <form
-          onSubmit={handleSubmit(values => {
-            signUpMutation.mutate(values);
-          })}
-          style={{ width: "100%" }}
-        >
+        <form onSubmit={handleFormSubmit} style={{ width: "100%" }}>
           <VStack mb="12px">
             {previewImg !== "" ? (
               <Avatar size="2xl" src={previewImg} />
@@ -136,13 +135,12 @@ export default function Profile() {
                 placeholder="닉네임"
                 {...register("nickname", {
                   required: "닉네임이 필요해요",
-
-                  validate: nickname => {
-                    if (!nickname) return true;
-                    if (!/^[a-zA-Z0-9]*$/.test(nickname))
-                      return "영어와 숫자만 사용할 수 있어요";
-                    nicknameMutation.mutate({ nickname });
-                    return true;
+                  pattern: {
+                    value: /^[a-zA-Z0-9]*$/,
+                    message: "영어와 숫자만 사용할 수 있어요"
+                  },
+                  onChange: e => {
+                    nicknameMutation.mutate({ nickname: e.target.value });
                   }
                 })}
               />
@@ -196,7 +194,11 @@ export default function Profile() {
               </FormErrorMessage>
             )}
           </FormControl>
-          <AuthButton type="submit" isLoading={isSubmitting}>
+          <AuthButton
+            type="submit"
+            isLoading={isSubmitting}
+            isDisabled={!isValid || !isDirty}
+          >
             가입 완료
           </AuthButton>
         </form>
