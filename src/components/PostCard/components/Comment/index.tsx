@@ -13,30 +13,47 @@ import {
 } from "@chakra-ui/react";
 import { faComment } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ComponentProps, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import CommentItem from "./CommentItem";
 
-type CommentItemProps = {
-  nickname: string;
+type CommentData = {
+  replyId: number;
+  feedId: number;
+  authorNickname: string;
   content: string;
-  nestedComments?: CommentItemProps[];
+  authorProfileImageUrl: string;
+  numberOfRereply: number;
+  createdAt: Date;
+  modifiedAt: Date;
 };
 
 type CommentProps = {
-  comments: CommentItemProps[];
-  step?: 0 | 1;
-} & ComponentProps<typeof Accordion>;
+  feedId: number;
+  replyId?: number | null;
+};
 
-export default function Comment({
-  comments,
-  step = 0,
-  ...restProps
-}: CommentProps) {
+export default function Comment({ feedId, replyId = null }: CommentProps) {
   const [isCommentOpen, setIsCommentOpen] = useState(false);
-  const isNested = step === 1;
+  const isRereply = replyId !== null;
+  const REPLY_API = isRereply
+    ? `/api/feeds/${feedId}/replies/${replyId}/rereplies`
+    : `/api/feeds/${feedId}/replies`;
+
+  const getReplies = async () => {
+    const response = await fetch(REPLY_API);
+    const data = await response.json();
+
+    return data;
+  };
+
+  const query = useQuery<CommentData[]>(
+    ["comments", feedId, replyId],
+    getReplies
+  );
 
   return (
-    <Accordion allowToggle {...restProps}>
+    <Accordion allowToggle mt="12px">
       <AccordionItem border="none">
         <AccordionButton
           p={0}
@@ -45,26 +62,35 @@ export default function Comment({
           }}
         >
           <HStack py="8px" color="gray">
-            {isNested && <Divider w="50px" borderColor="gray" />}
+            {isRereply && <Divider w="50px" borderColor="gray" />}
             <Button as={HStack} bg="none" w="fit-content">
               <Icon as={FontAwesomeIcon} icon={faComment} />
               <Text>
-                {isNested ? "답글 " : "댓글 "}
-                {isCommentOpen ? "숨기기" : `${comments.length}개 모두 보기`}
+                {isRereply ? "답글" : "댓글"}
+                {isCommentOpen
+                  ? " 숨기기"
+                  : ` ${query.data && query.data.length}개 모두 보기`}
               </Text>
             </Button>
           </HStack>
         </AccordionButton>
-        <AccordionPanel p={0} ml={isNested ? "50px" : "0"}>
+        <AccordionPanel p={0} ml={isRereply ? "50px" : "0"}>
           <Flex direction="column">
-            {comments.map(({ nickname, content, nestedComments = [] }) => (
-              <Box key={nickname}>
-                <CommentItem nickname={nickname} content={content} />
-                {nestedComments.length > 0 && (
-                  <Comment comments={nestedComments} step={1} />
-                )}
-              </Box>
-            ))}
+            {query.data?.map(
+              ({
+                replyId: referenceReplyId,
+                authorNickname,
+                content,
+                numberOfRereply
+              }) => (
+                <Box key={authorNickname}>
+                  <CommentItem nickname={authorNickname} content={content} />
+                  {numberOfRereply > 0 && !isRereply && (
+                    <Comment feedId={feedId} replyId={referenceReplyId} />
+                  )}
+                </Box>
+              )
+            )}
           </Flex>
         </AccordionPanel>
       </AccordionItem>

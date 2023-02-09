@@ -1,6 +1,6 @@
 import { Avatar, HStack, Text, VStack } from "@chakra-ui/react";
 
-export type CommentItemProps = {
+type CommentItemProps = {
   nickname: string;
   content: string;
 };
