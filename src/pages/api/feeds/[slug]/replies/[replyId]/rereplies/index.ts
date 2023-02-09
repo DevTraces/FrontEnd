@@ -4,7 +4,7 @@ type NestedCommentData = {
   rereplyId: number;
   replyId: number;
   feedId: number;
-  authorId: number;
+  authorNickname: string;
   content: string;
   authorProfileImageUrl: string;
   createdAt: Date;
@@ -20,7 +20,7 @@ export default function handler(
       rereplyId: 1,
       replyId: 1,
       feedId: 1,
-      authorId: 1,
+      authorNickname: "1",
       content: "댓글 내용",
       authorProfileImageUrl: "https://placehold.it/100x100",
       createdAt: new Date(),
@@ -34,7 +34,7 @@ export default function handler(
         rereplyId: 1,
         replyId: 1,
         feedId: 1,
-        authorId: 1,
+        authorNickname: "1",
         content: "대댓글 내용",
         authorProfileImageUrl: "https://placehold.it/100x100",
         createdAt: new Date(),
@@ -44,7 +44,7 @@ export default function handler(
         rereplyId: 2,
         replyId: 1,
         feedId: 1,
-        authorId: 2,
+        authorNickname: "2",
         content: "대댓글 내용",
         authorProfileImageUrl: "https://placehold.it/100x100",
         createdAt: new Date(),
