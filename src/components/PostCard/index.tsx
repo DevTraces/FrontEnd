@@ -26,14 +26,8 @@ type PostCardProps = {
   hashtags: string[];
   content: string;
   createdAt: Date;
-};
-
-export type FeedData = PostCardProps & {
-  authorNickname: string;
-  content: string;
-  imageUrls: string[];
-  hashtags: string[];
-  numberOfLike: number;
+  liked: boolean;
+  saved: boolean;
 };
 
 export default function PostCard({
@@ -43,7 +37,9 @@ export default function PostCard({
   numberOfLike,
   hashtags,
   content,
-  createdAt
+  createdAt,
+  liked,
+  saved
 }: PostCardProps) {
   return (
     <Card w="md" zIndex="base">
@@ -56,11 +52,14 @@ export default function PostCard({
       <Carousel imgs={imageUrls} />
       <CardBody px="12px">
         <Content
-          nickname={authorNickname}
-          like={numberOfLike}
-          hashtag={hashtags}
+          feedId={feedId}
+          authorNickname={authorNickname}
+          numberOfLike={numberOfLike}
+          hashtags={hashtags}
           content={content}
-          date={createdAt}
+          createdAt={createdAt}
+          liked={liked}
+          saved={saved}
         />
         <ReplyList feedId={feedId} />
       </CardBody>
