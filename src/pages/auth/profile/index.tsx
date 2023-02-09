@@ -1,3 +1,4 @@
+import { getNicknameDuplicateCheck } from "@/api/users/nickname/check";
 import { SignUpUser, signUpUserAtom } from "@/atoms/auth/signUpUser";
 import AuthButton from "@/components/auth/AuthButton";
 import AuthLayout from "@/components/auth/AuthLayout";
@@ -61,12 +62,10 @@ export default function Profile() {
 
   const nicknameMutation = useMutation({
     mutationFn: async ({ nickname }: Pick<FormData, "nickname">) => {
-      const res = await fetch(`/api/users/nickname/check?nickname=${nickname}`);
-      if (!res.ok) throw Error((await res.json()).errorMessage);
-      return res.json() as Promise<{ isDuplicated: boolean }>;
+      return getNicknameDuplicateCheck(nickname as string);
     },
     onSuccess: async res => {
-      if (res.isDuplicated)
+      if (res.isDuplicated && !errors.nickname)
         setError("nickname", { message: "이미 가입된 닉네임이에요" });
     }
   });
@@ -74,21 +73,27 @@ export default function Profile() {
   const { ref: profileImagesRef, ...profileImagesRegisterRest } =
     register("profileImages");
 
-  const handleFormSubmit = handleSubmit(async formData => {
-    try {
-      await requestSignUp({ ...signUpUser, ...formData });
-      router.push("/auth/signIn");
-      toast({
-        title: "성공적으로 가입되었습니다.",
-        status: "success",
-        duration: 3000
-      });
-    } catch (e) {
-      let errorMsg = "Unknown error";
-      if (e instanceof Error) errorMsg = e.message;
-      setError("root", { message: errorMsg });
+  const handleFormSubmit = handleSubmit(
+    async ({ profileImages: pImgs, ...formData }) => {
+      try {
+        await requestSignUp({
+          ...signUpUser,
+          ...formData,
+          profileImage: pImgs[0]
+        });
+        router.push("/auth/signIn");
+        toast({
+          title: "성공적으로 가입되었습니다.",
+          status: "success",
+          duration: 3000
+        });
+      } catch (e) {
+        let errorMsg = "Unknown error";
+        if (e instanceof Error) errorMsg = e.message;
+        setError("root", { message: errorMsg });
+      }
     }
-  });
+  );
 
   return (
     <>

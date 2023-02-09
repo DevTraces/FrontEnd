@@ -1,7 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
 interface SuccessData {
-  data: null;
+  data: {
+    isDuplicated: boolean;
+  };
 }
 
 interface FailData {
@@ -14,15 +16,17 @@ export default function handler(
   res: NextApiResponse<SuccessData | FailData>
 ) {
   if (req.method === "GET") {
-    if (!req.query.nickname?.includes("k")) {
+    try {
       res.status(200).json({
-        data: null
+        data: {
+          isDuplicated: req.query.nickname?.includes("k") ?? true
+        }
       });
-    } else {
+    } catch {
       res.status(400).json({
-        errorCode: "EXIST_NICKNAME_CONFLICT",
-        errorMessage: "중복된 닉네임입니다.",
-        data: null
+        errorCode: "VALIDATION_FAILED",
+        errorMessage:
+          "email: 이메일 형식이 올바르지 않습니다, nickname: 닉네임 입력은 필수입니다."
       });
     }
   }

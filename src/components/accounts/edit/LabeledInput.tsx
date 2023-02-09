@@ -1,10 +1,12 @@
 import {
+  FormControl,
   FormErrorMessage,
   FormHelperText,
   FormLabel,
   Input,
   Text
 } from "@chakra-ui/react";
+import { forwardRef } from "react";
 
 type LabeledInputProps = {
   isError: boolean;
@@ -13,31 +15,37 @@ type LabeledInputProps = {
   ErrorText: string;
   defaultValue: string;
 };
+export default forwardRef<HTMLInputElement, LabeledInputProps>(
+  (
+    { isError, labelText, helperText, ErrorText, defaultValue, ...restProps },
+    ref
+  ) => {
+    return (
+      <FormControl isInvalid={isError}>
+        <FormLabel lineHeight={10}>
+          <Text>{labelText}</Text>
+          <Input
+            defaultValue={defaultValue}
+            bg="white"
+            rounded="12px"
+            px="12px"
+            size="lg"
+            fontSize="md"
+            ref={ref}
+            {...restProps}
+          />
 
-export default function LabeledInput({
-  isError,
-  labelText,
-  helperText,
-  ErrorText,
-  defaultValue
-}: LabeledInputProps) {
-  return (
-    <FormLabel lineHeight={10}>
-      <Text>{labelText}</Text>
-      <Input
-        defaultValue={defaultValue}
-        bg="white"
-        rounded="12px"
-        px="12px"
-        size="lg"
-        fontSize="md"
-      />
-
-      {!isError ? (
-        <FormHelperText color="gray.500">{helperText}</FormHelperText>
-      ) : (
-        <FormErrorMessage>{ErrorText}</FormErrorMessage>
-      )}
-    </FormLabel>
-  );
-}
+          {!isError ? (
+            <FormHelperText color="gray.500" w="full" h="40px">
+              {helperText}
+            </FormHelperText>
+          ) : (
+            <FormErrorMessage w="full" h="40px">
+              {ErrorText}
+            </FormErrorMessage>
+          )}
+        </FormLabel>
+      </FormControl>
+    );
+  }
+);
