@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
 interface SuccessData {
-  data: null;
+  isCorrect: boolean;
 }
 
 interface FailData {
@@ -9,22 +9,27 @@ interface FailData {
   errorMessage: string;
 }
 
-let a = 0;
-
 export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<SuccessData | FailData>
 ) {
   if (req.method === "POST") {
-    a += 1;
-    if (a % 2 === 0) {
-      res.status(200).json({
-        data: null
-      });
-    } else {
+    const { authKey } = JSON.parse(req.body);
+    try {
+      if (`${authKey}`.includes("1")) {
+        res.status(200).json({
+          isCorrect: true
+        });
+      } else {
+        res.status(200).json({
+          isCorrect: false
+        });
+      }
+    } catch {
       res.status(400).json({
-        errorCode: "EMAIL_AUTH_KEY_MISMATCH",
-        errorMessage: "메일 인증코드가 일치하지 않습니다."
+        errorCode: "VALIDATION_FAILED",
+        errorMessage:
+          "email: 이메일 형식이 올바르지 않습니다, authKey: 메일 인증키 입력은 필수입니다."
       });
     }
   }
