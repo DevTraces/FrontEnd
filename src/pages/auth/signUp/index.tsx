@@ -13,13 +13,34 @@ import {
   FormHelperText,
   Text
 } from "@chakra-ui/react";
-import { useMutation } from "@tanstack/react-query";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { FormEventHandler } from "react";
 import { useForm } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
 
 type FormData = Pick<SignUpUser, "email">;
+
+const sendAuthKey = async (email: SignUpUser["email"]) => {
+  const res = await fetch("/api/auth/email/auth-key", {
+    method: "POST",
+    body: JSON.stringify({
+      email
+    })
+  });
+
+  if (!res.ok) throw Error((await res.json()).errorMessage);
+
+  return res.json() as Promise<{ data: null }>;
+};
+
+const checkDuplicate = async (email: SignUpUser["email"]) => {
+  const res = await fetch(`/api/users/email/check?email=${email}`);
+
+  if (!res.ok) throw Error((await res.json()).errorMessage);
+
+  return res.json() as Promise<{ isDuplicated: boolean }>;
+};
 
 export default function SignUp() {
   const router = useRouter();
@@ -28,19 +49,29 @@ export default function SignUp() {
   const {
     handleSubmit,
     register,
+    setError,
     formState: { errors, isSubmitting, isValid, isDirty }
-  } = useForm<FormData>({ mode: "onChange" });
+  } = useForm<FormData>();
 
-  const mutation = useMutation({
-    mutationFn: ({ email }: FormData) => {
-      return fetch("/api/auth/email/auth-key", {
-        method: "POST",
-        body: JSON.stringify({
-          email
-        })
-      });
+  const handleFormSubmit: FormEventHandler<HTMLFormElement> = handleSubmit(
+    async formData => {
+      const { email } = formData;
+      try {
+        const res = await checkDuplicate(email);
+        if (res.isDuplicated) {
+          setError("email", { message: "이미 가입된 이메일입니다" });
+        } else {
+          await sendAuthKey(email);
+          setSignUpUser(prev => ({ ...prev, ...formData }));
+          router.push("/auth/signUp/emailAuth");
+        }
+      } catch (e) {
+        let message = "Unknown Error";
+        if (e instanceof Error) message = e.message;
+        setError("email", { message });
+      }
     }
-  });
+  );
 
   return (
     <>
@@ -56,14 +87,7 @@ export default function SignUp() {
         </Text>
         <KakaoLoginButton>카카오로 시작하기</KakaoLoginButton>
         <Divider />
-        <form
-          style={{ width: "100%" }}
-          onSubmit={handleSubmit(values => {
-            setSignUpUser(prev => ({ ...prev, email: values.email }));
-            mutation.mutate({ email: values.email });
-            router.push("/auth/signUp/emailAuth");
-          })}
-        >
+        <form style={{ width: "100%" }} onSubmit={handleFormSubmit}>
           <FormControl
             as={Flex}
             direction="column"
