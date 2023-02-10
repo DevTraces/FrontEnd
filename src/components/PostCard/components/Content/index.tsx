@@ -36,8 +36,6 @@ export default function Content({
   liked,
   saved
 }: ContentProps) {
-  const [isLiked, setIsLiked] = useState(liked);
-  const [isSaved, setIsSaved] = useState(saved);
   const [isMoreLoaded, setIsMoreLoaded] = useState(false);
   const contentPreview = content.slice(0, MAX_PREVIEW_LENGTH);
   const contentMore = content.slice(MAX_PREVIEW_LENGTH);
@@ -47,27 +45,21 @@ export default function Content({
   const like = useMutation({
     mutationFn: () => {
       return fetch(`/api/like/${feedId}`, {
-        method: isLiked ? "DELETE" : "POST"
+        method: liked ? "DELETE" : "POST"
       });
-    },
-    onSuccess: async res => {
-      if (res.ok) setIsLiked(prev => !prev);
     }
   });
 
   const bookmark = useMutation({
     mutationFn: () => {
       return fetch(`/api/bookmark/${feedId}`, {
-        method: isSaved ? "DELETE" : "POST"
+        method: saved ? "DELETE" : "POST"
       });
     },
     onSuccess: async res => {
       if (res.ok) {
-        setIsSaved(prev => !prev);
         toast({
-          title: isSaved
-            ? "저장목록에서 삭제했어요."
-            : "저장목록에 추가했어요.",
+          title: saved ? "저장목록에서 삭제했어요." : "저장목록에 추가했어요.",
           status: "success",
           duration: 2000,
           isClosable: true
@@ -95,8 +87,8 @@ export default function Content({
         <HStack spacing="15px">
           <Icon
             as={FontAwesomeIcon}
-            icon={isLiked ? faHeartFilled : faHeartBlank}
-            color={isLiked ? "red" : "black"}
+            icon={liked ? faHeartFilled : faHeartBlank}
+            color={liked ? "red" : "black"}
             boxSize={6}
             onClick={() => {
               like.mutate();
@@ -119,8 +111,8 @@ export default function Content({
         </HStack>
         <Icon
           as={FontAwesomeIcon}
-          icon={isSaved ? faBookmarkFilled : faBookmarkBlank}
-          color={isSaved ? "primary" : "black"}
+          icon={saved ? faBookmarkFilled : faBookmarkBlank}
+          color={saved ? "primary" : "black"}
           boxSize={6}
           cursor="pointer"
           onClick={() => bookmark.mutate()}
