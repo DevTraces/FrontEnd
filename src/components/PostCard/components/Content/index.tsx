@@ -10,30 +10,72 @@ import {
   faLink
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import MAX_PREVIEW_LENGTH from "../../constants/posts";
 
-export default function Content({
-  like,
-  nickname,
-  content,
-  hashtag,
-  date
-}: {
-  like: number;
-  nickname: string;
+type ContentProps = {
+  feedId: number;
+  authorNickname: string;
+  numberOfLike: number;
+  hashtags: string[];
   content: string;
-  hashtag: any[];
-  date: string;
-}) {
-  const [isLiked, setIsLiked] = useState(false);
-  const [isSaved, setIsSaved] = useState(false);
+  createdAt: Date;
+  liked: boolean;
+  saved: boolean;
+};
+
+export default function Content({
+  feedId,
+  authorNickname,
+  numberOfLike,
+  hashtags,
+  content,
+  createdAt,
+  liked,
+  saved
+}: ContentProps) {
   const [isMoreLoaded, setIsMoreLoaded] = useState(false);
   const contentPreview = content.slice(0, MAX_PREVIEW_LENGTH);
   const contentMore = content.slice(MAX_PREVIEW_LENGTH);
 
   const toast = useToast();
+
+  const like = useMutation({
+    mutationFn: () => {
+      return fetch(`/api/like/${feedId}`, {
+        method: liked ? "DELETE" : "POST"
+      });
+    }
+  });
+
+  const bookmark = useMutation({
+    mutationFn: () => {
+      return fetch(`/api/bookmark/${feedId}`, {
+        method: saved ? "DELETE" : "POST"
+      });
+    },
+    onSuccess: async res => {
+      if (res.ok) {
+        toast({
+          title: saved ? "저장목록에서 삭제했어요." : "저장목록에 추가했어요.",
+          status: "success",
+          duration: 2000,
+          isClosable: true
+        });
+      }
+    }
+  });
+
+  const handleShareClick = () => {
+    navigator.clipboard.writeText(`http://localhost:3000/feed/${feedId}`);
+    toast({
+      title: "링크가 복사되었어요.",
+      status: "success",
+      duration: 1000
+    });
+  };
 
   useEffect(() => {
     if (content.length < MAX_PREVIEW_LENGTH) setIsMoreLoaded(true);
@@ -45,10 +87,12 @@ export default function Content({
         <HStack spacing="15px">
           <Icon
             as={FontAwesomeIcon}
-            icon={isLiked ? faHeartFilled : faHeartBlank}
-            color={isLiked ? "red" : "black"}
+            icon={liked ? faHeartFilled : faHeartBlank}
+            color={liked ? "red" : "black"}
             boxSize={6}
-            onClick={() => setIsLiked(prev => !prev)}
+            onClick={() => {
+              like.mutate();
+            }}
             cursor="pointer"
           />
           <Icon
@@ -62,39 +106,23 @@ export default function Content({
             as={FontAwesomeIcon}
             icon={faLink}
             boxSize={6}
-            onClick={() => {
-              navigator.clipboard.writeText("주소/post/1");
-              toast({
-                title: "링크가 복사되었어요.",
-                status: "success",
-                duration: 1000
-              });
-            }}
+            onClick={handleShareClick}
           />
         </HStack>
         <Icon
           as={FontAwesomeIcon}
-          icon={isSaved ? faBookmarkFilled : faBookmarkBlank}
-          color={isSaved ? "primary" : "black"}
+          icon={saved ? faBookmarkFilled : faBookmarkBlank}
+          color={saved ? "primary" : "black"}
           boxSize={6}
           cursor="pointer"
-          onClick={() => {
-            setIsSaved(prev => !prev);
-            toast({
-              title: isSaved
-                ? "저장 목록에서 삭제했어요."
-                : "저장 목록에 추가했어요.",
-              status: "success",
-              duration: 1000
-            });
-          }}
+          onClick={() => bookmark.mutate()}
         />
       </Flex>
-      <Text fontWeight="bold">좋아요 {like}개</Text>
+      <Text fontWeight="bold">좋아요 {numberOfLike}개</Text>
       <Flex direction="column" alignItems="flex-start" w="full">
-        <Text fontWeight="bold">{nickname}</Text>
+        <Text fontWeight="bold">{authorNickname}</Text>
         <HStack>
-          {hashtag.map(tag => (
+          {hashtags.map(tag => (
             <Link href={`/explore/tags/${tag}`} key={tag}>
               <Text color="blue.700">#{tag}</Text>
             </Link>
@@ -115,7 +143,7 @@ export default function Content({
           </Text>
         )}
         <Text fontSize="12px" color="gray">
-          {date}
+          {createdAt.toLocaleString()}
         </Text>
       </Flex>
     </Flex>

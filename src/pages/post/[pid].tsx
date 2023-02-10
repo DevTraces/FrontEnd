@@ -14,7 +14,17 @@ export default function Post() {
       </Head>
       <NavLayout>
         <Center mt="40px">
-          <PostCard />
+          <PostCard
+            feedId={0}
+            authorNickname=""
+            imageUrls={[]}
+            numberOfLike={0}
+            hashtags={[]}
+            content=""
+            createdAt={new Date()}
+            liked={false}
+            saved={false}
+          />
         </Center>
       </NavLayout>
     </>

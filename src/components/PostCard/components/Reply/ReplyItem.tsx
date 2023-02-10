@@ -1,11 +1,11 @@
 import { Avatar, HStack, Text, VStack } from "@chakra-ui/react";
 
-export type CommentItemProps = {
+type ReplyItemProps = {
   nickname: string;
   content: string;
 };
 
-export default function CommentItem({ nickname, content }: CommentItemProps) {
+export default function ReplyItem({ nickname, content }: ReplyItemProps) {
   return (
     <HStack alignItems="flex-start" spacing="10px">
       <Avatar boxSize="40px" />

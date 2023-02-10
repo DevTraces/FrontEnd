@@ -11,7 +11,7 @@ type NoticeLikeData = {
 
 type NoticeFollowData = {
   nickname: string;
-  senderId: string;
+  senderNickname: string;
   noticeType: string;
   imageUrl: string;
   isChecked: boolean;
@@ -48,7 +48,7 @@ export default function handler(
       },
       {
         nickname: "nickname2",
-        senderId: "1",
+        senderNickname: "1",
         noticeType: "FOLLOW",
         isChecked: false,
         imageUrl: "https://www...",

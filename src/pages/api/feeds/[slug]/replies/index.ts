@@ -3,9 +3,10 @@ import type { NextApiRequest, NextApiResponse } from "next";
 type CommentData = {
   replyId: number;
   feedId: number;
-  authorId: number;
+  authorNickname: string;
   content: string;
   authorProfileImageUrl: string;
+  numberOfRereply: number;
   createdAt: Date;
   modifiedAt: Date;
 };
@@ -18,9 +19,10 @@ export default function handler(
     res.status(200).json({
       replyId: 1,
       feedId: 1,
-      authorId: 1,
+      authorNickname: "1",
       content: "댓글 내용",
       authorProfileImageUrl: "https://placehold.it/100x100",
+      numberOfRereply: 8,
       createdAt: new Date(),
       modifiedAt: new Date()
     });
@@ -31,18 +33,20 @@ export default function handler(
       {
         replyId: 1,
         feedId: 1,
-        authorId: 1,
+        authorNickname: "1",
         content: "댓글 내용",
         authorProfileImageUrl: "https://placehold.it/100x100",
+        numberOfRereply: 8,
         createdAt: new Date(),
         modifiedAt: new Date()
       },
       {
         replyId: 2,
         feedId: 1,
-        authorId: 2,
+        authorNickname: "2",
         content: "댓글 내용",
         authorProfileImageUrl: "https://placehold.it/100x100",
+        numberOfRereply: 8,
         createdAt: new Date(),
         modifiedAt: new Date()
       }

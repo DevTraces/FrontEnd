@@ -30,8 +30,8 @@ export default function FollowItem({
         method: "POST"
       });
     },
-    onSuccess: () => {
-      setIsCurrentFollowing(true);
+    onSuccess: async res => {
+      if (res.ok) setIsCurrentFollowing(true);
     }
   });
 
@@ -41,8 +41,8 @@ export default function FollowItem({
         method: "DELETE"
       });
     },
-    onSuccess: () => {
-      setIsCurrentFollowing(false);
+    onSuccess: async res => {
+      if (res.ok) setIsCurrentFollowing(false);
     }
   });
 
