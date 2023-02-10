@@ -40,17 +40,17 @@ export default function ReplyList({ feedId, replyId = null }: ReplyListProps) {
     ? `/api/feeds/${feedId}/replies/${replyId}/rereplies`
     : `/api/feeds/${feedId}/replies`;
 
-  const getReplies = async () => {
+  const getReplies = async (): Promise<ReplyData[]> => {
     const response = await fetch(REPLY_API);
     const data = await response.json();
 
     return data;
   };
 
-  const query = useQuery<ReplyData[]>(
-    ["comments", feedId, replyId],
-    getReplies
-  );
+  const query = useQuery({
+    queryKey: ["comments", feedId, replyId],
+    queryFn: getReplies
+  });
 
   return (
     <Accordion allowToggle mt="12px">
@@ -67,9 +67,10 @@ export default function ReplyList({ feedId, replyId = null }: ReplyListProps) {
               <Icon as={FontAwesomeIcon} icon={faComment} />
               <Text>
                 {isRereply ? "답글" : "댓글"}
-                {isReplyListOpen
-                  ? " 숨기기"
-                  : ` ${query.data && query.data.length}개 모두 보기`}
+                {!query.isLoading &&
+                  (isReplyListOpen
+                    ? " 숨기기"
+                    : ` ${query.data?.length}개 모두 보기`)}
               </Text>
             </Button>
           </HStack>

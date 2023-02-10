@@ -1,3 +1,4 @@
+import { ComponentProps } from "react";
 import {
   Avatar,
   Card,
@@ -18,7 +19,7 @@ import Carousel from "./components/Carousel";
 import ReplyList from "./components/Reply";
 import Content from "./components/Content";
 
-type PostCardProps = {
+type PostData = {
   feedId: number;
   authorNickname: string;
   imageUrls: string[];
@@ -30,6 +31,8 @@ type PostCardProps = {
   saved: boolean;
 };
 
+type PostCardProps = PostData & ComponentProps<typeof Card>;
+
 export default function PostCard({
   feedId,
   authorNickname,
@@ -39,10 +42,11 @@ export default function PostCard({
   content,
   createdAt,
   liked,
-  saved
+  saved,
+  ...restProps
 }: PostCardProps) {
   return (
-    <Card w="md" zIndex="base">
+    <Card w="md" zIndex="base" {...restProps}>
       <CardHeader px={0}>
         <Flex alignItems="center" gap={4} px={4}>
           <Avatar boxSize={10} />
