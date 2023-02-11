@@ -1,7 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
 interface SuccessData {
-  isCorrect: boolean;
+  data: {
+    isCorrect: boolean;
+  };
 }
 
 interface FailData {
@@ -14,15 +16,18 @@ export default function handler(
   res: NextApiResponse<SuccessData | FailData>
 ) {
   if (req.method === "POST") {
-    const { authKey } = JSON.parse(req.body);
     try {
+      const { authKey } = req.body;
+
       if (`${authKey}`.includes("1")) {
         res.status(200).json({
-          isCorrect: true
+          data: { isCorrect: true }
         });
       } else {
         res.status(200).json({
-          isCorrect: false
+          data: {
+            isCorrect: false
+          }
         });
       }
     } catch {

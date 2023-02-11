@@ -1,4 +1,6 @@
-import { SignUpUser, signUpUserAtom } from "@/atoms/auth/signUpUser";
+import { postEmailAuthKey } from "@/api/auth/email/auth-key";
+import { postEmailAuthKeyCheck } from "@/api/auth/email/auth-key/check";
+import { signUpUserAtom } from "@/atoms/auth/signUpUser";
 import AuthButton from "@/components/auth/AuthButton";
 import AuthLayout from "@/components/auth/AuthLayout";
 import AuthTextInput from "@/components/auth/AuthTextInput";
@@ -24,36 +26,6 @@ interface FormData {
   authKey: string;
 }
 
-const sendAuthKey = async (email: SignUpUser["email"]) => {
-  const res = await fetch("/api/auth/email/auth-key", {
-    method: "POST",
-    body: JSON.stringify({
-      email
-    })
-  });
-
-  if (!res.ok) throw Error((await res.json()).errorMessage);
-
-  return res.json() as Promise<{ data: null }>;
-};
-
-const checkAuthKey = async ({
-  email,
-  authKey
-}: Pick<SignUpUser, "email"> & FormData) => {
-  const res = await fetch("/api/auth/email/auth-key/check", {
-    method: "POST",
-    body: JSON.stringify({
-      email,
-      authKey
-    })
-  });
-
-  if (!res.ok) throw Error((await res.json()).errorMessage);
-
-  return res.json() as Promise<{ isCorrect: boolean }>;
-};
-
 export default function EmailAuth() {
   const [isClient, setIsClient] = useState(false);
   const router = useRouter();
@@ -75,7 +47,7 @@ export default function EmailAuth() {
 
   const handleResendClick = async () => {
     try {
-      await sendAuthKey(user.email);
+      await postEmailAuthKey(user.email);
       toast({
         title: "인증코드가 전송되었습니다.",
         status: "success",
@@ -95,7 +67,8 @@ export default function EmailAuth() {
   const handleFormSubmit = handleSubmit(async formData => {
     const { authKey } = formData;
     try {
-      const res = await checkAuthKey({ email: user.email, authKey });
+      if (!user.email) throw new Error("이메일이 없습니다.");
+      const res = await postEmailAuthKeyCheck(user.email, authKey);
       if (res.isCorrect) {
         router.push("/auth/profile");
       } else {
