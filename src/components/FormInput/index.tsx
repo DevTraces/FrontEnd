@@ -2,6 +2,7 @@ import {
   FormControl,
   FormErrorMessage,
   FormHelperText,
+  FormLabel,
   Input,
   InputGroup,
   InputLeftAddon
@@ -12,6 +13,8 @@ type AuthTextInputProps = {
   isInvalid: boolean;
   errorMessage: string;
   placeholder: string;
+  isTextarea?: boolean;
+  labelText?: string;
   helperText?: string;
   leftAddon?: JSX.Element;
 } & ComponentProps<typeof Input>;
@@ -21,6 +24,7 @@ export default forwardRef<HTMLInputElement, AuthTextInputProps>(
     {
       isInvalid,
       helperText,
+      labelText,
       placeholder,
       errorMessage,
       leftAddon,
@@ -29,6 +33,7 @@ export default forwardRef<HTMLInputElement, AuthTextInputProps>(
     ref
   ) => (
     <FormControl isInvalid={isInvalid}>
+      {labelText && <FormLabel lineHeight={10}>{labelText}</FormLabel>}
       <InputGroup size="lg">
         {leftAddon && <InputLeftAddon>{leftAddon}</InputLeftAddon>}
         <Input
@@ -41,11 +46,11 @@ export default forwardRef<HTMLInputElement, AuthTextInputProps>(
         />
       </InputGroup>
       {!isInvalid ? (
-        <FormHelperText opacity={helperText ? "1" : "0"} w="full" h="40px">
+        <FormHelperText opacity={helperText ? "1" : "0"} w="full" h="20px">
           {helperText ?? `${placeholder}를 입력해야해요`}
         </FormHelperText>
       ) : (
-        <FormErrorMessage w="full" h="40px">
+        <FormErrorMessage w="full" h="20px">
           {errorMessage}
         </FormErrorMessage>
       )}
