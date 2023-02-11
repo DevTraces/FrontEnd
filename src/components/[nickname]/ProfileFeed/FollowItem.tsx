@@ -1,15 +1,10 @@
+import { FollowItemData } from "@/api/follows/following/[nickname]";
+import { deleteFollow, postFollow } from "@/api/follows/[nickname]";
 import { Text, Avatar, VStack, HStack, Button, Circle } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-
-export type FollowItemData = {
-  username: string;
-  nickname: string;
-  profileImageUrl: string;
-  isFollowing: boolean;
-};
 
 type FollowItemProps = FollowItemData & {
   isPending?: boolean;
@@ -26,23 +21,19 @@ export default function FollowItem({
 
   const follow = useMutation({
     mutationFn: () => {
-      return fetch(`/api/follows/${nickname}`, {
-        method: "POST"
-      });
+      return postFollow(nickname);
     },
-    onSuccess: async res => {
-      if (res.ok) setIsCurrentFollowing(true);
+    onSuccess: async () => {
+      setIsCurrentFollowing(true);
     }
   });
 
   const unfollow = useMutation({
     mutationFn: () => {
-      return fetch(`/api/follows/${nickname}`, {
-        method: "DELETE"
-      });
+      return deleteFollow(nickname);
     },
-    onSuccess: async res => {
-      if (res.ok) setIsCurrentFollowing(false);
+    onSuccess: async () => {
+      setIsCurrentFollowing(false);
     }
   });
 
