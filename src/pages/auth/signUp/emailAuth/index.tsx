@@ -4,16 +4,8 @@ import { signUpUserAtom } from "@/atoms/auth/signUpUser";
 import AuthButton from "@/components/auth/AuthButton";
 import AuthLayout from "@/components/auth/AuthLayout";
 import AuthTextInput from "@/components/auth/AuthTextInput";
-import {
-  Center,
-  FormControl,
-  FormErrorMessage,
-  FormHelperText,
-  Icon,
-  Text,
-  useToast,
-  VStack
-} from "@chakra-ui/react";
+import VALIDATION_RULE from "@/constants/auth/VALIDATION_RULE";
+import { Center, Icon, Text, useToast } from "@chakra-ui/react";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Head from "next/head";
@@ -37,7 +29,7 @@ export default function EmailAuth() {
     register,
     setError,
     formState: { errors, isSubmitting }
-  } = useForm<FormData>();
+  } = useForm<FormData>({ mode: "onChange" });
 
   useEffect(() => {
     setIsClient(true);
@@ -111,27 +103,16 @@ export default function EmailAuth() {
           </Text>
         </Text>
         <form onSubmit={handleFormSubmit} style={{ width: "100%" }}>
-          <FormControl as={VStack} isInvalid={!!errors.authKey}>
-            <AuthTextInput
-              type="text"
-              placeholder="인증 코드"
-              {...register("authKey", {
-                required: "인증코드를 입력해야해요."
-              })}
-            />
-            {!errors.authKey ? (
-              <FormHelperText opacity={0} h="20px">
-                {user.email} 주소로 전송된 인증코드를 확인해주세요.
-              </FormHelperText>
-            ) : (
-              <FormErrorMessage h="20px" w="full">
-                {errors.authKey?.message}
-              </FormErrorMessage>
-            )}
-            <AuthButton type="submit" isLoading={isSubmitting}>
-              다음
-            </AuthButton>
-          </FormControl>
+          <AuthTextInput
+            type="text"
+            isInvalid={!!errors.authKey}
+            placeholder="인증 코드"
+            errorMessage={errors.authKey?.message}
+            {...register("authKey", VALIDATION_RULE.authKey)}
+          />
+          <AuthButton type="submit" isLoading={isSubmitting}>
+            다음
+          </AuthButton>
         </form>
       </AuthLayout>
     </>

@@ -4,18 +4,8 @@ import { SignUpUser, signUpUserAtom } from "@/atoms/auth/signUpUser";
 import AuthButton from "@/components/auth/AuthButton";
 import AuthLayout from "@/components/auth/AuthLayout";
 import AuthTextInput from "@/components/auth/AuthTextInput";
-import {
-  Avatar,
-  Button,
-  FormControl,
-  FormErrorMessage,
-  FormHelperText,
-  Input,
-  InputGroup,
-  InputLeftAddon,
-  useToast,
-  VStack
-} from "@chakra-ui/react";
+import VALIDATION_RULE from "@/constants/auth/VALIDATION_RULE";
+import { Avatar, Button, Input, useToast, VStack } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -123,74 +113,34 @@ export default function Profile() {
               }}
             />
           </VStack>
-          <FormControl isInvalid={!!errors.nickname}>
-            <InputGroup size="lg">
-              <InputLeftAddon color="gray">@</InputLeftAddon>
-              <AuthTextInput
-                type="text"
-                roundedLeft="none"
-                placeholder="닉네임"
-                {...register("nickname", {
-                  required: "닉네임이 필요해요",
-                  pattern: {
-                    value: /^[a-zA-Z0-9]*$/,
-                    message: "영어와 숫자만 사용할 수 있어요"
-                  },
-                  onChange: e => {
-                    nicknameMutation.mutate({ nickname: e.target.value });
-                  }
-                })}
-              />
-            </InputGroup>
+          <AuthTextInput
+            isInvalid={!!errors.nickname}
+            type="text"
+            placeholder="닉네임"
+            errorMessage={errors.nickname?.message}
+            leftAddon="@"
+            {...register("nickname", {
+              ...VALIDATION_RULE.nickname,
+              onChange: e => {
+                nicknameMutation.mutate({ nickname: e.target.value });
+              }
+            })}
+          />
+          <AuthTextInput
+            isInvalid={!!errors.username}
+            type="text"
+            placeholder="이름"
+            errorMessage={errors.username?.message}
+            {...register("username", VALIDATION_RULE.username)}
+          />
 
-            {!errors.nickname ? (
-              <FormHelperText w="full" h="30px" opacity="0">
-                닉네임을 입력해야해요
-              </FormHelperText>
-            ) : (
-              <FormErrorMessage w="full" h="30px">
-                {errors.nickname.message}
-              </FormErrorMessage>
-            )}
-          </FormControl>
-          <FormControl isInvalid={!!errors.username}>
-            <AuthTextInput
-              type="text"
-              placeholder="이름"
-              {...register("username", {
-                required: "이름이 필요해요"
-              })}
-            />
-
-            {!errors.username ? (
-              <FormHelperText w="full" h="30px" opacity="0">
-                이름을 입력해야해요
-              </FormHelperText>
-            ) : (
-              <FormErrorMessage w="full" h="30px">
-                {errors.username.message}
-              </FormErrorMessage>
-            )}
-          </FormControl>
-          <FormControl isInvalid={!!errors.password}>
-            <AuthTextInput
-              type="password"
-              placeholder="비밀번호"
-              {...register("password", {
-                required: "비밀번호가 필요해요"
-              })}
-            />
-
-            {!errors.password ? (
-              <FormHelperText w="full" h="30px" opacity="0">
-                비밀번호를 입력해야해요
-              </FormHelperText>
-            ) : (
-              <FormErrorMessage w="full" h="30px">
-                {errors.password.message}
-              </FormErrorMessage>
-            )}
-          </FormControl>
+          <AuthTextInput
+            isInvalid={!!errors.password}
+            type="password"
+            placeholder="비밀번호"
+            errorMessage={errors.password?.message}
+            {...register("password", VALIDATION_RULE.password)}
+          />
           <AuthButton
             type="submit"
             isLoading={isSubmitting}
