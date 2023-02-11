@@ -1,6 +1,6 @@
 type Params = {
   path: string;
-  query?: { [key in string]: unknown };
+  query?: { [key in string]: BodyInit };
 };
 
 type HttpRequest = <T = any>(params: Params) => Promise<T>;
@@ -13,7 +13,7 @@ type PATCH = POST;
 
 type POST = <T = any>(
   params: Params & {
-    body?: { [key in string]: unknown };
+    body?: { [key in PropertyKey]: any };
   }
 ) => Promise<T>;
 
@@ -30,27 +30,29 @@ const getURL = (path: string, query?: { [key in string]: unknown }) => {
   return `${path}?${queryString}`;
 };
 
-const handleResponse = async (res: Response) => {
+const handleResponse = async (url: string, res: Response) => {
   if (!res.ok) {
     const { errorMessage } = await res.json();
 
-    if (!errorMessage) throw new Error("에러에 errorMessage가 없습니다.");
+    if (!errorMessage)
+      throw new Error(`${url} 에러에 errorMessage가 없습니다.`);
 
     throw new Error(errorMessage);
   }
 
-  const { data } = await res.json();
+  const data = await res.json();
 
-  if (!data) throw new Error("응답에 data 속성이 없습니다.");
+  if (!Object.hasOwn(data, "data"))
+    throw new Error(`${url} 응답에 data 속성이 없습니다.`);
 
-  return data;
+  return data.data;
 };
 
 const get: GET = async ({ path, query }) => {
   const url = getURL(path, query);
   const res = await fetch(url);
 
-  return handleResponse(res);
+  return handleResponse(url, res);
 };
 
 const post: POST = async ({ path, query, body = {} }) => {
@@ -62,7 +64,7 @@ const post: POST = async ({ path, query, body = {} }) => {
     body: JSON.stringify(body)
   });
 
-  return handleResponse(res);
+  return handleResponse(url, res);
 };
 
 const api: { get: GET; post: POST; delete: DELETE; patch: PATCH } = {
