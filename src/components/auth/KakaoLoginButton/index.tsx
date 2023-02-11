@@ -1,11 +1,11 @@
 import Image from "next/image";
-import KakaoImg from "public/kakao.png";
-import React from "react";
+import { ComponentProps } from "react";
+import KakaoImg from "$/kakao.png";
 import AuthButton from "../AuthButton";
 
 export default function KakaoLoginButton({
   ...props
-}: React.ComponentProps<typeof AuthButton>) {
+}: ComponentProps<typeof AuthButton>) {
   return (
     <AuthButton
       bg="#FEE500"
