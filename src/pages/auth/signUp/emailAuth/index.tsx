@@ -47,6 +47,7 @@ export default function EmailAuth() {
 
   const handleResendClick = async () => {
     try {
+      if (!user.email) throw Error("이메일이 없습니다");
       await postEmailAuthKey(user.email);
       toast({
         title: "인증코드가 전송되었습니다.",
