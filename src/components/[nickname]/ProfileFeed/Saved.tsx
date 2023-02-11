@@ -1,28 +1,21 @@
+import { getBookmarkList } from "@/api/bookmark";
 import { AspectRatio, Grid, GridItem } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 
-type SavedData = {
-  feedId: string;
-  imageUrl: string;
-};
-
 export default function Saved() {
-  const getSaved = async () => {
-    const res = await fetch("/api/bookmark");
-    const data = await res.json();
-    return data;
-  };
-
-  const query = useQuery<SavedData[]>({
-    queryKey: ["saved"],
-    queryFn: getSaved
+  const bookmarkQuery = useQuery({
+    queryKey: ["bookmark"],
+    queryFn: getBookmarkList
   });
+
+  if (bookmarkQuery.isError) return <>Bookmark에서 에러가 발생했습니다.</>;
+  if (bookmarkQuery.isLoading) return <>Bookmark 로딩중..</>;
 
   return (
     <Grid w="full" templateColumns="repeat(3, 1fr)" gap="10px">
-      {query.data?.map(({ feedId, imageUrl }) => (
+      {bookmarkQuery.data.map(({ feedId, imageUrl }) => (
         <GridItem key={feedId} position="relative">
           <Link href={`/post/${feedId}`}>
             <AspectRatio ratio={1 / 1}>
