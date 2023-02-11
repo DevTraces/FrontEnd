@@ -1,6 +1,6 @@
 import { patchPassword } from "@/api/users/password";
-import AuthButton from "@/components/auth/AuthButton";
-import AuthLayout from "@/components/auth/AuthLayout";
+import FormButton from "@/components/FormButton";
+import FormLayout from "@/components/FormLayout";
 import FormInput from "@/components/FormInput";
 import Logo from "@/components/Logo";
 import VALIDATION_RULE from "@/constants/auth/VALIDATION_RULE";
@@ -56,7 +56,7 @@ export default function EditPassword() {
       <Head>
         <title>ArtBubble | Sign Up</title>
       </Head>
-      <AuthLayout>
+      <FormLayout>
         <Center color="black">
           <Logo type="full" height={50} />
         </Center>
@@ -96,15 +96,14 @@ export default function EditPassword() {
                 "비밀번호가 일치하지 않아요"
             })}
           />
-          <AuthButton
-            type="submit"
+          <FormButton
             isDisabled={!isDirty || !isValid}
             isLoading={isSubmitting}
           >
             비밀번호 변경
-          </AuthButton>
+          </FormButton>
         </form>
-      </AuthLayout>
+      </FormLayout>
     </>
   );
 }

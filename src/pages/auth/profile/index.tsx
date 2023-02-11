@@ -1,8 +1,8 @@
 import { postSignUp } from "@/api/auth/sign-up";
 import { getNicknameDuplicateCheck } from "@/api/users/nickname/check";
 import { SignUpUser, signUpUserAtom } from "@/atoms/auth/signUpUser";
-import AuthButton from "@/components/auth/AuthButton";
-import AuthLayout from "@/components/auth/AuthLayout";
+import FormButton from "@/components/FormButton";
+import FormLayout from "@/components/FormLayout";
 import AuthTextInput from "@/components/FormInput";
 import VALIDATION_RULE from "@/constants/auth/VALIDATION_RULE";
 import { Avatar, Button, Input, useToast, VStack } from "@chakra-ui/react";
@@ -83,7 +83,7 @@ export default function Profile() {
         <title>ArtBubble | Profile</title>
       </Head>
 
-      <AuthLayout>
+      <FormLayout>
         <form onSubmit={handleFormSubmit} style={{ width: "100%" }}>
           <VStack mb="12px">
             {previewImg !== "" ? (
@@ -141,15 +141,14 @@ export default function Profile() {
             errorMessage={errors.password?.message}
             {...register("password", VALIDATION_RULE.password)}
           />
-          <AuthButton
-            type="submit"
+          <FormButton
             isLoading={isSubmitting}
             isDisabled={!isValid || !isDirty}
           >
             가입 완료
-          </AuthButton>
+          </FormButton>
         </form>
-      </AuthLayout>
+      </FormLayout>
     </>
   );
 }

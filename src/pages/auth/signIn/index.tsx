@@ -1,6 +1,6 @@
 import { postSignIn } from "@/api/auth/sign-in";
-import AuthButton from "@/components/auth/AuthButton";
-import AuthLayout from "@/components/auth/AuthLayout";
+import FormButton from "@/components/FormButton";
+import FormLayout from "@/components/FormLayout";
 import AuthTextInput from "@/components/FormInput";
 import KakaoLoginButton from "@/components/auth/KakaoLoginButton";
 import Logo from "@/components/Logo";
@@ -46,7 +46,7 @@ export default function SignIn() {
       <Head>
         <title>ArtBubble | Sign In</title>
       </Head>
-      <AuthLayout>
+      <FormLayout>
         <Center color="black">
           <Logo type="full" height={50} />
         </Center>
@@ -66,13 +66,12 @@ export default function SignIn() {
             {...register("password", VALIDATION_RULE.password)}
           />
 
-          <AuthButton
+          <FormButton
             isLoading={isSubmitting}
             isDisabled={!isValid || !isDirty}
-            type="submit"
           >
             로그인
-          </AuthButton>
+          </FormButton>
         </form>
 
         <Divider />
@@ -82,7 +81,7 @@ export default function SignIn() {
             <Link href="/auth/signUp">계정 만들기</Link>
           </Text>
         </HStack>
-      </AuthLayout>
+      </FormLayout>
     </>
   );
 }
