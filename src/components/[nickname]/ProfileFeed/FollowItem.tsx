@@ -23,7 +23,7 @@ export default function FollowItem({
     mutationFn: () => {
       return postFollow(nickname);
     },
-    onSuccess: async () => {
+    onSuccess: () => {
       setIsCurrentFollowing(true);
     }
   });
@@ -32,7 +32,7 @@ export default function FollowItem({
     mutationFn: () => {
       return deleteFollow(nickname);
     },
-    onSuccess: async () => {
+    onSuccess: () => {
       setIsCurrentFollowing(false);
     }
   });
