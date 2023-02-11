@@ -92,12 +92,12 @@ export default function Profile() {
                   </TabPanel>
                   <TabPanel>
                     {selected === "following" && (
-                      <FollowList nickname={nickname} selected={selected} />
+                      <FollowList nickname={nickname} type="following" />
                     )}
                   </TabPanel>
                   <TabPanel>
                     {selected === "follower" && (
-                      <FollowList nickname={nickname} selected={selected} />
+                      <FollowList nickname={nickname} type="follower" />
                     )}
                   </TabPanel>
                   <TabPanel>{selected === "saved" && <Saved />}</TabPanel>
