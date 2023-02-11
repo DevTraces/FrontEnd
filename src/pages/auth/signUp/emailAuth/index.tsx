@@ -1,9 +1,9 @@
 import { postEmailAuthKey } from "@/api/auth/email/auth-key";
 import { postEmailAuthKeyCheck } from "@/api/auth/email/auth-key/check";
 import { signUpUserAtom } from "@/atoms/auth/signUpUser";
-import AuthButton from "@/components/auth/AuthButton";
-import AuthLayout from "@/components/auth/AuthLayout";
-import AuthTextInput from "@/components/auth/AuthTextInput";
+import FormButton from "@/components/FormButton";
+import FormLayout from "@/components/FormLayout";
+import AuthTextInput from "@/components/FormInput";
 import VALIDATION_RULE from "@/constants/auth/VALIDATION_RULE";
 import { Center, Icon, Text, useToast } from "@chakra-ui/react";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
@@ -13,6 +13,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRecoilValue } from "recoil";
+import { useMutation } from "@tanstack/react-query";
 
 interface FormData {
   authKey: string;
@@ -28,50 +29,59 @@ export default function EmailAuth() {
     handleSubmit,
     register,
     setError,
-    formState: { errors, isSubmitting }
+    formState: { errors, isSubmitting, isDirty, isValid }
   } = useForm<FormData>({ mode: "onChange" });
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
-  if (!isClient) return null;
-
-  const handleResendClick = async () => {
-    try {
-      if (!user.email) throw Error("이메일이 없습니다");
-      await postEmailAuthKey(user.email);
+  const emailAuthKeyMutation = useMutation({
+    mutationFn: ({ email }: { email: string }) => postEmailAuthKey(email),
+    onSuccess: () => {
       toast({
-        title: "인증코드가 전송되었습니다.",
+        title: "인증코드가 전송되었습니다",
         status: "success",
         duration: 3000
       });
-    } catch (e) {
-      let message = "Unknown Error";
-      if (e instanceof Error) message = e.message;
+    },
+    onError: () => {
       toast({
-        title: message,
-        status: "warning",
+        title: "인증코드 전송에 실패하였습니다",
+        status: "error",
         duration: 3000
       });
     }
-  };
+  });
 
-  const handleFormSubmit = handleSubmit(async formData => {
-    const { authKey } = formData;
-    try {
-      if (!user.email) throw new Error("이메일이 없습니다.");
-      const res = await postEmailAuthKeyCheck(user.email, authKey);
+  const emailAuthKeyCheckMutation = useMutation({
+    mutationFn: ({ email, authKey }: { email: string; authKey: string }) =>
+      postEmailAuthKeyCheck(email, authKey),
+    onSuccess: res => {
       if (res.isCorrect) {
         router.push("/auth/profile");
       } else {
         setError("authKey", { message: "인증코드가 올바르지 않습니다" });
       }
-    } catch (e) {
-      let message = "Unknown Error";
-      if (e instanceof Error) message = e.message;
-      setError("authKey", { message });
+    },
+    onError: () => {
+      setError("authKey", {
+        message: "인증코드 확인중 에러가 발생하였습니다."
+      });
     }
+  });
+
+  if (!isClient) return null;
+
+  const handleResendClick = () => {
+    if (!user.email) return;
+    emailAuthKeyMutation.mutate({ email: user.email });
+  };
+
+  const handleFormSubmit = handleSubmit(async formData => {
+    if (!user.email) return;
+    const { authKey } = formData;
+    emailAuthKeyCheckMutation.mutate({ email: user.email, authKey });
   });
 
   return (
@@ -79,7 +89,7 @@ export default function EmailAuth() {
       <Head>
         <title>ArtBubble | Email Authorization</title>
       </Head>
-      <AuthLayout>
+      <FormLayout>
         <Center>
           <Icon
             as={FontAwesomeIcon}
@@ -110,11 +120,14 @@ export default function EmailAuth() {
             errorMessage={errors.authKey?.message}
             {...register("authKey", VALIDATION_RULE.authKey)}
           />
-          <AuthButton type="submit" isLoading={isSubmitting}>
+          <FormButton
+            isLoading={isSubmitting}
+            isDisabled={!isDirty || !isValid}
+          >
             다음
-          </AuthButton>
+          </FormButton>
         </form>
-      </AuthLayout>
+      </FormLayout>
     </>
   );
 }

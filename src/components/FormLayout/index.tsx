@@ -1,8 +1,8 @@
 import { Center, Container, VStack } from "@chakra-ui/react";
 
-type AuthLayoutProps = React.ComponentProps<typeof Container>;
+type FormLayoutProps = React.ComponentProps<typeof Container>;
 
-export default function AuthLayout({ children }: AuthLayoutProps) {
+export default function FormLayout({ children }: FormLayoutProps) {
   return (
     <Container centerContent pt={{ sm: "0", md: "100px" }}>
       <Center>
