@@ -27,7 +27,7 @@ export default function FollowList({ nickname, type }: FollowListProps) {
   return (
     <VStack>
       {followListQuery.data.map(d => (
-        <FollowItem key={d.nickname} {...d} />
+        <FollowItem key={d.nickname} type={type} {...d} />
       ))}
     </VStack>
   );

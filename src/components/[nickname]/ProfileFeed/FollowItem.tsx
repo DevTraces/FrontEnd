@@ -1,12 +1,12 @@
 import { FollowItemData } from "@/api/follows/following/[nickname]";
 import { deleteFollow, postFollow } from "@/api/follows/[nickname]";
-import { Text, Avatar, VStack, HStack, Button } from "@chakra-ui/react";
+import { Avatar, Button, HStack, Text, VStack } from "@chakra-ui/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
-import { useState } from "react";
 import CircledImage from "../CircledImage";
 
 type FollowItemProps = FollowItemData & {
+  type: "follower" | "following";
   isPending?: boolean;
 };
 
@@ -15,52 +15,41 @@ export default function FollowItem({
   nickname,
   profileImageUrl,
   isFollowing,
+  type,
   isPending = false
 }: FollowItemProps) {
-  const [isCurrentFollowing, setIsCurrentFollowing] = useState(isFollowing);
-
   const queryClient = useQueryClient();
 
-  const follow = useMutation({
+  const toggleFollow = useMutation({
     mutationFn: () => {
-      return postFollow(nickname);
-    },
-    onMutate: () => {
-      setIsCurrentFollowing(true);
-    },
-    onError: () => {
-      setIsCurrentFollowing(false);
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["following", nickname]
-      });
-    }
-  });
-
-  const unfollow = useMutation({
-    mutationFn: () => {
+      if (!isFollowing) postFollow(nickname);
       return deleteFollow(nickname);
     },
-    onMutate: () => {
-      setIsCurrentFollowing(false);
+    onMutate: async () => {
+      await queryClient.cancelQueries({ queryKey: [type, nickname] });
+      const prevFollows = queryClient.getQueryData([type, nickname]);
+      queryClient.setQueryData(
+        [type, nickname],
+        (old: FollowItemData[] | undefined) =>
+          old?.map(o =>
+            o.nickname === nickname ? { ...o, isFollowing: !isFollowing } : o
+          )
+      );
+
+      return { prevFollows };
     },
-    onError: () => {
-      setIsCurrentFollowing(true);
+    onError: (err, variables, context) => {
+      queryClient.setQueryData([type, nickname], context?.prevFollows);
     },
     onSettled: () => {
       queryClient.invalidateQueries({
-        queryKey: ["following", nickname]
+        queryKey: [type, nickname]
       });
     }
   });
 
   const handleFollowClick = () => {
-    follow.mutate();
-  };
-
-  const handleUnfollowClick = () => {
-    unfollow.mutate();
+    toggleFollow.mutate();
   };
 
   return (
@@ -84,25 +73,15 @@ export default function FollowItem({
           <Text color="gray">@{nickname}</Text>
         </VStack>
       </Link>
-      {isCurrentFollowing ? (
-        <Button
-          w="100px"
-          colorScheme="blackAlpha"
-          fontWeight="bold"
-          onClick={handleUnfollowClick}
-        >
-          팔로잉
-        </Button>
-      ) : (
-        <Button
-          w="100px"
-          colorScheme="blue"
-          fontWeight="bold"
-          onClick={handleFollowClick}
-        >
-          {isPending ? "수락" : "팔로우"}
-        </Button>
-      )}
+      <Button
+        w="100px"
+        colorScheme={isFollowing ? "blackAlpha" : "blue"}
+        fontWeight="bold"
+        onClick={handleFollowClick}
+      >
+        {isFollowing && "팔로잉"}
+        {!isFollowing && (isPending ? "수락" : "팔로우")}
+      </Button>
     </HStack>
   );
 }
