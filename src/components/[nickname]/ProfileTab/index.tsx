@@ -14,10 +14,10 @@ const selectedList: ProfileTabName[] = [
 
 type ProfileTabProps = {
   nickname: string;
-  selected: ProfileTabName;
+  selectedTab: ProfileTabName;
 };
 
-export default function ProfileTab({ nickname, selected }: ProfileTabProps) {
+export default function ProfileTab({ nickname, selectedTab }: ProfileTabProps) {
   const isMyProfile = nickname === "choonsik";
 
   const tabList = isMyProfile
@@ -53,7 +53,7 @@ export default function ProfileTab({ nickname, selected }: ProfileTabProps) {
       variant="line"
       align="center"
       colorScheme="red"
-      index={selectedList.findIndex(item => item === selected)}
+      index={selectedList.findIndex(item => item === selectedTab)}
       isLazy
     >
       <TabList>

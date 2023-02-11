@@ -34,7 +34,7 @@ export default function Profile() {
           <>
             <ProfileInfo {...profileQuery.data} p="20px" pt="100px" />
             {selectedTab && (
-              <ProfileTab nickname={nickname} selected={selectedTab} />
+              <ProfileTab nickname={nickname} selectedTab={selectedTab} />
             )}
           </>
         )}
