@@ -1,7 +1,7 @@
 import { postSignIn } from "@/api/auth/sign-in";
 import AuthButton from "@/components/auth/AuthButton";
 import AuthLayout from "@/components/auth/AuthLayout";
-import AuthTextInput from "@/components/auth/AuthTextInput";
+import AuthTextInput from "@/components/FormInput";
 import KakaoLoginButton from "@/components/auth/KakaoLoginButton";
 import Logo from "@/components/Logo";
 import VALIDATION_RULE from "@/constants/auth/VALIDATION_RULE";

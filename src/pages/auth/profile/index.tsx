@@ -3,7 +3,7 @@ import { getNicknameDuplicateCheck } from "@/api/users/nickname/check";
 import { SignUpUser, signUpUserAtom } from "@/atoms/auth/signUpUser";
 import AuthButton from "@/components/auth/AuthButton";
 import AuthLayout from "@/components/auth/AuthLayout";
-import AuthTextInput from "@/components/auth/AuthTextInput";
+import AuthTextInput from "@/components/FormInput";
 import VALIDATION_RULE from "@/constants/auth/VALIDATION_RULE";
 import { Avatar, Button, Input, useToast, VStack } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";

@@ -3,7 +3,7 @@ import { postEmailAuthKeyCheck } from "@/api/auth/email/auth-key/check";
 import { signUpUserAtom } from "@/atoms/auth/signUpUser";
 import AuthButton from "@/components/auth/AuthButton";
 import AuthLayout from "@/components/auth/AuthLayout";
-import AuthTextInput from "@/components/auth/AuthTextInput";
+import AuthTextInput from "@/components/FormInput";
 import VALIDATION_RULE from "@/constants/auth/VALIDATION_RULE";
 import { Center, Icon, Text, useToast } from "@chakra-ui/react";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
