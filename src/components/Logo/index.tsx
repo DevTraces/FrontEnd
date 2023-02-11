@@ -1,5 +1,5 @@
-import Image from "next/image";
 import { ComponentProps } from "react";
+import Image from "next/image";
 
 type LogoProps = { type: "text" | "icon" | "full" } & Omit<
   ComponentProps<typeof Image>,
