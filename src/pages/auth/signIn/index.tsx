@@ -4,16 +4,8 @@ import AuthLayout from "@/components/auth/AuthLayout";
 import AuthTextInput from "@/components/auth/AuthTextInput";
 import KakaoLoginButton from "@/components/auth/KakaoLoginButton";
 import Logo from "@/components/Logo";
-import {
-  Center,
-  Divider,
-  FormControl,
-  FormErrorMessage,
-  FormHelperText,
-  HStack,
-  Text,
-  useToast
-} from "@chakra-ui/react";
+import VALIDATION_RULE from "@/constants/auth/VALIDATION_RULE";
+import { Center, Divider, HStack, Text, useToast } from "@chakra-ui/react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -61,46 +53,19 @@ export default function SignIn() {
         <KakaoLoginButton />
         <Divider />
         <form style={{ width: "100%" }} onSubmit={handleFormSubmit}>
-          <FormControl isInvalid={!!errors.email}>
-            <AuthTextInput
-              placeholder="이메일"
-              {...register("email", {
-                required: "이메일을 입력해야해요",
-                pattern: {
-                  value: /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/,
-                  message: "이메일 형식을 지켜주세요"
-                }
-              })}
-            />
-            {!errors.email ? (
-              <FormHelperText opacity={0}>
-                로그인 할 이메일을 입력해주세요
-              </FormHelperText>
-            ) : (
-              <FormErrorMessage>{errors.email.message}</FormErrorMessage>
-            )}
-          </FormControl>
-          <FormControl isInvalid={!!errors.password}>
-            <AuthTextInput
-              placeholder="비밀번호"
-              type="password"
-              {...register("password", {
-                required: "비밀번호를 입력해야해요"
+          <AuthTextInput
+            isInvalid={!!errors.email}
+            errorMessage={errors.email?.message}
+            placeholder="이메일"
+            {...register("email", VALIDATION_RULE.email)}
+          />
+          <AuthTextInput
+            isInvalid={!!errors.password}
+            errorMessage={errors.password?.message}
+            placeholder="비밀번호"
+            {...register("password", VALIDATION_RULE.password)}
+          />
 
-                // pattern: {
-                //   value: /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/,
-                //   message: "이메일 형식을 지켜주세요"
-                // }
-              })}
-            />
-            {!errors.password ? (
-              <FormHelperText opacity={0}>
-                로그인 할 비밀번호를 입력해주세요
-              </FormHelperText>
-            ) : (
-              <FormErrorMessage>{errors.password.message}</FormErrorMessage>
-            )}
-          </FormControl>
           <AuthButton
             isLoading={isSubmitting}
             isDisabled={!isValid || !isDirty}

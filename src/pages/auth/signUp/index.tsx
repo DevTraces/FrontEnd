@@ -6,15 +6,8 @@ import AuthLayout from "@/components/auth/AuthLayout";
 import AuthTextInput from "@/components/auth/AuthTextInput";
 import KakaoLoginButton from "@/components/auth/KakaoLoginButton";
 import Logo from "@/components/Logo";
-import {
-  Center,
-  Divider,
-  Flex,
-  FormControl,
-  FormErrorMessage,
-  FormHelperText,
-  Text
-} from "@chakra-ui/react";
+import VALIDATION_RULE from "@/constants/auth/VALIDATION_RULE";
+import { Center, Divider, Text } from "@chakra-ui/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { FormEventHandler } from "react";
@@ -72,37 +65,19 @@ export default function SignUp() {
         <KakaoLoginButton>카카오로 시작하기</KakaoLoginButton>
         <Divider />
         <form style={{ width: "100%" }} onSubmit={handleFormSubmit}>
-          <FormControl
-            as={Flex}
-            direction="column"
+          <AuthTextInput
+            placeholder="이메일"
             isInvalid={!!errors.email}
-            gap="5px"
+            errorMessage={errors.email?.message}
+            {...register("email", VALIDATION_RULE.email)}
+          />
+          <AuthButton
+            isLoading={isSubmitting}
+            isDisabled={!isValid || !isDirty}
+            type="submit"
           >
-            <AuthTextInput
-              placeholder="이메일"
-              {...register("email", {
-                required: "이메일을 입력해야해요",
-                pattern: {
-                  value: /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/,
-                  message: "이메일 형식을 지켜주세요"
-                }
-              })}
-            />
-            {!errors.email ? (
-              <FormHelperText opacity={0}>
-                가입 할 이메일을 입력해주세요
-              </FormHelperText>
-            ) : (
-              <FormErrorMessage>{errors.email.message}</FormErrorMessage>
-            )}
-            <AuthButton
-              isLoading={isSubmitting}
-              isDisabled={!isValid || !isDirty}
-              type="submit"
-            >
-              가입하기
-            </AuthButton>
-          </FormControl>
+            가입하기
+          </AuthButton>
         </form>
       </AuthLayout>
     </>
