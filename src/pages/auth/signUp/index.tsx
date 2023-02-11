@@ -1,3 +1,5 @@
+import { postEmailAuthKey } from "@/api/auth/email/auth-key";
+import { getEmailDuplicateCheck } from "@/api/auth/email/check";
 import { SignUpUser, signUpUserAtom } from "@/atoms/auth/signUpUser";
 import AuthButton from "@/components/auth/AuthButton";
 import AuthLayout from "@/components/auth/AuthLayout";
@@ -21,27 +23,6 @@ import { useSetRecoilState } from "recoil";
 
 type FormData = Pick<SignUpUser, "email">;
 
-const sendAuthKey = async (email: SignUpUser["email"]) => {
-  const res = await fetch("/api/auth/email/auth-key", {
-    method: "POST",
-    body: JSON.stringify({
-      email
-    })
-  });
-
-  if (!res.ok) throw Error((await res.json()).errorMessage);
-
-  return res.json() as Promise<{ data: null }>;
-};
-
-const checkDuplicate = async (email: SignUpUser["email"]) => {
-  const res = await fetch(`/api/users/email/check?email=${email}`);
-
-  if (!res.ok) throw Error((await res.json()).errorMessage);
-
-  return res.json() as Promise<{ isDuplicated: boolean }>;
-};
-
 export default function SignUp() {
   const router = useRouter();
   const setSignUpUser = useSetRecoilState(signUpUserAtom);
@@ -56,12 +37,15 @@ export default function SignUp() {
   const handleFormSubmit: FormEventHandler<HTMLFormElement> = handleSubmit(
     async formData => {
       const { email } = formData;
+
       try {
-        const res = await checkDuplicate(email);
+        if (!email) throw Error("이메일을 입력해야 합니다.");
+        const res = await getEmailDuplicateCheck(email);
+
         if (res.isDuplicated) {
           setError("email", { message: "이미 가입된 이메일입니다" });
         } else {
-          await sendAuthKey(email);
+          await postEmailAuthKey(email);
           setSignUpUser(prev => ({ ...prev, ...formData }));
           router.push("/auth/signUp/emailAuth");
         }
