@@ -6,11 +6,13 @@ type NoticeData = {
 
 export default function handler(
   req: NextApiRequest,
-  res: NextApiResponse<NoticeData>
+  res: NextApiResponse<{ data: NoticeData }>
 ) {
   if (req.method === "GET") {
     res.status(200).json({
-      noticeNumber: 1
+      data: {
+        noticeNumber: 1
+      }
     });
   }
 }

@@ -1,3 +1,5 @@
+import { deleteBookmark, postBookmark } from "@/api/bookmark/[feedId]";
+import { deleteLike, postLike } from "@/api/like/[feedId]";
 import { Button, Flex, HStack, Icon, Text, useToast } from "@chakra-ui/react";
 import {
   faBookmark as faBookmarkBlank,
@@ -44,27 +46,23 @@ export default function Content({
 
   const like = useMutation({
     mutationFn: () => {
-      return fetch(`/api/like/${feedId}`, {
-        method: liked ? "DELETE" : "POST"
-      });
+      if (liked) return deleteLike(feedId);
+      return postLike(feedId);
     }
   });
 
   const bookmark = useMutation({
     mutationFn: () => {
-      return fetch(`/api/bookmark/${feedId}`, {
-        method: saved ? "DELETE" : "POST"
-      });
+      if (saved) return deleteBookmark(feedId);
+      return postBookmark(feedId);
     },
-    onSuccess: async res => {
-      if (res.ok) {
-        toast({
-          title: saved ? "저장목록에서 삭제했어요." : "저장목록에 추가했어요.",
-          status: "success",
-          duration: 2000,
-          isClosable: true
-        });
-      }
+    onSuccess: async () => {
+      toast({
+        title: saved ? "저장목록에서 삭제했어요." : "저장목록에 추가했어요.",
+        status: "success",
+        duration: 2000,
+        isClosable: true
+      });
     }
   });
 

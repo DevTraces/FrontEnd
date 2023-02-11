@@ -1,27 +1,32 @@
+import { getFollowerList } from "@/api/follows/follower/[nickname]";
+import { getFollowingList } from "@/api/follows/following/[nickname]";
 import { VStack } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
-import { useRouter } from "next/router";
-import FollowItem, { FollowItemData } from "./FollowItem";
+import FollowItem from "./FollowItem";
 
-export default function FollowList() {
-  const router = useRouter();
-  const { nickname, selected } = router.query;
+type FollowListProps = {
+  nickname: string;
+  type: "follower" | "following";
+};
 
-  const getFollowList = async () => {
-    const res = await fetch(`/api/follows/${selected}/${nickname}`);
-    const data = await res.json();
-
-    return data;
-  };
-
-  const query = useQuery<FollowItemData[]>({
-    queryKey: ["followList", nickname, selected],
-    queryFn: getFollowList
+export default function FollowList({ nickname, type }: FollowListProps) {
+  const followListQuery = useQuery({
+    queryKey: ["followList", nickname, type],
+    queryFn: ({ queryKey }) => {
+      // TODO: pagination 필요
+      if (queryKey[2] === "follower") {
+        return getFollowerList(queryKey[2], 1, 1);
+      }
+      return getFollowingList(queryKey[2], 1, 1);
+    }
   });
+
+  if (followListQuery.isError) return <>FollowList 에러 발생</>;
+  if (followListQuery.isLoading) return <>FollowList 로딩 중...</>;
 
   return (
     <VStack>
-      {query.data?.map(d => (
+      {followListQuery.data.map(d => (
         <FollowItem key={d.nickname} {...d} />
       ))}
     </VStack>

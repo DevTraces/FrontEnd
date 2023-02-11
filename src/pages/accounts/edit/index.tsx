@@ -39,7 +39,8 @@ export default function Setting() {
     }
   });
 
-  if (isLoading || isError) return null;
+  if (isLoading) return <>Setting 로딩 중...</>;
+  if (isError) return <>Setting 에러발생</>;
 
   return (
     <NavLayout>
