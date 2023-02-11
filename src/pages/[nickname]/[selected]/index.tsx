@@ -1,8 +1,6 @@
 import { getUserProfile } from "@/api/users/profile/[nickname]";
 import NavLayout from "@/components/NavLayout";
-import ProfileInfo, {
-  ProfileData
-} from "@/components/[nickname]/Profile/ProfileInfo";
+import ProfileInfo from "@/components/[nickname]/Profile/ProfileInfo";
 import FollowList from "@/components/[nickname]/ProfileFeed/FollowList";
 import Posts from "@/components/[nickname]/ProfileFeed/Posts";
 import Saved from "@/components/[nickname]/ProfileFeed/Saved";
@@ -23,14 +21,17 @@ const selectedList: Selected[] = ["posts", "following", "follower", "saved"];
 
 export default function Profile() {
   const router = useRouter();
-  const { nickname, selected } = router.query;
+  const { nickname, selected } = router.query as {
+    nickname: string;
+    selected: string;
+  };
 
   const isMyProfile = nickname === "choonsik";
 
-  const { data, isLoading, isError } = useQuery<ProfileData>({
+  const profileQuery = useQuery({
     queryKey: ["profile", nickname],
     queryFn: ({ queryKey }) => {
-      return getUserProfile(queryKey[1] as string);
+      return getUserProfile(queryKey[1]);
     }
   });
 
@@ -40,11 +41,11 @@ export default function Profile() {
         <title>Arterest | {nickname}님의 프로필</title>
       </Head>
       <NavLayout maxW="750px">
-        {isLoading || isError ? (
+        {profileQuery.isLoading || profileQuery.isError ? (
           <Spinner mt="400px" boxSize="100px" />
         ) : (
           <>
-            <ProfileInfo {...data} p="20px" pt="100px" />
+            <ProfileInfo {...profileQuery.data} p="20px" pt="100px" />
             {selected && (
               <Tabs
                 variant="line"
@@ -86,12 +87,18 @@ export default function Profile() {
                   )}
                 </TabList>
                 <TabPanels>
-                  <TabPanel>{selected === "posts" && <Posts />}</TabPanel>
                   <TabPanel>
-                    {selected === "following" && <FollowList />}
+                    {selected === "posts" && <Posts nickname={nickname} />}
                   </TabPanel>
                   <TabPanel>
-                    {selected === "follower" && <FollowList />}
+                    {selected === "following" && (
+                      <FollowList nickname={nickname} selected={selected} />
+                    )}
+                  </TabPanel>
+                  <TabPanel>
+                    {selected === "follower" && (
+                      <FollowList nickname={nickname} selected={selected} />
+                    )}
                   </TabPanel>
                   <TabPanel>{selected === "saved" && <Saved />}</TabPanel>
                 </TabPanels>

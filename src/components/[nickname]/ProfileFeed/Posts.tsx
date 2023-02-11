@@ -1,39 +1,26 @@
+import { getFeeds } from "@/api/feeds/[nickname]";
 import { VStack } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
-import { useRouter } from "next/router";
 import PostCard from "../../PostCard";
 
-type FeedData = {
-  feedId: number;
-  authorNickname: string;
-  content: string;
-  authorProfileImageUrl: string;
-  numberOfReply: number;
-  createdAt: Date;
-  modifiedAt: Date;
-  imageUrls: string[];
-  hashtags: string[];
-  numberOfLike: number;
-  liked: boolean;
-  saved: boolean;
+type PostsProps = {
+  nickname: string;
 };
 
-export default function Posts() {
-  const router = useRouter();
-  const { nickname } = router.query;
+export default function Posts({ nickname }: PostsProps) {
+  const postsQuery = useQuery({
+    queryKey: ["posts", nickname],
+    queryFn: ({ queryKey }) => getFeeds(queryKey[1] as string)
+  });
 
-  const getPosts = async () => {
-    const response = await fetch(`/api/feeds/${nickname}`);
-    const data = await response.json();
-
-    return data;
-  };
-
-  const query = useQuery<FeedData[]>(["posts", nickname], () => getPosts());
+  if (postsQuery.isLoading) return <>Posts 로딩중...</>;
+  if (postsQuery.isError) return <>Posts 에서 에러가 발생했습니다.</>;
 
   return (
     <VStack>
-      {query.data && query.data.map(d => <PostCard key={d.feedId} {...d} />)}
+      {postsQuery.data.map(d => (
+        <PostCard key={d.feedId} {...d} />
+      ))}
     </VStack>
   );
 }
