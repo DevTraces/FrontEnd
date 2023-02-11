@@ -2,6 +2,7 @@ import {
   FormControl,
   FormErrorMessage,
   FormHelperText,
+  FormLabel,
   Input,
   InputGroup,
   InputLeftAddon
@@ -12,6 +13,8 @@ type AuthTextInputProps = {
   isInvalid: boolean;
   errorMessage: string;
   placeholder: string;
+  isTextarea?: boolean;
+  labelText?: string;
   helperText?: string;
   leftAddon?: JSX.Element;
 } & ComponentProps<typeof Input>;
@@ -21,6 +24,7 @@ export default forwardRef<HTMLInputElement, AuthTextInputProps>(
     {
       isInvalid,
       helperText,
+      labelText,
       placeholder,
       errorMessage,
       leftAddon,
@@ -29,6 +33,7 @@ export default forwardRef<HTMLInputElement, AuthTextInputProps>(
     ref
   ) => (
     <FormControl isInvalid={isInvalid}>
+      {labelText && <FormLabel lineHeight={10}>{labelText}</FormLabel>}
       <InputGroup size="lg">
         {leftAddon && <InputLeftAddon>{leftAddon}</InputLeftAddon>}
         <Input
