@@ -1,6 +1,6 @@
 import api from "@/api";
 
-export const postBoomark = (feedId: number) => {
+export const postBookmark = (feedId: number) => {
   return api.post<null>({ path: `/api/bookmark/${feedId}` });
 };
 
