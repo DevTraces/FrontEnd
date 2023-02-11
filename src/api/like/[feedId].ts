@@ -1,9 +1,9 @@
 import api from "..";
 
 export const postLike = (feedId: number) => {
-  return api.post({ path: `/api/like/${feedId}` });
+  return api.post<null>({ path: `/api/like/${feedId}` });
 };
 
 export const deleteLike = (feedId: number) => {
-  return api.delete({ path: `/api/like/${feedId}` });
+  return api.delete<null>({ path: `/api/like/${feedId}` });
 };
