@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { ComponentProps } from "react";
-import KakaoImg from "kakao.png";
+import KakaoImg from "../../../../public/kakao.png";
 import AuthButton from "../AuthButton";
 
 export default function KakaoLoginButton({
