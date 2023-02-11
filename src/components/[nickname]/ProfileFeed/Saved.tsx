@@ -1,4 +1,4 @@
-import { getBookmark } from "@/api/bookmark";
+import { getBookmarkList } from "@/api/bookmark";
 import { AspectRatio, Grid, GridItem } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
@@ -7,7 +7,7 @@ import Link from "next/link";
 export default function Saved() {
   const bookmarkQuery = useQuery({
     queryKey: ["bookmark"],
-    queryFn: getBookmark
+    queryFn: getBookmarkList
   });
 
   if (bookmarkQuery.isError) return <>Bookmark에서 에러가 발생했습니다.</>;
