@@ -1,3 +1,5 @@
+import { deleteBookmark, postBoomark } from "@/api/bookmark/[feedId]";
+import { deleteLike, postLike } from "@/api/like/[feedId]";
 import { Button, Flex, HStack, Icon, Text, useToast } from "@chakra-ui/react";
 import {
   faBookmark as faBookmarkBlank,
@@ -44,17 +46,15 @@ export default function Content({
 
   const like = useMutation({
     mutationFn: () => {
-      return fetch(`/api/like/${feedId}`, {
-        method: liked ? "DELETE" : "POST"
-      });
+      if (liked) return deleteLike(feedId);
+      return postLike(feedId);
     }
   });
 
   const bookmark = useMutation({
     mutationFn: () => {
-      return fetch(`/api/bookmark/${feedId}`, {
-        method: saved ? "DELETE" : "POST"
-      });
+      if (saved) return deleteBookmark(feedId);
+      return postBoomark(feedId);
     },
     onSuccess: async res => {
       if (res.ok) {
