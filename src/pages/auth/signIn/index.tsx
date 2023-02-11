@@ -1,3 +1,4 @@
+import { postSignIn } from "@/api/auth/sign-in";
 import AuthButton from "@/components/auth/AuthButton";
 import AuthLayout from "@/components/auth/AuthLayout";
 import AuthTextInput from "@/components/auth/AuthTextInput";
@@ -23,18 +24,6 @@ interface FormData {
   password: string;
 }
 
-const requestLogin = async ({ email, password }: FormData) => {
-  const res = await fetch("/api/auth/sign-in", {
-    method: "POST",
-    body: JSON.stringify({
-      email,
-      password
-    })
-  });
-  if (!res.ok) throw Error((await res.json()).errorMessage);
-  return res.json();
-};
-
 export default function SignIn() {
   const router = useRouter();
   const toast = useToast();
@@ -47,7 +36,7 @@ export default function SignIn() {
 
   const handleFormSubmit = handleSubmit(async formData => {
     try {
-      await requestLogin(formData);
+      await postSignIn(formData.email, formData.password);
       router.push("/feed");
     } catch (e) {
       let errorMsg = "Unknown error";

@@ -1,8 +1,8 @@
-import Image from "next/image";
-import TextLogo from "public/ArtBubbleTextLogo_landscape.svg";
-import IconLogo from "public/ArtBubble_square.svg";
-import FullLogo from "public/ArtBubbleLogo_landscape.svg";
 import { ComponentProps } from "react";
+import Image from "next/image";
+import FullLogo from "public/ArtBubbleLogo_landscape.svg";
+import IconLogo from "public/ArtBubble_square.svg";
+import TextLogo from "public/ArtBubbleTextLogo_landscape.svg";
 
 type LogoProps = { type: "text" | "icon" | "full" } & Omit<
   ComponentProps<typeof Image>,

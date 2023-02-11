@@ -12,11 +12,15 @@ export default function handler(
     const { email } = req.query;
     if (email?.includes("1")) {
       res.status(200).json({
-        data: { isDuplicated: true }
+        data: {
+          isDuplicated: true
+        }
       });
     } else {
       res.status(200).json({
-        data: { isDuplicated: false }
+        data: {
+          isDuplicated: false
+        }
       });
     }
   }

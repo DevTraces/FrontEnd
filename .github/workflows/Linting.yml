@@ -17,4 +17,5 @@ jobs:
           node-version: "14"
       - run: echo "🔎 ESLint 검사를 시작합니다..."
       - run: yarn
+      - run: yarn build
       - run: yarn lint

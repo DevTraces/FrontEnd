@@ -1,3 +1,4 @@
+import { postSignUp } from "@/api/auth/sign-up";
 import { getNicknameDuplicateCheck } from "@/api/users/nickname/check";
 import { SignUpUser, signUpUserAtom } from "@/atoms/auth/signUpUser";
 import AuthButton from "@/components/auth/AuthButton";
@@ -24,15 +25,6 @@ import { useRecoilValue } from "recoil";
 
 type FormData = Pick<SignUpUser, "nickname" | "username" | "password"> & {
   profileImages: FileList;
-};
-
-const requestSignUp = async (signUpUser: SignUpUser) => {
-  const res = await fetch("/api/auth/sign-up", {
-    method: "POST",
-    body: JSON.stringify(signUpUser)
-  });
-  if (!res.ok) throw Error((await res.json()).errorMessage);
-  return res.json();
 };
 
 export default function Profile() {
@@ -76,7 +68,7 @@ export default function Profile() {
   const handleFormSubmit = handleSubmit(
     async ({ profileImages: pImgs, ...formData }) => {
       try {
-        await requestSignUp({
+        await postSignUp({
           ...signUpUser,
           ...formData,
           profileImage: pImgs[0]
