@@ -1,5 +1,4 @@
 import api from "@/api";
-import { SignUpUser } from "@/atoms/auth/signUpUser";
 
-export const postEmailAuthKey = (email: SignUpUser["email"]) =>
+export const postEmailAuthKey = (email: string) =>
   api.post({ path: "/api/auth/email/auth-key", body: { email } });
