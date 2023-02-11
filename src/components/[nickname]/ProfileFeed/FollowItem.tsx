@@ -1,10 +1,10 @@
 import { FollowItemData } from "@/api/follows/following/[nickname]";
 import { deleteFollow, postFollow } from "@/api/follows/[nickname]";
-import { Text, Avatar, VStack, HStack, Button, Circle } from "@chakra-ui/react";
-import { useMutation } from "@tanstack/react-query";
-import Image from "next/image";
+import { Text, Avatar, VStack, HStack, Button } from "@chakra-ui/react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useState } from "react";
+import CircledImage from "../CircledImage";
 
 type FollowItemProps = FollowItemData & {
   isPending?: boolean;
@@ -19,12 +19,22 @@ export default function FollowItem({
 }: FollowItemProps) {
   const [isCurrentFollowing, setIsCurrentFollowing] = useState(isFollowing);
 
+  const queryClient = useQueryClient();
+
   const follow = useMutation({
     mutationFn: () => {
       return postFollow(nickname);
     },
-    onSuccess: () => {
+    onMutate: () => {
       setIsCurrentFollowing(true);
+    },
+    onError: () => {
+      setIsCurrentFollowing(false);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["following", nickname]
+      });
     }
   });
 
@@ -32,8 +42,16 @@ export default function FollowItem({
     mutationFn: () => {
       return deleteFollow(nickname);
     },
-    onSuccess: () => {
+    onMutate: () => {
       setIsCurrentFollowing(false);
+    },
+    onError: () => {
+      setIsCurrentFollowing(true);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["following", nickname]
+      });
     }
   });
 
@@ -57,15 +75,7 @@ export default function FollowItem({
         }}
       >
         {profileImageUrl ? (
-          <Circle size="50px" position="relative" overflow="hidden">
-            <Image
-              src={profileImageUrl}
-              alt="프로필 이미지"
-              sizes="50px"
-              fill
-              style={{ objectFit: "cover" }}
-            />
-          </Circle>
+          <CircledImage src={profileImageUrl} size="50px" alt="프로필 이미지" />
         ) : (
           <Avatar boxSize={10} src={profileImageUrl} />
         )}

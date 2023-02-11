@@ -11,13 +11,13 @@ type FollowListProps = {
 
 export default function FollowList({ nickname, type }: FollowListProps) {
   const followListQuery = useQuery({
-    queryKey: ["followList", nickname, type],
+    queryKey: [type, nickname],
     queryFn: ({ queryKey }) => {
       // TODO: pagination 필요
-      if (queryKey[2] === "follower") {
-        return getFollowerList(queryKey[2], 1, 1);
+      if (queryKey[1] === "follower") {
+        return getFollowerList(queryKey[1], 1, 1);
       }
-      return getFollowingList(queryKey[2], 1, 1);
+      return getFollowingList(queryKey[1], 1, 1);
     }
   });
 
