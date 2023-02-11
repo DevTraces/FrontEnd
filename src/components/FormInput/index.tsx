@@ -46,11 +46,11 @@ export default forwardRef<HTMLInputElement, AuthTextInputProps>(
         />
       </InputGroup>
       {!isInvalid ? (
-        <FormHelperText opacity={helperText ? "1" : "0"} w="full" h="40px">
+        <FormHelperText opacity={helperText ? "1" : "0"} w="full" h="20px">
           {helperText ?? `${placeholder}를 입력해야해요`}
         </FormHelperText>
       ) : (
-        <FormErrorMessage w="full" h="40px">
+        <FormErrorMessage w="full" h="20px">
           {errorMessage}
         </FormErrorMessage>
       )}
