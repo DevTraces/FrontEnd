@@ -1,15 +1,18 @@
 import { ComponentProps } from "react";
 import Image from "next/image";
+import FullLogo from "public/ArtBubbleLogo_landscape.svg";
+import IconLogo from "public/ArtBubble_square.svg";
+import TextLogo from "public/ArtBubbleTextLogo_landscape.svg";
 
 type LogoProps = { type: "text" | "icon" | "full" } & Omit<
   ComponentProps<typeof Image>,
   "src" | "alt"
 >;
 export default function Logo({ type, ...restProps }: LogoProps) {
-  const ImgSrcs: { [key in typeof type]: string } = {
-    full: "ArtBubbleLogo_landscape.svg",
-    icon: "ArtBubble_square.svg",
-    text: "ArtBubbleTextLogo_landscape.svg"
+  const ImgSrcs: { [key in typeof type]: typeof TextLogo } = {
+    full: FullLogo,
+    icon: IconLogo,
+    text: TextLogo
   };
   return (
     <Image src={ImgSrcs[type]} alt="ArtBubble Logo" {...restProps} priority />
