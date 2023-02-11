@@ -22,12 +22,11 @@ const sampleimgs = [
 
 export default function TagResult() {
   const router = useRouter();
-  const { tag } = router.query;
 
   return (
     <>
       <Head>
-        <title>ArtBubble | {tag} 검색 결과</title>
+        <title>ArtBubble | {router.query.tag} 검색 결과</title>
       </Head>
       <NavLayout>
         <Container centerContent>
@@ -36,7 +35,7 @@ export default function TagResult() {
               <Avatar boxSize="80px" />
               <Flex gap="20px">
                 <VStack alignItems="flex-start">
-                  <Text fontWeight="bold">#{tag}</Text>
+                  <Text fontWeight="bold">#{router.query.tag}</Text>
                   <Text>
                     게시물 <strong>6385</strong>
                   </Text>
@@ -49,7 +48,7 @@ export default function TagResult() {
                   <AspectRatio ratio={1 / 1}>
                     <Image
                       src={img}
-                      alt={`${tag}이미지`}
+                      alt={`${router.query.tag}이미지`}
                       sizes="100%"
                       fill
                       priority
