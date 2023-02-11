@@ -1,3 +1,5 @@
+import { getReplies } from "@/api/feeds/[feedId]/replies";
+import { getRereplies } from "@/api/feeds/[feedId]/replies/[replyId]/rereplies";
 import {
   Accordion,
   AccordionButton,
@@ -17,17 +19,6 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import ReplyItem from "./ReplyItem";
 
-type ReplyData = {
-  replyId: number;
-  feedId: number;
-  authorNickname: string;
-  content: string;
-  authorProfileImageUrl: string;
-  numberOfRereply: number;
-  createdAt: Date;
-  modifiedAt: Date;
-};
-
 type ReplyListProps = {
   feedId: number;
   replyId?: number | null;
@@ -36,21 +27,17 @@ type ReplyListProps = {
 export default function ReplyList({ feedId, replyId = null }: ReplyListProps) {
   const [isReplyListOpen, setIsReplyListOpen] = useState(false);
   const isRereply = replyId !== null;
-  const REPLY_API = isRereply
-    ? `/api/feeds/${feedId}/replies/${replyId}/rereplies`
-    : `/api/feeds/${feedId}/replies`;
 
-  const getReplies = async (): Promise<ReplyData[]> => {
-    const response = await fetch(REPLY_API);
-    const data = await response.json();
-
-    return data;
-  };
-
-  const query = useQuery({
-    queryKey: ["comments", feedId, replyId],
-    queryFn: getReplies
+  const repliesQuery = useQuery({
+    queryKey: ["replies", feedId, replyId] as const,
+    queryFn: ({ queryKey }) => {
+      if (isRereply) return getRereplies(queryKey[1], queryKey[2]);
+      return getReplies(queryKey[1]);
+    }
   });
+
+  if (repliesQuery.isError) return <>ReplyList에서 에러 발생.</>;
+  if (repliesQuery.isLoading) return <>ReplyList 로딩 중...</>;
 
   return (
     <Accordion allowToggle mt="12px">
@@ -67,17 +54,16 @@ export default function ReplyList({ feedId, replyId = null }: ReplyListProps) {
               <Icon as={FontAwesomeIcon} icon={faComment} />
               <Text>
                 {isRereply ? "답글" : "댓글"}
-                {!query.isLoading &&
-                  (isReplyListOpen
-                    ? " 숨기기"
-                    : ` ${query.data?.length}개 모두 보기`)}
+                {isReplyListOpen
+                  ? " 숨기기"
+                  : ` ${repliesQuery.data.length}개 모두 보기`}
               </Text>
             </Button>
           </HStack>
         </AccordionButton>
         <AccordionPanel p={0} ml={isRereply ? "50px" : "0"}>
           <Flex direction="column">
-            {query.data?.map(
+            {repliesQuery.data.map(
               ({
                 replyId: referenceReplyId,
                 authorNickname,
