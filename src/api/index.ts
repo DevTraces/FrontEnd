@@ -1,6 +1,6 @@
 type Params = {
   path: string;
-  query?: { [key in string]: BodyInit };
+  query?: { [key in string | number]: string | number };
 };
 
 type HttpRequest = <T = any>(params: Params) => Promise<T>;
@@ -21,7 +21,7 @@ const defaultHeaders = {
   "Content-Type": "application/json"
 };
 
-const getURL = (path: string, query?: { [key in string]: unknown }) => {
+const getURL = (path: Params["path"], query?: Params["query"]) => {
   if (!query) return path;
 
   const queryString = Object.entries(query)
@@ -30,7 +30,10 @@ const getURL = (path: string, query?: { [key in string]: unknown }) => {
   return `${path}?${queryString}`;
 };
 
-const handleResponse = async (url: string, res: Response) => {
+const handleResponse = async (
+  url: ReturnType<typeof getURL>,
+  res: Response
+) => {
   if (!res.ok) {
     const { errorMessage } = await res.json();
 
