@@ -1,7 +1,8 @@
 import { getUserProfile } from "@/api/users/profile/[nickname]";
 import LabeledInput from "@/components/accounts/edit/LabeledInput";
 import NavLayout from "@/components/NavLayout";
-import { ProfileData } from "@/components/[nickname]/Profile/ProfileInfo";
+import { ProfileData } from "@/types/data/user";
+
 import {
   Avatar,
   Box,

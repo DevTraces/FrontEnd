@@ -1,14 +1,6 @@
 import api from "@/api";
+import { ProfileData } from "@/types/data/user";
 
-type UserProfileData = {
-  username: string;
-  nickname: string;
-  description: string;
-  profileImageUrl: string;
-  totalFeedNumber: number;
-  followerNumber: number;
-  followingNumber: number;
-};
 export async function getUserProfile(nickname: string) {
-  return api.get<UserProfileData>({ path: `/api/users/profile/${nickname}` });
+  return api.get<ProfileData>({ path: `/api/users/profile/${nickname}` });
 }
