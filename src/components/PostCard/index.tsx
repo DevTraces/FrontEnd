@@ -1,4 +1,4 @@
-import { ComponentProps } from "react";
+import { PostData } from "@/types/data/post";
 import {
   Avatar,
   Card,
@@ -15,21 +15,10 @@ import {
 } from "@chakra-ui/react";
 import { faPaperPlane, faSmile } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { ComponentProps } from "react";
 import Carousel from "./components/Carousel";
-import ReplyList from "./components/Reply";
 import Content from "./components/Content";
-
-type PostData = {
-  feedId: number;
-  authorNickname: string;
-  imageUrls: string[];
-  numberOfLike: number;
-  hashtags: string[];
-  content: string;
-  createdAt: Date;
-  liked: boolean;
-  saved: boolean;
-};
+import ReplyList from "./components/Reply";
 
 type PostCardProps = PostData & ComponentProps<typeof Card>;
 

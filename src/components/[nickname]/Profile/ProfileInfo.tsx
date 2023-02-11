@@ -1,24 +1,7 @@
-import {
-  Avatar,
-  VStack,
-  Button,
-  Box,
-  Text,
-  HStack,
-  Circle
-} from "@chakra-ui/react";
-import Image from "next/image";
+import { ProfileData } from "@/types/data/user";
+import { Avatar, VStack, Button, Box, Text, HStack } from "@chakra-ui/react";
 import Link from "next/link";
-
-export type ProfileData = {
-  username: string;
-  nickname: string;
-  description: string;
-  profileImageUrl: string;
-  totalFeedNumber: number;
-  followerNumber: number;
-  followingNumber: number;
-};
+import CircledImage from "../CircledImage";
 
 type ProfileProps = ProfileData & React.ComponentProps<typeof VStack>;
 
@@ -38,15 +21,7 @@ export default function ProfileInfo({
     <VStack gap="20px" {...restProps}>
       <HStack gap="20px">
         {profileImageUrl ? (
-          <Circle size="80px" position="relative" overflow="hidden">
-            <Image
-              alt="프로필 이미지"
-              sizes="80px"
-              fill
-              src={profileImageUrl}
-              style={{ objectFit: "cover" }}
-            />
-          </Circle>
+          <CircledImage src={profileImageUrl} size="80px" alt="프로필 이미지" />
         ) : (
           <Avatar boxSize="80px" />
         )}

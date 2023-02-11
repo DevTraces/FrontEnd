@@ -2,7 +2,7 @@ import { getUserProfile } from "@/api/users/profile/[nickname]";
 import FormTextarea from "@/components/FormTextarea";
 import FormTextInput from "@/components/FormInput";
 import NavLayout from "@/components/NavLayout";
-import { ProfileData } from "@/components/[nickname]/Profile/ProfileInfo";
+import { ProfileData } from "@/types/data/user";
 import VALIDATION_RULE from "@/constants/auth/VALIDATION_RULE";
 import {
   Avatar,

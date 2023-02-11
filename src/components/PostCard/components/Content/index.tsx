@@ -1,5 +1,6 @@
 import { deleteBookmark, postBookmark } from "@/api/bookmark/[feedId]";
 import { deleteLike, postLike } from "@/api/like/[feedId]";
+import { PostData } from "@/types/data/post";
 import { Button, Flex, HStack, Icon, Text, useToast } from "@chakra-ui/react";
 import {
   faBookmark as faBookmarkBlank,
@@ -17,16 +18,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import MAX_PREVIEW_LENGTH from "../../constants/posts";
 
-type ContentProps = {
-  feedId: number;
-  authorNickname: string;
-  numberOfLike: number;
-  hashtags: string[];
-  content: string;
-  createdAt: Date;
-  liked: boolean;
-  saved: boolean;
-};
+type ContentProps = Omit<PostData, "imageUrls">;
 
 export default function Content({
   feedId,
@@ -75,6 +67,14 @@ export default function Content({
     });
   };
 
+  const handleLikeClick = () => {
+    like.mutate();
+  };
+
+  const handleBookmarkClick = () => {
+    bookmark.mutate();
+  };
+
   useEffect(() => {
     if (content.length < MAX_PREVIEW_LENGTH) setIsMoreLoaded(true);
   }, [setIsMoreLoaded, content]);
@@ -88,23 +88,21 @@ export default function Content({
             icon={liked ? faHeartFilled : faHeartBlank}
             color={liked ? "red" : "black"}
             boxSize={6}
-            onClick={() => {
-              like.mutate();
-            }}
+            onClick={handleLikeClick}
             cursor="pointer"
           />
           <Icon
-            cursor="pointer"
             as={FontAwesomeIcon}
             icon={faComment}
             boxSize={6}
+            cursor="pointer"
           />
           <Icon
-            cursor="pointer"
             as={FontAwesomeIcon}
             icon={faLink}
             boxSize={6}
             onClick={handleShareClick}
+            cursor="pointer"
           />
         </HStack>
         <Icon
@@ -113,7 +111,7 @@ export default function Content({
           color={saved ? "primary" : "black"}
           boxSize={6}
           cursor="pointer"
-          onClick={() => bookmark.mutate()}
+          onClick={handleBookmarkClick}
         />
       </Flex>
       <Text fontWeight="bold">좋아요 {numberOfLike}개</Text>

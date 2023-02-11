@@ -72,7 +72,7 @@ export default function ReplyList({ feedId, replyId = null }: ReplyListProps) {
               }) => (
                 <Box key={authorNickname}>
                   <ReplyItem nickname={authorNickname} content={content} />
-                  {numberOfRereply > 0 && !isRereply && (
+                  {!isRereply && numberOfRereply && (
                     <ReplyList feedId={feedId} replyId={referenceReplyId} />
                   )}
                 </Box>
