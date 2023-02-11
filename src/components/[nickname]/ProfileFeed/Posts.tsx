@@ -10,7 +10,7 @@ type PostsProps = {
 export default function Posts({ nickname }: PostsProps) {
   const postsQuery = useQuery({
     queryKey: ["posts", nickname],
-    queryFn: ({ queryKey }) => getFeeds(queryKey[1] as string)
+    queryFn: ({ queryKey }) => getFeeds(queryKey[1])
   });
 
   if (postsQuery.isLoading) return <>Posts 로딩중...</>;
