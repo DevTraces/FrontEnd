@@ -1,9 +1,9 @@
 import { postEmailAuthKey } from "@/api/auth/email/auth-key";
 import { getEmailDuplicateCheck } from "@/api/auth/email/check";
 import { SignUpUser, signUpUserAtom } from "@/atoms/auth/signUpUser";
-import AuthButton from "@/components/auth/AuthButton";
-import AuthLayout from "@/components/auth/AuthLayout";
-import AuthTextInput from "@/components/auth/AuthTextInput";
+import FormButton from "@/components/FormButton";
+import FormLayout from "@/components/FormLayout";
+import AuthTextInput from "@/components/FormInput";
 import KakaoLoginButton from "@/components/auth/KakaoLoginButton";
 import Logo from "@/components/Logo";
 import VALIDATION_RULE from "@/constants/auth/VALIDATION_RULE";
@@ -55,14 +55,14 @@ export default function SignUp() {
       <Head>
         <title>ArtBubble | Sign Up</title>
       </Head>
-      <AuthLayout>
+      <FormLayout>
         <Center>
           <Logo type="full" height={50} />
         </Center>
         <Text fontSize="2xl" textAlign="center" wordBreak="keep-all">
           그림을 좋아하는 사람들과 소통하려면 가입하세요.
         </Text>
-        <KakaoLoginButton>카카오로 시작하기</KakaoLoginButton>
+        <KakaoLoginButton />
         <Divider />
         <form style={{ width: "100%" }} onSubmit={handleFormSubmit}>
           <AuthTextInput
@@ -71,15 +71,14 @@ export default function SignUp() {
             errorMessage={errors.email?.message}
             {...register("email", VALIDATION_RULE.email)}
           />
-          <AuthButton
+          <FormButton
             isLoading={isSubmitting}
             isDisabled={!isValid || !isDirty}
-            type="submit"
           >
             가입하기
-          </AuthButton>
+          </FormButton>
         </form>
-      </AuthLayout>
+      </FormLayout>
     </>
   );
 }

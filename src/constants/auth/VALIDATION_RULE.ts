@@ -1,6 +1,12 @@
 import { RegisterOptions } from "react-hook-form";
 
-type PossibleKeys = "email" | "authKey" | "nickname" | "username" | "password";
+type PossibleKeys =
+  | "email"
+  | "authKey"
+  | "nickname"
+  | "username"
+  | "password"
+  | "description";
 
 const VALIDATION_RULE: { [key in PossibleKeys]: RegisterOptions } = {
   email: {
@@ -27,6 +33,12 @@ const VALIDATION_RULE: { [key in PossibleKeys]: RegisterOptions } = {
   },
   password: {
     required: "비밀번호가 필요해요"
+  },
+  description: {
+    maxLength: {
+      value: 150,
+      message: "150자 이하로만 가능해요"
+    }
   }
 };
 
