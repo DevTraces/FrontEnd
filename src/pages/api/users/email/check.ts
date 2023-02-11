@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
 type Data = {
-  isDuplicated: boolean;
+  data: { isDuplicated: boolean };
 };
 
 export default function handler(
@@ -12,11 +12,11 @@ export default function handler(
     const { email } = req.query;
     if (email?.includes("1")) {
       res.status(200).json({
-        isDuplicated: true
+        data: { isDuplicated: true }
       });
     } else {
       res.status(200).json({
-        isDuplicated: false
+        data: { isDuplicated: false }
       });
     }
   }
