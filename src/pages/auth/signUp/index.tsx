@@ -1,11 +1,11 @@
 import { postEmailAuthKey } from "@/api/auth/email/auth-key";
 import { getEmailDuplicateCheck } from "@/api/auth/email/check";
 import { SignUpUser, signUpUserAtom } from "@/atoms/auth/signUpUser";
-import FormButton from "@/components/FormButton";
-import FormLayout from "@/components/FormLayout";
-import AuthTextInput from "@/components/FormInput";
+import FormButton from "@/components/@common/FormButton";
+import FormLayout from "@/components/@common/FormLayout";
+import AuthTextInput from "@/components/@common/FormInput";
 import KakaoLoginButton from "@/components/auth/KakaoLoginButton";
-import Logo from "@/components/Logo";
+import Logo from "@/components/@common/Logo";
 import VALIDATION_RULE from "@/constants/auth/VALIDATION_RULE";
 import { Center, Divider, Text } from "@chakra-ui/react";
 import Head from "next/head";

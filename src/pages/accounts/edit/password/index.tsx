@@ -1,8 +1,8 @@
 import { patchPassword } from "@/api/users/password";
-import FormButton from "@/components/FormButton";
-import FormLayout from "@/components/FormLayout";
-import FormInput from "@/components/FormInput";
-import Logo from "@/components/Logo";
+import FormButton from "@/components/@common/FormButton";
+import FormLayout from "@/components/@common/FormLayout";
+import FormInput from "@/components/@common/FormInput";
+import Logo from "@/components/@common/Logo";
 import VALIDATION_RULE from "@/constants/auth/VALIDATION_RULE";
 import { Center, useToast } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";

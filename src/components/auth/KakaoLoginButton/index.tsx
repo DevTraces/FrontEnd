@@ -1,7 +1,7 @@
 import Image from "next/image";
 import KakaoImg from "public/kakao.png";
 import { ComponentProps } from "react";
-import FormButton from "../../FormButton";
+import FormButton from "../../@common/FormButton";
 
 type KakaoLoginButtonProps = Omit<
   ComponentProps<typeof FormButton>,

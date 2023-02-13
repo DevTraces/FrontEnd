@@ -1,5 +1,5 @@
-import NavLayout from "@/components/NavLayout";
-import PostCard from "@/components/PostCard";
+import NavLayout from "@/components/@common/NavLayout";
+import PostCard from "@/components/@common/PostCard";
 import { Center, Flex } from "@chakra-ui/react";
 import Head from "next/head";
 

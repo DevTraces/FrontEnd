@@ -1,9 +1,9 @@
 import { postSignUp } from "@/api/auth/sign-up";
 import { getNicknameDuplicateCheck } from "@/api/users/nickname/check";
 import { SignUpUser, signUpUserAtom } from "@/atoms/auth/signUpUser";
-import FormButton from "@/components/FormButton";
-import FormLayout from "@/components/FormLayout";
-import AuthTextInput from "@/components/FormInput";
+import FormButton from "@/components/@common/FormButton";
+import FormLayout from "@/components/@common/FormLayout";
+import AuthTextInput from "@/components/@common/FormInput";
 import VALIDATION_RULE from "@/constants/auth/VALIDATION_RULE";
 import { Avatar, Button, Input, useToast, VStack } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";

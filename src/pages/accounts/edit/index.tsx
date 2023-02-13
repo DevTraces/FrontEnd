@@ -1,7 +1,6 @@
 import { getUserProfile } from "@/api/users/profile/[nickname]";
-import FormTextarea from "@/components/FormTextarea";
-import FormTextInput from "@/components/FormInput";
-import NavLayout from "@/components/NavLayout";
+import FormTextarea from "@/components/@common/FormTextarea";
+import FormTextInput from "@/components/@common/FormInput";
 import { ProfileData } from "@/types/data/user";
 import VALIDATION_RULE from "@/constants/auth/VALIDATION_RULE";
 import {
@@ -17,6 +16,7 @@ import { useQuery } from "@tanstack/react-query";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
+import NavLayout from "@/components/@common/NavLayout";
 
 type FormData = Pick<ProfileData, "username" | "nickname" | "description">;
 

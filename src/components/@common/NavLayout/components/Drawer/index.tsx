@@ -1,4 +1,4 @@
-import { Nav } from "@/components/NavLayout/constants/nav";
+import { Nav } from "@/components/@common/NavLayout/constants/nav";
 import { Box, Text } from "@chakra-ui/react";
 import { ComponentProps, forwardRef } from "react";
 import Alert from "./components/Alert";

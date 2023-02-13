@@ -1,9 +1,9 @@
 import { postEmailAuthKey } from "@/api/auth/email/auth-key";
 import { postEmailAuthKeyCheck } from "@/api/auth/email/auth-key/check";
 import { signUpUserAtom } from "@/atoms/auth/signUpUser";
-import FormButton from "@/components/FormButton";
-import FormLayout from "@/components/FormLayout";
-import AuthTextInput from "@/components/FormInput";
+import FormButton from "@/components/@common/FormButton";
+import FormLayout from "@/components/@common/FormLayout";
+import AuthTextInput from "@/components/@common/FormInput";
 import VALIDATION_RULE from "@/constants/auth/VALIDATION_RULE";
 import { Center, Icon, Text, useToast } from "@chakra-ui/react";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
