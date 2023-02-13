@@ -1,4 +1,4 @@
-import Logo from "@/components/Logo";
+import Logo from "@/components/@common/Logo";
 import AnimatedBubble from "@/components/root/AnimatedBubble";
 import { Box, Button, Center, HStack, Text } from "@chakra-ui/react";
 import Head from "next/head";

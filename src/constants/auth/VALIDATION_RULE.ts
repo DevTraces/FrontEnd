@@ -12,7 +12,7 @@ const VALIDATION_RULE: { [key in PossibleKeys]: RegisterOptions } = {
   email: {
     required: "이메일을 입력해야해요",
     pattern: {
-      value: /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/,
+      value: /[a-zA-Z0-9]+@[a-zA-]+\.[a-z]{2,3}/,
       message: "이메일 형식을 지켜주세요"
     }
   },

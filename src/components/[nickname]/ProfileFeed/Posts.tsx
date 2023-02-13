@@ -1,7 +1,7 @@
 import { getFeeds } from "@/api/feeds/[nickname]";
 import { VStack } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
-import PostCard from "../../PostCard";
+import PostCard from "../../@common/PostCard";
 
 type PostsProps = {
   nickname: string;

@@ -1,4 +1,4 @@
-import NavLayout from "@/components/NavLayout";
+import NavLayout from "@/components/@common/NavLayout";
 import ImageBox from "@/components/newPost/ImageBox";
 import {
   Button,

@@ -1,4 +1,4 @@
-import NavLayout from "@/components/NavLayout";
+import NavLayout from "@/components/@common/NavLayout";
 // import PostCard from "@/components/PostCard";
 import { Center } from "@chakra-ui/react";
 import Head from "next/head";

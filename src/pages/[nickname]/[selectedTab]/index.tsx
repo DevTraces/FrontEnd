@@ -1,5 +1,5 @@
 import { getUserProfile } from "@/api/users/profile/[nickname]";
-import NavLayout from "@/components/NavLayout";
+import NavLayout from "@/components/@common/NavLayout";
 import ProfileInfo from "@/components/[nickname]/Profile/ProfileInfo";
 import ProfileTab from "@/components/[nickname]/ProfileTab";
 import { ProfileTabName } from "@/types/data/user";

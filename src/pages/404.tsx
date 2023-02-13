@@ -1,4 +1,4 @@
-import NavLayout from "@/components/NavLayout";
+import NavLayout from "@/components/@common/NavLayout";
 import { Button, Center, Flex, Text } from "@chakra-ui/react";
 import Link from "next/link";
 
