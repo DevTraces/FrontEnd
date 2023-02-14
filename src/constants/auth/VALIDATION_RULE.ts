@@ -6,7 +6,8 @@ type PossibleKeys =
   | "nickname"
   | "username"
   | "password"
-  | "description";
+  | "description"
+  | "replyContent";
 
 const VALIDATION_RULE: { [key in PossibleKeys]: RegisterOptions } = {
   email: {
@@ -38,6 +39,13 @@ const VALIDATION_RULE: { [key in PossibleKeys]: RegisterOptions } = {
     maxLength: {
       value: 150,
       message: "150자 이하로만 가능해요"
+    }
+  },
+  replyContent: {
+    required: true,
+    maxLength: {
+      value: 1000,
+      message: "1000자 이하로만 가능해요"
     }
   }
 };
