@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import getDateFormat from "../../utils/date";
 
 export default function Follow({
   nickname,
@@ -49,12 +50,17 @@ export default function Follow({
         <Text>
           <b>{nickname}</b>님이 당신을 팔로우하기 시작했습니다.
         </Text>
-        <Text color="gray">{createdAt}</Text>
+        <Text color="gray">{getDateFormat(createdAt)}</Text>
       </Flex>
       {isFollowButton ? (
         <Icon as={FontAwesomeIcon} icon={faChevronRight} color="gray.400" />
       ) : (
-        <Button colorScheme="blue" onClick={handleFollowClick}>
+        <Button
+          colorScheme="blue"
+          onClick={handleFollowClick}
+          size="sm"
+          fontSize="sm"
+        >
           팔로우
         </Button>
       )}

@@ -4,6 +4,7 @@ import { Flex, Icon, Text, Avatar, HStack } from "@chakra-ui/react";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
+import getDateFormat from "../../utils/date";
 
 export default function ReReply({
   nickname,
@@ -23,7 +24,7 @@ export default function ReReply({
           <Text>
             <b>{nickname}</b>님이 당신의 게시글/댓글에 댓글을 남겼습니다.
           </Text>
-          <Text color="gray">{createdAt}</Text>
+          <Text color="gray">{getDateFormat(createdAt)}</Text>
         </Flex>
         <Icon as={FontAwesomeIcon} icon={faChevronRight} color="gray.400" />
       </HStack>

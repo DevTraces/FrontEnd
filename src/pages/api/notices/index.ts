@@ -6,7 +6,7 @@ type NoticeLikeData = {
   feedId: number;
   noticeType: string;
   imageUrl: string;
-  createdAt: string;
+  createdAt: Date;
 };
 
 type NoticeFollowData = {
@@ -14,7 +14,7 @@ type NoticeFollowData = {
   nickname: string;
   noticeType: string;
   imageUrl: string;
-  createdAt: string;
+  createdAt: Date;
 };
 
 type NoticeCommentData = {
@@ -26,7 +26,7 @@ type NoticeCommentData = {
   reReplyId?: number;
   noticeType: string;
   imageUrl: string;
-  createdAt: string;
+  createdAt: Date;
 };
 
 export default function handler(
@@ -48,7 +48,7 @@ export default function handler(
             noticeType: "LIKE",
             imageUrl:
               "https://cdn.pixabay.com/photo/2019/11/19/22/25/animal-4638681_960_720.jpg",
-            createdAt: "2023-02-07T09:59:23.653281"
+            createdAt: new Date(new Date().getTime() - 5 * 60 * 60 * 1000)
           },
           {
             noticeId: 2,
@@ -56,7 +56,7 @@ export default function handler(
             noticeType: "FOLLOW",
             imageUrl:
               "https://cdn.pixabay.com/photo/2019/11/19/22/25/animal-4638681_960_720.jpg",
-            createdAt: "2023-02-07T09:59:23.653281"
+            createdAt: new Date(new Date().getTime() - 5 * 24 * 60 * 60 * 1000)
           },
           {
             noticeId: 3,
@@ -67,7 +67,7 @@ export default function handler(
             noticeType: "REPLY",
             imageUrl:
               "https://cdn.pixabay.com/photo/2019/11/19/22/25/animal-4638681_960_720.jpg",
-            createdAt: "2023-02-07T09:59:23.653281"
+            createdAt: new Date(new Date().getTime() - 24 * 24 * 60 * 60 * 1000)
           },
           {
             noticeId: 4,
@@ -79,7 +79,9 @@ export default function handler(
             noticeType: "REREPLY",
             imageUrl:
               "https://cdn.pixabay.com/photo/2019/11/19/22/25/animal-4638681_960_720.jpg",
-            createdAt: "2023-02-07T09:59:23.653281"
+            createdAt: new Date(
+              new Date().getTime() - 100 * 24 * 60 * 60 * 1000
+            )
           }
         ]
       }

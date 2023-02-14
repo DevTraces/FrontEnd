@@ -29,6 +29,7 @@ export default function Alert() {
           onClick={() => {
             remove.mutate(alert.noticeId);
           }}
+          fontSize="sm"
         >
           {alert.noticeType === "FOLLOW" && <Follow {...alert} />}
           {alert.noticeType === "LIKE" && <Like {...alert} />}
