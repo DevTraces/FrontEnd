@@ -12,6 +12,7 @@ export type LikeNotice = NoticeBase & {
 
 export type FollowNotice = NoticeBase & {
   noticeType: "FOLLOW";
+  isFollowing: boolean;
 };
 
 export type ReplyNotice = NoticeBase & {
@@ -26,7 +27,7 @@ export type ReReplyNotice = Omit<ReplyNotice, "noticeType"> & {
   reReplyId: number;
 };
 
-export type NoticeCount = { noticeNumber: number };
+export type NoticesCount = { noticeNumber: number };
 
 export type NoticeList = (
   | LikeNotice
