@@ -1,46 +1,32 @@
-import { Box, Flex, Icon, Text } from "@chakra-ui/react";
-import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { getNotices } from "@/api/notices";
+import { Flex, VStack } from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
+import Follow from "./Follow";
+import Like from "./Like";
+import Reply from "./Reply";
+import ReReply from "./ReReply";
 
-const alerts = [
-  {
-    id: "1231bb3123",
-    type: "follow",
-    nickname: "john134"
-  }
-];
 export default function Alert() {
+  const alertQuery = useQuery({
+    queryKey: ["notices"],
+    queryFn: () => {
+      return getNotices();
+    }
+  });
+
+  if (alertQuery.isLoading) return <>알림 로딩중</>;
+  if (alertQuery.isError) return <>알림 에러</>;
+
   return (
-    <Flex direction="column" gap="10px">
-      <Flex direction="column" gap="20px">
-        {alerts.map(alert => {
-          return (
-            <Flex
-              key={alert.id}
-              alignItems="center"
-              justifyContent="space-between"
-              gap="12px"
-              h="50px"
-              cursor="pointer"
-            >
-              {alert.type === "follow" && (
-                <>
-                  <Box boxSize={10} borderRadius="50%" bg="gray" />
-                  <Flex direction="column" flex={1}>
-                    <Text fontWeight="bold">팔로우 요청</Text>
-                    <Text color="gray">@{alert.nickname}</Text>
-                  </Flex>
-                  <Icon
-                    as={FontAwesomeIcon}
-                    icon={faChevronRight}
-                    color="gray.400"
-                  />
-                </>
-              )}
-            </Flex>
-          );
-        })}
-      </Flex>
-    </Flex>
+    <VStack spacing="30px">
+      {alertQuery.data.noticeList.map(alert => (
+        <Flex key={alert.noticeId} w="full">
+          {alert.noticeType === "FOLLOW" && <Follow {...alert} />}
+          {alert.noticeType === "LIKE" && <Like {...alert} />}
+          {alert.noticeType === "REPLY" && <Reply {...alert} />}
+          {alert.noticeType === "REREPLY" && <ReReply {...alert} />}
+        </Flex>
+      ))}
+    </VStack>
   );
 }
