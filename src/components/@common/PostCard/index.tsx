@@ -1,4 +1,5 @@
-import { PostData } from "@/types/data/post";
+import CircledImage from "@/components/[nickname]/CircledImage";
+import { PostCardData } from "@/types/data/feed";
 import {
   Avatar,
   Card,
@@ -20,11 +21,12 @@ import Carousel from "./components/Carousel";
 import Content from "./components/Content";
 import ReplyList from "./components/Reply";
 
-type PostCardProps = PostData & ComponentProps<typeof Card>;
+type PostCardProps = PostCardData & ComponentProps<typeof Card>;
 
 export default function PostCard({
   feedId,
   authorNickname,
+  authorProfileImageUrl,
   imageUrls,
   numberOfLike,
   hashtags,
@@ -38,7 +40,15 @@ export default function PostCard({
     <Card w="md" zIndex="base" {...restProps}>
       <CardHeader px={0}>
         <Flex alignItems="center" gap={4} px={4}>
-          <Avatar boxSize={10} />
+          {authorProfileImageUrl ? (
+            <CircledImage
+              src={authorProfileImageUrl}
+              size="40px"
+              alt="프로필 이미지"
+            />
+          ) : (
+            <Avatar boxSize="80px" />
+          )}
           <Text fontWeight="bold">{authorNickname}</Text>
         </Flex>
       </CardHeader>

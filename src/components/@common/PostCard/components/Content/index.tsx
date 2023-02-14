@@ -1,6 +1,6 @@
 import { deleteBookmark, postBookmark } from "@/api/bookmark/[feedId]";
 import { deleteLike, postLike } from "@/api/like/[feedId]";
-import { PostData } from "@/types/data/post";
+import { FeedContent } from "@/types/data/feed";
 import { Button, Flex, HStack, Icon, Text, useToast } from "@chakra-ui/react";
 import {
   faBookmark as faBookmarkBlank,
@@ -18,8 +18,6 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import MAX_PREVIEW_LENGTH from "../../constants/posts";
 
-type ContentProps = Omit<PostData, "imageUrls">;
-
 export default function Content({
   feedId,
   authorNickname,
@@ -29,7 +27,7 @@ export default function Content({
   createdAt,
   liked,
   saved
-}: ContentProps) {
+}: FeedContent) {
   const [isMoreLoaded, setIsMoreLoaded] = useState(false);
   const contentPreview = content.slice(0, MAX_PREVIEW_LENGTH);
   const contentMore = content.slice(MAX_PREVIEW_LENGTH);
