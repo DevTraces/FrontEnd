@@ -8,17 +8,17 @@ type PostsProps = {
 };
 
 export default function Posts({ nickname }: PostsProps) {
-  const postsQuery = useQuery({
-    queryKey: ["posts", nickname],
+  const feedsQuery = useQuery({
+    queryKey: ["feeds", nickname],
     queryFn: ({ queryKey }) => getFeeds(queryKey[1])
   });
 
-  if (postsQuery.isLoading) return <>Posts 로딩중...</>;
-  if (postsQuery.isError) return <>Posts 에서 에러가 발생했습니다.</>;
+  if (feedsQuery.isLoading) return <>Posts 로딩중...</>;
+  if (feedsQuery.isError) return <>Posts 에서 에러가 발생했습니다.</>;
 
   return (
     <VStack>
-      {postsQuery.data.map(d => (
+      {feedsQuery.data.map(d => (
         <PostCard key={d.feedId} {...d} />
       ))}
     </VStack>
