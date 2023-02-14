@@ -1,13 +1,13 @@
 import { getReplies, postReplies } from "@/api/feeds/[feedId]/replies";
 import VALIDATION_RULE from "@/constants/auth/VALIDATION_RULE";
-import { PostData } from "@/types/data/post";
+import { PostCardData } from "@/types/data/feed";
 import { Flex, useToast } from "@chakra-ui/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import ReplyInput from "./components/ReplyInput";
 import ReplyItem from "./components/ReplyItem";
 
-type ReplyListProps = Pick<PostData, "feedId">;
+type ReplyListProps = Pick<PostCardData, "feedId">;
 type FormData = {
   content: string;
 };

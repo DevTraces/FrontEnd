@@ -1,6 +1,6 @@
 import { deleteBookmark, postBookmark } from "@/api/bookmark/[feedId]";
 import { deleteLike, postLike } from "@/api/like/[feedId]";
-import { PostData } from "@/types/data/post";
+import { PostCardData } from "@/types/data/feed";
 import { Button, Flex, Icon, useToast } from "@chakra-ui/react";
 import {
   faBookmark as faBookmarkBlank,
@@ -16,7 +16,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useMutation } from "@tanstack/react-query";
 import { ComponentProps, Dispatch, SetStateAction } from "react";
 
-type ToolbarProps = Pick<PostData, "liked" | "feedId" | "saved"> & {
+type ToolbarProps = Pick<PostCardData, "liked" | "feedId" | "saved"> & {
   setIsReplyOpen: Dispatch<SetStateAction<boolean>>;
 } & ComponentProps<typeof Flex>;
 

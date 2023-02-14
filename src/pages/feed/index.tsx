@@ -22,6 +22,7 @@ export default function Feed() {
               createdAt={new Date()}
               liked={false}
               saved={false}
+              authorProfileImageUrl=""
             />
           </Flex>
         </Center>

@@ -1,16 +1,17 @@
-import { PostData } from "@/types/data/post";
 import { Avatar, Card, Flex, Text } from "@chakra-ui/react";
 import { ComponentProps, useState } from "react";
+import { PostCardData } from "@/types/data/feed";
 import Carousel from "./components/Carousel";
 import ReplyList from "./components/ReplyList";
 import TextContent from "./components/TextContent";
 import Toolbar from "./components/Toolbar";
 
-type PostCardProps = PostData & ComponentProps<typeof Card>;
+type PostCardProps = PostCardData & ComponentProps<typeof Card>;
 
 export default function PostCard({
   feedId,
   authorNickname,
+  authorProfileImageUrl,
   imageUrls,
   numberOfLike,
   hashtags,

@@ -1,10 +1,10 @@
-import { PostData } from "@/types/data/post";
+import { PostCardData } from "@/types/data/feed";
 import { Button, Flex, HStack, Text, Box } from "@chakra-ui/react";
 import Link from "next/link";
 import { ComponentProps, useEffect, useState } from "react";
 
 type TextContentProps = Pick<
-  PostData,
+  PostCardData,
   "numberOfLike" | "authorNickname" | "hashtags" | "createdAt" | "content"
 > &
   ComponentProps<typeof Box>;
