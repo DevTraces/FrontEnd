@@ -1,10 +1,15 @@
-import { Box, HStack } from "@chakra-ui/react";
+import { Box, Flex, HStack } from "@chakra-ui/react";
 import {} from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 import { useState } from "react";
 import ArrowIconButton from "./ArrowIconButton";
 
-export default function Carousel({ imgs }: { imgs: string[] }) {
+type CarouselProps = {
+  imgs: string[];
+  boxSize: number;
+};
+
+export default function Carousel({ imgs, boxSize }: CarouselProps) {
   const MIN_IMG_COUNT = 0;
   const MAX_IMG_LENGTH = imgs.length - 1;
 
@@ -17,23 +22,25 @@ export default function Carousel({ imgs }: { imgs: string[] }) {
   };
 
   return (
-    <Box bg="white" position="relative">
-      <HStack height="500px" spacing="0px" overflow="hidden" bg="gray.900">
+    <Box bg="white" position="relative" overflow="hidden">
+      <Flex w={`${boxSize * imgs.length}px`} h={`${boxSize}px`} bg="gray.900">
         {imgs.map((img, i) => (
-          <Image
-            key={img}
-            src={img}
-            alt="포스트 이미지"
-            width={500}
-            height={500}
-            priority={i === current}
-            style={{
-              transform: `translateX(-${current * 450}px)`,
-              transition: "0.5s ease-in-out"
-            }}
-          />
+          <Box position="relative" boxSize={`${boxSize}px`}>
+            <Image
+              key={img}
+              src={img}
+              alt="포스트 이미지"
+              fill
+              priority={i === current}
+              style={{
+                transform: `translateX(-${current * boxSize}px)`,
+                transition: "0.5s ease-in-out",
+                objectFit: "contain"
+              }}
+            />
+          </Box>
         ))}
-      </HStack>
+      </Flex>
       {current > MIN_IMG_COUNT && (
         <ArrowIconButton direction="left" handleArrowClick={handleArrowClick} />
       )}
