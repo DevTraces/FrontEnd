@@ -6,3 +6,10 @@ export const getReplies = (feedId: number) => {
     path: `/api/feeds/${feedId}/replies`
   });
 };
+
+export const postReplies = (feedId: number, content: string) => {
+  return api.post<ReplyData[]>({
+    path: `/api/feeds/${feedId}/replies`,
+    body: { content }
+  });
+};
