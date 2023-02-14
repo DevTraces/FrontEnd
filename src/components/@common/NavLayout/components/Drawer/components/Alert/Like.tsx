@@ -5,9 +5,14 @@ import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 
-export default function Like({ nickname, imageUrl, feedId }: LikeNotice) {
+export default function Like({
+  nickname,
+  imageUrl,
+  feedId,
+  createdAt
+}: LikeNotice) {
   return (
-    <Link href={`post/${feedId}`} style={{ width: "100%" }}>
+    <Link href={`/post/${feedId}`} style={{ width: "100%" }}>
       <HStack w="full" h="50px" cursor="pointer">
         {imageUrl ? (
           <CircledImage src={imageUrl} size="10" alt="프로필 이미지" />
@@ -15,8 +20,10 @@ export default function Like({ nickname, imageUrl, feedId }: LikeNotice) {
           <Avatar boxSize={10} />
         )}
         <Flex direction="column" flex={1}>
-          <Text fontWeight="bold">좋아요 알림</Text>
-          <Text color="gray">@{nickname}</Text>
+          <Text>
+            <b>{nickname}</b>님이 당신의 게시글을 좋아합니다.
+          </Text>
+          <Text color="gray">{createdAt}</Text>
         </Flex>
         <Icon as={FontAwesomeIcon} icon={faChevronRight} color="gray.400" />
       </HStack>
