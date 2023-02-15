@@ -111,7 +111,7 @@ export default function handler(
             rereplierImageUrl:
               "https://images.unsplash.com/photo-1604782666037-3c63d50052db?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=627&q=80",
             createdAt: "2023-02-07T09:59:23.653281",
-            noticeTarget: "nickname3"
+            noticeTarget: "post"
           }
         ]
       }

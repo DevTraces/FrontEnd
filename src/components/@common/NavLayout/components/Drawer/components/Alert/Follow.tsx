@@ -1,7 +1,7 @@
 import { postFollow } from "@/api/follows/[nickname]";
 import CircledImage from "@/components/[nickname]/CircledImage";
 import { FollowNotice } from "@/types/data/notice";
-import { Flex, Text, Avatar, HStack, Icon, Button } from "@chakra-ui/react";
+import { Text, Avatar, HStack, Icon, Button, Box } from "@chakra-ui/react";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useMutation } from "@tanstack/react-query";
@@ -50,12 +50,12 @@ export default function Follow({
       ) : (
         <Avatar boxSize={10} />
       )}
-      <Flex direction="column" flex={1}>
-        <Text>
-          <b>{senderNickname}</b>님이 당신을 팔로우하기 시작했습니다.
+      <Box>
+        <b>{senderNickname}</b>님이 당신을 팔로우하기 시작했습니다.
+        <Text as="span" ml="5px" color="gray">
+          {getDateFormat(createdAt)}
         </Text>
-        <Text color="gray">{getDateFormat(createdAt)}</Text>
-      </Flex>
+      </Box>
       {isFollowButton ? (
         <Icon as={FontAwesomeIcon} icon={faChevronRight} color="gray.400" />
       ) : (

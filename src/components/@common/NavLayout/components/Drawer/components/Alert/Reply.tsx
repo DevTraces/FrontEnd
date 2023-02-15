@@ -1,15 +1,16 @@
 import CircledImage from "@/components/[nickname]/CircledImage";
 import { ReplyNotice } from "@/types/data/notice";
-import { Flex, Icon, Text, Avatar, HStack } from "@chakra-ui/react";
-import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Text, Avatar, HStack, Box } from "@chakra-ui/react";
 import Link from "next/link";
 import getDateFormat from "../../utils/date";
+import SquaredImage from "../SquaredImage";
 
 export default function Reply({
   nickname,
   replierProfileImageUrl,
   feedId,
+  feedFirstImageUrl,
+  content,
   createdAt
 }: ReplyNotice) {
   return (
@@ -24,13 +25,14 @@ export default function Reply({
         ) : (
           <Avatar boxSize={10} />
         )}
-        <Flex direction="column" flex={1}>
-          <Text>
-            <b>{nickname}</b>님이 당신의 게시글에 댓글을 남겼습니다.
+        <Box>
+          <b>{nickname}</b>님이 당신의 게시글에 댓글을 남겼습니다: &quot;
+          {content}&quot;
+          <Text as="span" ml="5px" color="gray">
+            {getDateFormat(createdAt)}
           </Text>
-          <Text color="gray">{getDateFormat(createdAt)}</Text>
-        </Flex>
-        <Icon as={FontAwesomeIcon} icon={faChevronRight} color="gray.400" />
+        </Box>
+        <SquaredImage src={feedFirstImageUrl} size="10" alt="프로필 이미지" />
       </HStack>
     </Link>
   );
