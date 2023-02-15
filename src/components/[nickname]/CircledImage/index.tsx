@@ -1,4 +1,5 @@
-import { Circle, Image } from "@chakra-ui/react";
+import { Circle } from "@chakra-ui/react";
+import Image from "next/image";
 
 type CircledImageProps = {
   src: string;
@@ -13,21 +14,8 @@ export default function CircledImage({
   ...restProps
 }: CircledImageProps) {
   return (
-    <Circle
-      size={size}
-      overflow="hidden"
-      style={{ position: "relative" }}
-      {...restProps}
-    >
-      <Image
-        alt={alt}
-        src={src}
-        style={{
-          width: "100%",
-          height: "100%",
-          objectFit: "cover"
-        }}
-      />
+    <Circle size={size} overflow="hidden" position="relative" {...restProps}>
+      <Image alt={alt} src={src} fill style={{ objectFit: "cover" }} />
     </Circle>
   );
 }

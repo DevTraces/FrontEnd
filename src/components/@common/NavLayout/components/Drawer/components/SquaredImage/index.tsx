@@ -1,4 +1,5 @@
-import { Square, Image } from "@chakra-ui/react";
+import { Square } from "@chakra-ui/react";
+import Image from "next/image";
 
 type SquaredImageProps = {
   src: string;
@@ -13,18 +14,12 @@ export default function SquaredImage({
   ...restProps
 }: SquaredImageProps) {
   return (
-    <Square
-      size={size}
-      overflow="hidden"
-      style={{ position: "relative" }}
-      {...restProps}
-    >
+    <Square size={size} overflow="hidden" position="relative" {...restProps}>
       <Image
         alt={alt}
         src={src}
+        fill
         style={{
-          width: "100%",
-          height: "100%",
           objectFit: "cover"
         }}
       />
