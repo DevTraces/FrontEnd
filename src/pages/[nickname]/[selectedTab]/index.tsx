@@ -22,6 +22,18 @@ export default function Profile() {
     }
   });
 
+  if (profileQuery.isError) return <>Profile에서 에러가 발생했습니다</>;
+  if (profileQuery.isLoading) return <>Profile 로딩중...</>;
+
+  const {
+    username,
+    description,
+    profileImageUrl,
+    totalFeedNumber,
+    followerNumber,
+    followingNumber
+  } = profileQuery.data;
+
   return (
     <>
       <Head>
@@ -32,7 +44,17 @@ export default function Profile() {
           <Spinner mt="400px" boxSize="100px" />
         ) : (
           <>
-            <ProfileInfo {...profileQuery.data} p="20px" pt="100px" />
+            <ProfileInfo
+              p="20px"
+              pt="100px"
+              username={username}
+              nickname={nickname}
+              description={description}
+              profileImageUrl={profileImageUrl}
+              totalFeedNumber={totalFeedNumber}
+              followerNumber={followerNumber}
+              followingNumber={followingNumber}
+            />
             {selectedTab && (
               <ProfileTab nickname={nickname} selectedTab={selectedTab} />
             )}
