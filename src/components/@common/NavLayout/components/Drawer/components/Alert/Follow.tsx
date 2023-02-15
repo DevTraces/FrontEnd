@@ -1,5 +1,5 @@
 import { postFollow } from "@/api/follows/[nickname]";
-import CircledImage from "@/components/[nickname]/CircledImage";
+import CircledImage from "@/components/user/[nickname]/CircledImage";
 import { FollowNotice } from "@/types/data/notice";
 import { Text, Avatar, HStack, Icon, Button, Box } from "@chakra-ui/react";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";

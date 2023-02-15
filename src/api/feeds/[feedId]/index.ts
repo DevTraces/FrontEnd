@@ -6,3 +6,6 @@ export const getFeed = async (feedId: number) => {
     path: `/api/feeds/${feedId}`
   });
 };
+
+export const deleteFeed = (feedId: number) =>
+  api.delete({ path: `/api/feeds/${feedId}` });

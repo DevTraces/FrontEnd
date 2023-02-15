@@ -1,4 +1,4 @@
-import CircledImage from "@/components/[nickname]/CircledImage";
+import CircledImage from "@/components/user/[nickname]/CircledImage";
 import { ReplyNotice } from "@/types/data/notice";
 import { Text, Avatar, HStack, Box } from "@chakra-ui/react";
 import Link from "next/link";

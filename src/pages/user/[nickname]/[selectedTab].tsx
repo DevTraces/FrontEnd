@@ -1,7 +1,7 @@
 import { getUserProfile } from "@/api/users/profile/[nickname]";
 import NavLayout from "@/components/@common/NavLayout";
-import ProfileInfo from "@/components/[nickname]/Profile/ProfileInfo";
-import ProfileTab from "@/components/[nickname]/ProfileTab";
+import ProfileInfo from "@/components/user/[nickname]/Profile/ProfileInfo";
+import ProfileTab from "@/components/user/[nickname]/ProfileTab";
 import { ProfileTabName } from "@/types/data/user";
 import { Spinner } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
