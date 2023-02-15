@@ -1,28 +1,27 @@
-type NoticeBase = {
+type NoticeTypes = "LIKE" | "FOLLOW" | "REPLY" | "REREPLY";
+
+type NoticeBase<T extends NoticeTypes> = {
   noticeId: number;
   createdAt: string;
+  noticeType: T;
 };
 
-export type LikeNotice = NoticeBase & {
+export type LikeNotice = NoticeBase<"LIKE"> & {
   nickname: string;
-  noticeType: "LIKE";
   feedId: number;
   feedContent: string;
   likeProfileImageUrl: string;
   feedFirstImageUrl: string;
-  createdAt: string;
 };
 
-export type FollowNotice = NoticeBase & {
+export type FollowNotice = NoticeBase<"FOLLOW"> & {
   senderNickname: string;
-  noticeType: "FOLLOW";
   isFollowing: boolean;
   followerProfileImageUrl: string;
 };
 
-export type ReplyNotice = NoticeBase & {
+export type ReplyNotice = NoticeBase<"REPLY"> & {
   nickname: string;
-  noticeType: "REPLY";
   content: string;
   feedId: number;
   replyId: number;
@@ -30,12 +29,12 @@ export type ReplyNotice = NoticeBase & {
   feedFirstImageUrl: string;
 };
 
-export type ReReplyNotice = Omit<
-  ReplyNotice,
-  "noticeType" | "replierProfileImageUrl"
-> & {
+export type ReReplyNotice = NoticeBase<"REREPLY"> & {
   nickname: string;
-  noticeType: "REREPLY";
+  content: string;
+  feedId: number;
+  replyId: number;
+  feedFirstImageUrl: string;
   reReplyId: number;
   noticeTarget: string;
   rereplierImageUrl: string;
