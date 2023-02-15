@@ -10,10 +10,12 @@ import { useRouter } from "next/router";
 export default function Post() {
   const router = useRouter();
 
+  const { pid } = router.query as { pid: string };
+
   const feedQuery = useQuery({
-    queryKey: ["feed", router.query.pid],
+    queryKey: ["feed", pid],
     queryFn: () => {
-      return getFeed(+(router.query.pid as string));
+      return getFeed(+pid);
     }
   });
 
