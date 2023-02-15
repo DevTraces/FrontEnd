@@ -43,12 +43,30 @@ export default function Profile() {
   }, [profileImages]);
 
   const nicknameMutation = useMutation({
-    mutationFn: async ({ nickname }: Pick<FormData, "nickname">) => {
-      return getNicknameDuplicateCheck(nickname as string);
-    },
-    onSuccess: async res => {
-      if (res.isDuplicated && !errors.nickname)
+    mutationFn: ({ nickname }: Pick<FormData, "nickname">) =>
+      getNicknameDuplicateCheck(nickname as string),
+    onSuccess: res => {
+      if (res.isDuplicated)
         setError("nickname", { message: "이미 가입된 닉네임이에요" });
+    }
+  });
+
+  const signupMutation = useMutation({
+    mutationFn: (user: SignUpUser) => postSignUp(user),
+    onSuccess: () => {
+      router.push("/auth/signIn");
+      toast({
+        title: "성공적으로 가입되었습니다.",
+        status: "success",
+        duration: 3000
+      });
+    },
+    onError: () => {
+      toast({
+        title: "회원가입에 실패하였습니다",
+        status: "error",
+        duration: 3000
+      });
     }
   });
 
@@ -56,24 +74,12 @@ export default function Profile() {
     register("profileImages");
 
   const handleFormSubmit = handleSubmit(
-    async ({ profileImages: pImgs, ...formData }) => {
-      try {
-        await postSignUp({
-          ...signUpUser,
-          ...formData,
-          profileImage: pImgs[0]
-        });
-        router.push("/auth/signIn");
-        toast({
-          title: "성공적으로 가입되었습니다.",
-          status: "success",
-          duration: 3000
-        });
-      } catch (e) {
-        let errorMsg = "Unknown error";
-        if (e instanceof Error) errorMsg = e.message;
-        setError("root", { message: errorMsg });
-      }
+    ({ profileImages: pImgs, ...formData }) => {
+      signupMutation.mutate({
+        ...signUpUser,
+        ...formData,
+        profileImage: pImgs[0]
+      });
     }
   );
 
@@ -121,8 +127,9 @@ export default function Profile() {
             leftAddon="@"
             {...register("nickname", {
               ...VALIDATION_RULE.nickname,
-              onChange: e => {
-                nicknameMutation.mutate({ nickname: e.target.value });
+              onBlur: e => {
+                if (!errors.nickname)
+                  nicknameMutation.mutate({ nickname: e.target.value });
               }
             })}
           />
