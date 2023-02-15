@@ -21,7 +21,7 @@ export default function Follow({
   });
 
   const handleFollowNoticeClick = () => {
-    router.push(`/${[senderNickname]}`);
+    router.push(`/user/${senderNickname}/posts`);
   };
 
   const handleFollowClick: React.MouseEventHandler<HTMLButtonElement> = e => {

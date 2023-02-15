@@ -58,7 +58,10 @@ export default function ProfileTab({ nickname, selectedTab }: ProfileTabProps) {
     >
       <TabList>
         {tabList.map(tab => (
-          <Tab key={tab} onClick={() => router.push(`/${nickname}/${tab}`)}>
+          <Tab
+            key={tab}
+            onClick={() => router.push(`/user/${nickname}/${tab}`)}
+          >
             {tabData[tab].name}
           </Tab>
         ))}
