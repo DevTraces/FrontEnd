@@ -25,9 +25,8 @@ export default function Carousel({ imgs, boxSize }: CarouselProps) {
     <Box bg="white" position="relative" overflow="hidden">
       <Flex w={`${boxSize * imgs.length}px`} h={`${boxSize}px`} bg="gray.900">
         {imgs.map((img, i) => (
-          <Box position="relative" boxSize={`${boxSize}px`}>
+          <Box key={img} position="relative" boxSize={`${boxSize}px`}>
             <Image
-              key={img}
               src={img}
               alt="포스트 이미지"
               fill
