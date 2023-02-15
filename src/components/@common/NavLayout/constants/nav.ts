@@ -29,6 +29,6 @@ export const NAVS: Nav[] = [
     key: "profile",
     icon: faUser,
     title: "프로필",
-    href: "/codeisneverodd/posts"
+    href: "/user/codeisneverodd/posts"
   }
 ];

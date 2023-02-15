@@ -55,7 +55,7 @@ export default function FollowItem({
   return (
     <HStack w="300px" justifyContent="space-between">
       <Link
-        href={`/${nickname}/posts`}
+        href={`/user/${nickname}/posts`}
         style={{
           display: "flex",
           alignItems: "center",
