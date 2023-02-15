@@ -1,30 +1,44 @@
 type NoticeBase = {
   noticeId: number;
-  nickname: string;
   createdAt: string;
-  imageUrl: string;
 };
 
 export type LikeNotice = NoticeBase & {
+  nickname: string;
   noticeType: "LIKE";
   feedId: number;
+  feedContent: string;
+  likeProfileImageUrl: string;
+  feedFirstImageUrl: string;
+  createdAt: string;
 };
 
 export type FollowNotice = NoticeBase & {
+  senderNickname: string;
   noticeType: "FOLLOW";
   isFollowing: boolean;
+  followerProfileImageUrl: string;
 };
 
 export type ReplyNotice = NoticeBase & {
+  nickname: string;
   noticeType: "REPLY";
+  content: string;
   feedId: number;
   replyId: number;
-  content: string;
+  replierProfileImageUrl: string;
+  feedFirstImageUrl: string;
 };
 
-export type ReReplyNotice = Omit<ReplyNotice, "noticeType"> & {
+export type ReReplyNotice = Omit<
+  ReplyNotice,
+  "noticeType" | "replierProfileImageUrl"
+> & {
+  nickname: string;
   noticeType: "REREPLY";
   reReplyId: number;
+  noticeTarget: string;
+  rereplierImageUrl: string;
 };
 
 export type NoticesCount = { noticeNumber: number };

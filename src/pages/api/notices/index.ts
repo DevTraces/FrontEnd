@@ -4,17 +4,20 @@ type NoticeLikeData = {
   noticeId: number;
   nickname: string;
   feedId: number;
+  feedContent: string;
   noticeType: string;
-  imageUrl: string;
-  createdAt: Date;
+  likeProfileImageUrl: string;
+  feedFirstImageUrl: string;
+  createdAt: string;
 };
 
 type NoticeFollowData = {
   noticeId: number;
-  nickname: string;
+  senderNickname: string;
   noticeType: string;
-  imageUrl: string;
-  createdAt: Date;
+  followerProfileImageUrl: string;
+  createdAt: string;
+  isFollowing: boolean;
 };
 
 type NoticeCommentData = {
@@ -23,17 +26,36 @@ type NoticeCommentData = {
   content: string;
   feedId: number;
   replyId: number;
-  reReplyId?: number;
   noticeType: string;
-  imageUrl: string;
-  createdAt: Date;
+  replierProfileImageUrl: string;
+  feedFirstImageUrl: string;
+  createdAt: string;
+};
+
+type NoticeReCommentData = {
+  noticeId: number;
+  nickname: string;
+  content: string;
+  feedId: number;
+  replyId: number;
+  reReplyId: number;
+  noticeType: string;
+  noticeTarget: string;
+  rereplierImageUrl: string;
+  feedFirstImageUrl: string;
+  createdAt: string;
 };
 
 export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<{
     data: {
-      noticeList: (NoticeLikeData | NoticeFollowData | NoticeCommentData)[];
+      noticeList: (
+        | NoticeLikeData
+        | NoticeFollowData
+        | NoticeCommentData
+        | NoticeReCommentData
+      )[];
     };
   }>
 ) {
@@ -45,43 +67,44 @@ export default function handler(
             noticeId: 1,
             nickname: "nickname1",
             feedId: 1,
+            feedContent: "오늘 맛집 찾음~",
             noticeType: "LIKE",
-            imageUrl:
-              "https://cdn.pixabay.com/photo/2019/11/19/22/25/animal-4638681_960_720.jpg",
-            createdAt: new Date(new Date().getTime() - 5 * 60 * 60 * 1000)
+            feedFirstImageUrl: "https://www...",
+            likeProfileImageUrl: "https://www...",
+            createdAt: "2023-02-07T09:59:23.653281"
           },
           {
             noticeId: 2,
             nickname: "nickname2",
+            senderNickname: "senderNickname1",
             noticeType: "FOLLOW",
-            imageUrl:
-              "https://cdn.pixabay.com/photo/2019/11/19/22/25/animal-4638681_960_720.jpg",
-            createdAt: new Date(new Date().getTime() - 5 * 24 * 60 * 60 * 1000)
+            followerProfileImageUrl: "https://www...",
+            createdAt: "2023-02-07T09:59:23.653281",
+            isFollowing: true
           },
           {
             noticeId: 3,
             nickname: "nickname3",
-            content: "nickname3 님이 postId1에 댓글을 남겼습니다.",
+            content: "사진 잘 보고 갑니다~!~!",
             feedId: 1,
             replyId: 1,
             noticeType: "REPLY",
-            imageUrl:
-              "https://cdn.pixabay.com/photo/2019/11/19/22/25/animal-4638681_960_720.jpg",
-            createdAt: new Date(new Date().getTime() - 24 * 24 * 60 * 60 * 1000)
+            feedFirstImageUrl: "https://www@J...",
+            replierProfileImageUrl: "https://www@J...",
+            createdAt: "2023-02-07T09:59:23.653281"
           },
           {
             noticeId: 4,
             nickname: "nickname4",
-            content: "nickname4 님이 replyId1 댓글에 대댓글을 남겼습니다.",
+            content: "안녕하세요 같이 맞팔해요~",
             feedId: 1,
             replyId: 1,
             reReplyId: 1,
             noticeType: "REREPLY",
-            imageUrl:
-              "https://cdn.pixabay.com/photo/2019/11/19/22/25/animal-4638681_960_720.jpg",
-            createdAt: new Date(
-              new Date().getTime() - 100 * 24 * 60 * 60 * 1000
-            )
+            feedFirstImageUrl: "https://www@J...",
+            rereplierImageUrl: "https://www...",
+            createdAt: "2023-02-07T09:59:23.653281",
+            noticeTarget: "nickname3"
           }
         ]
       }

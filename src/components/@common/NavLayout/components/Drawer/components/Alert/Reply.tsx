@@ -8,15 +8,19 @@ import getDateFormat from "../../utils/date";
 
 export default function Reply({
   nickname,
-  imageUrl,
+  replierProfileImageUrl,
   feedId,
   createdAt
 }: ReplyNotice) {
   return (
     <Link href={`/post/${feedId}`} style={{ width: "100%" }}>
       <HStack w="full" h="50px" cursor="pointer">
-        {imageUrl ? (
-          <CircledImage src={imageUrl} size="10" alt="프로필 이미지" />
+        {replierProfileImageUrl ? (
+          <CircledImage
+            src={replierProfileImageUrl}
+            size="10"
+            alt="프로필 이미지"
+          />
         ) : (
           <Avatar boxSize={10} />
         )}

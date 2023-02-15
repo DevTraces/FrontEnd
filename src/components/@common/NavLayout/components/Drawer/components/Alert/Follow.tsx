@@ -10,8 +10,8 @@ import { useState } from "react";
 import getDateFormat from "../../utils/date";
 
 export default function Follow({
-  nickname,
-  imageUrl,
+  senderNickname,
+  followerProfileImageUrl,
   isFollowing,
   createdAt
 }: FollowNotice) {
@@ -26,12 +26,12 @@ export default function Follow({
   });
 
   const handleFollowNoticeClick = () => {
-    router.push(`/${[nickname]}`);
+    router.push(`/${[senderNickname]}`);
   };
 
   const handleFollowClick: React.MouseEventHandler<HTMLButtonElement> = e => {
     e.stopPropagation();
-    follow.mutate(nickname);
+    follow.mutate(senderNickname);
   };
 
   return (
@@ -41,14 +41,18 @@ export default function Follow({
       h="50px"
       cursor="pointer"
     >
-      {imageUrl ? (
-        <CircledImage src={imageUrl} size="10" alt="프로필 이미지" />
+      {followerProfileImageUrl ? (
+        <CircledImage
+          src={followerProfileImageUrl}
+          size="10"
+          alt="프로필 이미지"
+        />
       ) : (
         <Avatar boxSize={10} />
       )}
       <Flex direction="column" flex={1}>
         <Text>
-          <b>{nickname}</b>님이 당신을 팔로우하기 시작했습니다.
+          <b>{senderNickname}</b>님이 당신을 팔로우하기 시작했습니다.
         </Text>
         <Text color="gray">{getDateFormat(createdAt)}</Text>
       </Flex>
