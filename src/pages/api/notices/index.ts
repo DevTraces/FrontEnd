@@ -69,8 +69,10 @@ export default function handler(
             feedId: 1,
             feedContent: "오늘 맛집 찾음~",
             noticeType: "LIKE",
-            feedFirstImageUrl: "https://www...",
-            likeProfileImageUrl: "https://www...",
+            feedFirstImageUrl:
+              "https://images.unsplash.com/photo-1563805042-7684c019e1cb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=627&q=80",
+            likeProfileImageUrl:
+              "https://images.unsplash.com/photo-1551024601-bec78aea704b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80",
             createdAt: "2023-02-07T09:59:23.653281"
           },
           {
@@ -78,7 +80,8 @@ export default function handler(
             nickname: "nickname2",
             senderNickname: "senderNickname1",
             noticeType: "FOLLOW",
-            followerProfileImageUrl: "https://www...",
+            followerProfileImageUrl:
+              "https://images.unsplash.com/photo-1587314168485-3236d6710814?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1078&q=80",
             createdAt: "2023-02-07T09:59:23.653281",
             isFollowing: true
           },
@@ -89,8 +92,10 @@ export default function handler(
             feedId: 1,
             replyId: 1,
             noticeType: "REPLY",
-            feedFirstImageUrl: "https://www@J...",
-            replierProfileImageUrl: "https://www@J...",
+            feedFirstImageUrl:
+              "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
+            replierProfileImageUrl:
+              "https://images.unsplash.com/photo-1508737804141-4c3b688e2546?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=686&q=80",
             createdAt: "2023-02-07T09:59:23.653281"
           },
           {
@@ -101,8 +106,10 @@ export default function handler(
             replyId: 1,
             reReplyId: 1,
             noticeType: "REREPLY",
-            feedFirstImageUrl: "https://www@J...",
-            rereplierImageUrl: "https://www...",
+            feedFirstImageUrl:
+              "https://images.unsplash.com/photo-1558522195-e1201b090344?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
+            rereplierImageUrl:
+              "https://images.unsplash.com/photo-1604782666037-3c63d50052db?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=627&q=80",
             createdAt: "2023-02-07T09:59:23.653281",
             noticeTarget: "nickname3"
           }
