@@ -6,7 +6,6 @@ import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/router";
-import { useState } from "react";
 import getDateFormat from "../../utils/date";
 
 export default function Follow({
@@ -16,13 +15,9 @@ export default function Follow({
   createdAt
 }: FollowNotice) {
   const router = useRouter();
-  const [isFollowButton, setIsFollowButton] = useState(isFollowing);
 
   const follow = useMutation({
-    mutationFn: postFollow,
-    onSuccess: async () => {
-      setIsFollowButton(true);
-    }
+    mutationFn: postFollow
   });
 
   const handleFollowNoticeClick = () => {
@@ -56,7 +51,7 @@ export default function Follow({
           {getDateFormat(createdAt)}
         </Text>
       </Box>
-      {isFollowButton ? (
+      {isFollowing ? (
         <Icon as={FontAwesomeIcon} icon={faChevronRight} color="gray.400" />
       ) : (
         <Button
