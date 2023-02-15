@@ -9,19 +9,12 @@ export default function handler(
   res: NextApiResponse<Data>
 ) {
   if (req.method === "GET") {
-    const { email } = req.query;
-    if (email?.includes("1")) {
-      res.status(200).json({
-        data: {
-          isDuplicated: true
-        }
-      });
-    } else {
-      res.status(200).json({
-        data: {
-          isDuplicated: false
-        }
-      });
-    }
+    // const { email } = req.query;
+
+    res.status(200).json({
+      data: {
+        isDuplicated: false
+      }
+    });
   }
 }

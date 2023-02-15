@@ -1,6 +1,9 @@
+const END_POINT = "http://54.180.200.170:8080";
+
 type Params = {
   path: string;
   query?: { [key in string | number]: string | number };
+  mode?: "prod";
 };
 
 type HttpRequest = <T = any>(params: Params) => Promise<T>;
@@ -21,13 +24,19 @@ const defaultHeaders = {
   "Content-Type": "application/json"
 };
 
-const getURL = (path: Params["path"], query?: Params["query"]) => {
-  if (!query) return path;
+const getURL = (
+  path: Params["path"],
+  query?: Params["query"],
+  mode?: Params["mode"]
+) => {
+  const queryString = query
+    ? `?${Object.entries(query)
+        .map(([key, value]) => `${key}=${value}`)
+        .join("&")}`
+    : "";
+  const endpoint = mode === "prod" ? END_POINT : "";
 
-  const queryString = Object.entries(query)
-    .map(([key, value]) => `${key}=${value}`)
-    .join("&");
-  return `${path}?${queryString}`;
+  return `${endpoint}${path}${queryString}`;
 };
 
 const handleResponse = async (
@@ -51,15 +60,17 @@ const handleResponse = async (
   return data.data;
 };
 
-const get: GET = async ({ path, query }) => {
-  const url = getURL(path, query);
-  const res = await fetch(url);
+const get: GET = async ({ path, query, mode }) => {
+  const url = getURL(path, query, mode);
+  const res = await fetch(url, {
+    headers: defaultHeaders
+  });
 
   return handleResponse(url, res);
 };
 
-const post: POST = async ({ path, query, body = {} }) => {
-  const url = getURL(path, query);
+const post: POST = async ({ path, query, body = {}, mode }) => {
+  const url = getURL(path, query, mode);
 
   const res = await fetch(url, {
     method: "POST",
