@@ -14,6 +14,8 @@ type DELETE = HttpRequest;
 
 type PATCH = POST;
 
+type PUT = POST;
+
 type POST = <T = any>(
   params: Params & {
     body?: { [key in PropertyKey]: any };
@@ -81,11 +83,12 @@ const post: POST = async ({ path, query, body = {}, mode }) => {
   return handleResponse(url, res);
 };
 
-const api: { get: GET; post: POST; delete: DELETE; patch: PATCH } = {
+const api: { get: GET; post: POST; delete: DELETE; patch: PATCH; put: PUT } = {
   get,
   post,
   delete: get,
-  patch: post
+  patch: post,
+  put: post
 };
 
 export default api;
