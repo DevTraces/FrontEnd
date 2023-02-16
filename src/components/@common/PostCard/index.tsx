@@ -17,6 +17,7 @@ import {
 import { faEdit, faEllipsis, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/router";
 import { ComponentProps, useState } from "react";
 import Carousel from "./components/Carousel";
 import DeleteConfirmDialog from "./components/DeleteConfirmDialog";
@@ -27,6 +28,7 @@ import Toolbar from "./components/Toolbar";
 
 type PostCardProps = PostCardData & ComponentProps<typeof Card>;
 
+// TODO: 로그인 정보 기반으로 내 프로필 것인지 확인
 const myNickname = "김철수";
 
 export default function PostCard({
@@ -42,6 +44,7 @@ export default function PostCard({
   saved,
   ...restProps
 }: PostCardProps) {
+  const router = useRouter();
   const [isReplyOpen, setIsReplyOpen] = useState(false);
   const {
     isOpen: isPopoverOpen,
@@ -125,7 +128,12 @@ export default function PostCard({
                   >
                     삭제
                   </PopoverIconButton>
-                  <PopoverIconButton icon={faEdit}>편집</PopoverIconButton>
+                  <PopoverIconButton
+                    icon={faEdit}
+                    onClick={() => router.push(`/post/edit/${feedId}`)}
+                  >
+                    편집
+                  </PopoverIconButton>
                 </Box>
               </PopoverContent>
             </Popover>
