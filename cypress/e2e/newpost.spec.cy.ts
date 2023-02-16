@@ -80,3 +80,5 @@ it("일반적인 사용자 테스트", () => {
 
   assertIncludeURL("feed");
 });
+
+export {};
