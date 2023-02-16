@@ -1,4 +1,5 @@
 import { getFeeds } from "@/api/feeds/[nickname]";
+import feedsKeys from "@/queryKeys/feedsKeys";
 import { VStack } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import PostCard from "../../../@common/PostCard";
@@ -9,8 +10,8 @@ type PostsProps = {
 
 export default function Posts({ nickname }: PostsProps) {
   const feedsQuery = useQuery({
-    queryKey: ["feeds", nickname],
-    queryFn: ({ queryKey }) => getFeeds(queryKey[1])
+    queryKey: feedsKeys.feeds(nickname),
+    queryFn: () => getFeeds(nickname)
   });
 
   if (feedsQuery.isLoading) return <>Posts 로딩중...</>;

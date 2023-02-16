@@ -1,5 +1,6 @@
 import { getReplies, postReplies } from "@/api/feeds/[feedId]/replies";
 import VALIDATION_RULE from "@/constants/auth/VALIDATION_RULE";
+import feedsKeys from "@/queryKeys/feedsKeys";
 import { PostCardData } from "@/types/data/feed";
 import { Flex, useToast } from "@chakra-ui/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -17,8 +18,8 @@ export default function ReplyList({ feedId }: ReplyListProps) {
   const toast = useToast();
 
   const repliesQuery = useQuery({
-    queryKey: ["replies", feedId] as const,
-    queryFn: ({ queryKey }) => getReplies(queryKey[1])
+    queryKey: feedsKeys.replies(feedId),
+    queryFn: () => getReplies(feedId)
   });
 
   const {
@@ -32,7 +33,7 @@ export default function ReplyList({ feedId }: ReplyListProps) {
     mutationFn: ({ content }: { content: string }) =>
       postReplies(feedId, content),
     onSuccess: () => {
-      queryClient.invalidateQueries(["replies", feedId]);
+      queryClient.invalidateQueries({ queryKey: feedsKeys.replies(feedId) });
       reset();
     },
     onError: () => {
