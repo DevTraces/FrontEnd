@@ -52,7 +52,7 @@ const assertIncludeURL = (url: string) => {
 };
 
 it("일반적인 사용자 테스트", () => {
-  visitURL("http://localhost:3000/newPost");
+  visitURL("http://localhost:3000/post/new");
 
   clickButton("이미지 추가");
   addImage("cypress/fixtures/assets/sample1.png");
