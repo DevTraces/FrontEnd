@@ -83,12 +83,36 @@ const post: POST = async ({ path, query, body = {}, mode }) => {
   return handleResponse(url, res);
 };
 
+const patch: PATCH = async ({ path, query, body = {}, mode }) => {
+  const url = getURL(path, query, mode);
+
+  const res = await fetch(url, {
+    method: "PATCH",
+    headers: defaultHeaders,
+    body: JSON.stringify(body)
+  });
+
+  return handleResponse(url, res);
+};
+
+const put: PUT = async ({ path, query, body = {}, mode }) => {
+  const url = getURL(path, query, mode);
+
+  const res = await fetch(url, {
+    method: "PUT",
+    headers: defaultHeaders,
+    body: JSON.stringify(body)
+  });
+
+  return handleResponse(url, res);
+};
+
 const api: { get: GET; post: POST; delete: DELETE; patch: PATCH; put: PUT } = {
   get,
   post,
   delete: get,
-  patch: post,
-  put: post
+  patch,
+  put
 };
 
 export default api;
