@@ -4,6 +4,7 @@ import {
   ReplyData
 } from "@/api/feeds/[feedId]/replies/[replyId]/rereplies";
 import VALIDATION_RULE from "@/constants/auth/VALIDATION_RULE";
+import feedsKeys from "@/queryKeys/feedsKeys";
 import {
   Accordion,
   AccordionButton,
@@ -34,8 +35,8 @@ export default function ReplyItem({
   const toast = useToast();
 
   const rerepliesQuery = useQuery({
-    queryKey: ["replies", feedId, replyId] as const,
-    queryFn: ({ queryKey }) => getRereplies(queryKey[1], queryKey[2])
+    queryKey: feedsKeys.rereplies(feedId, replyId),
+    queryFn: () => getRereplies(feedId, replyId)
   });
 
   const {
@@ -49,7 +50,9 @@ export default function ReplyItem({
     mutationFn: ({ newContent }: { newContent: string }) =>
       postRereplies(feedId, replyId, newContent),
     onSuccess: () => {
-      queryClient.invalidateQueries(["replies", feedId, replyId]);
+      queryClient.invalidateQueries({
+        queryKey: feedsKeys.rereplies(feedId, replyId)
+      });
       reset();
     },
     onError: () => {

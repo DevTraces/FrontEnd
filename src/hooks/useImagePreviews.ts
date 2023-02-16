@@ -1,19 +1,31 @@
-import { useState } from "react";
-
-type Image = {
-  file: File;
-  imageId: string;
-};
+import { EditorImage, UrlImage } from "@/types/data/feed";
+import { useMemo, useState } from "react";
+import { nanoid } from "nanoid";
 
 type ImagePreview = { url: string; imageId: string };
 
-export default function useImagePreviews() {
-  const [images, setImages] = useState<Image[]>([]);
-  const [imagePreviews, setImagePreviews] = useState<ImagePreview[]>([]);
+export default function useImagePreviews(imageUrls: string[] = []) {
+  const initImages = useMemo(
+    () =>
+      imageUrls.map<EditorImage>(url => ({
+        type: "url",
+        src: url,
+        imageId: nanoid()
+      })),
+    [imageUrls]
+  );
+
+  const [images, setImages] = useState<EditorImage[]>(initImages);
+
+  const [imagePreviews, setImagePreviews] = useState<ImagePreview[]>(
+    initImages
+      .filter((image): image is UrlImage => image.type === "url")
+      .map<ImagePreview>(({ src, imageId }) => ({ url: src, imageId }))
+  );
 
   const addImage = (image: File) => {
-    const imageId = window.self.crypto.randomUUID();
-    setImages(prev => [...prev, { file: image, imageId }]);
+    const imageId = nanoid();
+    setImages(prev => [...prev, { src: image, imageId, type: "file" }]);
     setImagePreviews(prev => [
       ...prev,
       { url: URL.createObjectURL(image), imageId }

@@ -1,5 +1,6 @@
 import { FollowItemData } from "@/api/follows/following/[nickname]";
 import { deleteFollow, postFollow } from "@/api/follows/[nickname]";
+import followsKeys from "@/queryKeys/followsKeys";
 import { Avatar, Button, HStack, Text, VStack } from "@chakra-ui/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
@@ -43,7 +44,10 @@ export default function FollowItem({
     },
     onSettled: () => {
       queryClient.invalidateQueries({
-        queryKey: [type, nickname]
+        queryKey:
+          type === "follower"
+            ? followsKeys.followerList(nickname)
+            : followsKeys.followingList(nickname)
       });
     }
   });

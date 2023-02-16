@@ -1,5 +1,6 @@
 import { getNotices } from "@/api/notices";
 import { deleteNotice } from "@/api/notices/[noticeId]";
+import noticesKeys from "@/queryKeys/noticesKeys";
 import { NoticeList } from "@/types/data/notice";
 import { Flex, VStack } from "@chakra-ui/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -16,31 +17,34 @@ export default function Alert() {
   const queryClient = useQueryClient();
 
   const alertQuery = useQuery({
-    queryKey: ["notices"],
+    queryKey: noticesKeys.notices,
     queryFn: getNotices
   });
 
   const remove = useMutation({
     mutationFn: deleteNotice,
     onMutate: async targetId => {
-      await queryClient.cancelQueries({ queryKey: ["notices"] });
-      const prevNotices = queryClient.getQueryData(["notices"]);
-      queryClient.setQueryData(["notices"], (old: NoticeData | undefined) => {
-        return {
-          noticeList: old?.noticeList.filter(
-            notice => notice.noticeId !== targetId
-          ) as NoticeList
-        };
-      });
+      await queryClient.cancelQueries({ queryKey: noticesKeys.notices });
+      const prevNotices = queryClient.getQueryData(noticesKeys.notices);
+      queryClient.setQueryData(
+        noticesKeys.notices,
+        (old: NoticeData | undefined) => {
+          return {
+            noticeList: old?.noticeList.filter(
+              notice => notice.noticeId !== targetId
+            ) as NoticeList
+          };
+        }
+      );
 
       return { prevNotices };
     },
     onError: (err, variables, context) => {
-      queryClient.setQueryData(["notices"], context?.prevNotices);
+      queryClient.setQueryData(noticesKeys.notices, context?.prevNotices);
     },
     onSettled: () => {
       queryClient.invalidateQueries({
-        queryKey: ["notices"]
+        queryKey: noticesKeys.notices
       });
     }
   });
