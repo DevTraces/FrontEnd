@@ -1,4 +1,5 @@
 import { getBookmarkList } from "@/api/bookmark";
+import bookmarkKeys from "@/queryKeys/bookmarkKeys";
 import { AspectRatio, Grid, GridItem } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
@@ -6,7 +7,7 @@ import Link from "next/link";
 
 export default function Saved() {
   const bookmarkQuery = useQuery({
-    queryKey: ["bookmark"],
+    queryKey: bookmarkKeys.bookmarkList,
     queryFn: getBookmarkList
   });
 
