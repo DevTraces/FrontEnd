@@ -1,26 +1,24 @@
 import { getFeed } from "@/api/feeds/[feedId]";
 import NavLayout from "@/components/@common/NavLayout";
 import PostCard from "@/components/@common/PostCard";
+import feedsKeys from "@/queryKeys/feedsKeys";
 import { FeedData } from "@/types/data/feed";
 import { Center } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
-export default function Post() {
+export default function Feed() {
   const router = useRouter();
 
-  const { pid } = router.query as { pid: string };
+  const { feedId } = router.query as { feedId: string };
 
   const feedQuery = useQuery({
-    queryKey: ["feed", pid],
-    queryFn: () => {
-      return getFeed(+pid);
-    }
+    queryKey: feedsKeys.feed(+feedId),
+    queryFn: () => getFeed(+feedId)
   });
 
   const getPostCardData = ({
-    feedId,
     authorNickname,
     imageUrls,
     numberOfLike,
@@ -31,7 +29,7 @@ export default function Post() {
     saved,
     authorProfileImageUrl
   }: FeedData) => ({
-    feedId,
+    feedId: +feedId,
     authorNickname,
     imageUrls,
     numberOfLike,
