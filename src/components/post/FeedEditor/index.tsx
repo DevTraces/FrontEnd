@@ -1,4 +1,5 @@
 import useImagePreviews from "@/hooks/useImagePreviews";
+import useTags from "@/hooks/useTags";
 import { EditorImage, FeedData } from "@/types/data/feed";
 import {
   Box,
@@ -12,8 +13,6 @@ import { useState } from "react";
 import ImageAddButton from "./ImageAddButton";
 import ImagePreview from "./ImagePreview";
 import Tags from "./Tags";
-
-type TagItem = { id: string; content: string };
 
 type FeedEditorProps = {
   onPublish: ({
@@ -35,8 +34,9 @@ export default function FeedEditor({
   const { images, imagePreviews, addImage, removeImage } = useImagePreviews(
     prevFeedData?.imageUrls ?? []
   );
-  const [tags, setTags] = useState<TagItem[]>([]);
-  const [textContent, setTextContent] = useState("");
+  const { tags, addTag, removeTag } = useTags(prevFeedData?.hashtags ?? []);
+
+  const [textContent, setTextContent] = useState(prevFeedData?.content ?? "");
   const toast = useToast();
 
   const handlePublishClick = () => {
@@ -89,15 +89,8 @@ export default function FeedEditor({
         />
         <Tags
           tags={tags}
-          onAddTag={tagContent => {
-            setTags(prev => [
-              ...prev,
-              { id: window.self.crypto.randomUUID(), content: tagContent }
-            ]);
-          }}
-          onRemoveTag={tagId =>
-            setTags(prev => prev.filter(p => p.id !== tagId))
-          }
+          onAddTag={tagContent => addTag(tagContent)}
+          onRemoveTag={tagId => removeTag(tagId)}
         />
       </VStack>
       <HStack spacing={5} w="full" mt="20px">
