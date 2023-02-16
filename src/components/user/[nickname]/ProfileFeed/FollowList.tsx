@@ -1,5 +1,6 @@
 import { getFollowerList } from "@/api/follows/follower/[nickname]";
 import { getFollowingList } from "@/api/follows/following/[nickname]";
+import followsKeys from "@/queryKeys/followsKeys";
 import { VStack } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import FollowItem from "./FollowItem";
@@ -11,14 +12,15 @@ type FollowListProps = {
 
 export default function FollowList({ nickname, type }: FollowListProps) {
   const followListQuery = useQuery({
-    queryKey: [type, nickname],
-    queryFn: ({ queryKey }) => {
+    queryKey:
+      type === "follower"
+        ? followsKeys.followerList(nickname)
+        : followsKeys.followingList(nickname),
+    queryFn: () =>
       // TODO: pagination 필요
-      if (queryKey[1] === "follower") {
-        return getFollowerList(queryKey[1], 1, 1);
-      }
-      return getFollowingList(queryKey[1], 1, 1);
-    }
+      type === "follower"
+        ? getFollowerList(nickname, 1, 1)
+        : getFollowingList(nickname, 1, 1)
   });
 
   if (followListQuery.isError) return <>FollowList 에러 발생</>;
