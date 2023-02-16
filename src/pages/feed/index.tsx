@@ -13,16 +13,16 @@ export default function Feed() {
         <Center>
           <Flex direction="column" pt={20} gap={10} m="auto" mb={20}>
             <PostCard
+              content=""
               feedId={0}
               authorNickname=""
-              imageUrls={[]}
               numberOfLike={0}
               hashtags={[]}
-              content=""
               createdAt={new Date()}
+              imageUrls={[]}
+              authorProfileImageUrl=""
               liked={false}
               saved={false}
-              authorProfileImageUrl=""
             />
           </Flex>
         </Center>

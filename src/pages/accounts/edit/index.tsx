@@ -17,6 +17,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import NavLayout from "@/components/@common/NavLayout";
+import usersKeys from "@/queryKeys/usersKeys";
 
 type FormData = Pick<ProfileData, "username" | "nickname" | "description">;
 
@@ -30,7 +31,7 @@ export default function Setting() {
   } = useForm<FormData>({ mode: "onChange" });
 
   const profileQuery = useQuery({
-    queryKey: ["profile", nickname],
+    queryKey: usersKeys.userProfile(nickname),
     queryFn: ({ queryKey }) => {
       return getUserProfile(queryKey[1]);
     }
