@@ -3,6 +3,8 @@ import Image from "next/image";
 import FullLogo from "public/ArtBubbleLogo_landscape.svg";
 import IconLogo from "public/ArtBubble_square.svg";
 import TextLogo from "public/ArtBubbleTextLogo_landscape.svg";
+import Link from "next/link";
+import { Box } from "@chakra-ui/react";
 
 type LogoProps = { type: "text" | "icon" | "full" } & Omit<
   ComponentProps<typeof Image>,
@@ -15,6 +17,15 @@ export default function Logo({ type, ...restProps }: LogoProps) {
     text: TextLogo
   };
   return (
-    <Image src={ImgSrcs[type]} alt="ArtBubble Logo" {...restProps} priority />
+    <Link href="/">
+      <Box position="relative">
+        <Image
+          src={ImgSrcs[type]}
+          alt="ArtBubble Logo"
+          {...restProps}
+          priority
+        />
+      </Box>
+    </Link>
   );
 }
