@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { Nav, NAVS } from "../../constants/nav";
+import SearchProvider from "../../SearchContext";
 import Drawer from "../Drawer";
 
 export default function SideBar() {
@@ -38,7 +39,6 @@ export default function SideBar() {
     switch (key) {
       case "search":
       case "alert":
-      case "saved":
         if (selectedNav === key) {
           onToggle();
         } else {
@@ -52,7 +52,7 @@ export default function SideBar() {
   };
 
   return (
-    <>
+    <SearchProvider>
       {isOpen && (
         <Drawer
           display={{
@@ -127,6 +127,6 @@ export default function SideBar() {
           ))}
         </Flex>
       </Flex>
-    </>
+    </SearchProvider>
   );
 }

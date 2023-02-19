@@ -4,17 +4,16 @@ import {
   Button,
   Flex,
   Icon,
-  Input,
-  InputGroup,
-  InputLeftElement,
   useDisclosure,
   useOutsideClick
 } from "@chakra-ui/react";
-import { faBell, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faBell } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useRef, useState } from "react";
 import { Nav } from "../../constants/nav";
+import SearchProvider from "../../SearchContext";
 import Drawer from "../Drawer";
+import InputContainer from "../Search/components/InputContainer";
 
 export default function TopBar() {
   const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
@@ -34,8 +33,22 @@ export default function TopBar() {
     }
   });
 
+  const handleInputClick = () => {
+    setSelectedNav("search");
+    onOpen();
+  };
+
+  const handleAlertClick = () => {
+    setSelectedNav("alert");
+    if (selectedNav === "alert") {
+      onToggle();
+    } else {
+      onOpen();
+    }
+  };
+
   return (
-    <>
+    <SearchProvider>
       {isOpen && (
         <Drawer
           display={{
@@ -63,41 +76,21 @@ export default function TopBar() {
           md: "none"
         }}
       >
-        <Box mr={20} w="200px" h="100px" position="relative">
-          <Logo type="text" fill />
+        <Box mr={20} w="200px" h="100px">
+          <Logo type="text" />
         </Box>
-        <InputGroup mr={10} data-type="navItem">
-          <InputLeftElement pointerEvents="none">
-            <Icon as={FontAwesomeIcon} icon={faSearch} color="gray.300" />
-          </InputLeftElement>
-          <Input
-            onClick={() => {
-              setSelectedNav("search");
-              onOpen();
-            }}
-            type="text"
-            bg="gray.200"
-            placeholder="검색"
-          />
-        </InputGroup>
+        <InputContainer onClick={handleInputClick} mr={10} />
         <Button
           boxSize="40px"
           px="10px"
           data-type="navItem"
           bg="white"
           colorScheme="whiteAlpha"
-          onClick={() => {
-            setSelectedNav("alert");
-            if (selectedNav === "alert") {
-              onToggle();
-            } else {
-              onOpen();
-            }
-          }}
+          onClick={handleAlertClick}
         >
           <Icon as={FontAwesomeIcon} icon={faBell} color="black" />
         </Button>
       </Flex>
-    </>
+    </SearchProvider>
   );
 }
