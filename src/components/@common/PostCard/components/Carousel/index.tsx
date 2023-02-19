@@ -30,6 +30,7 @@ export default function Carousel({ imgs, boxSize }: CarouselProps) {
               src={img}
               alt="포스트 이미지"
               fill
+              sizes="100%"
               priority={i === current}
               style={{
                 transform: `translateX(-${current * boxSize}px)`,
