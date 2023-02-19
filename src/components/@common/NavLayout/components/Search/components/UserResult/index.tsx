@@ -1,10 +1,10 @@
 import { getNicknameResult } from "@/api/search/nickname";
 import { getUsernameResult } from "@/api/search/username";
+import { SearchContext } from "@/components/@common/NavLayout/SearchContext";
 import searchKeys from "@/queryKeys/searchKeys";
 import { useQuery } from "@tanstack/react-query";
 import { useContext } from "react";
-import { SearchContext } from "../../SearchContext";
-import ResultContainer from "./components/ResultContainer";
+import ResultContainer from "../ResultContainer";
 import UserItem from "./UserItem";
 
 type UserListProps = {

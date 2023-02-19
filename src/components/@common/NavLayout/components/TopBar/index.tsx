@@ -13,7 +13,7 @@ import { useEffect, useRef, useState } from "react";
 import { Nav } from "../../constants/nav";
 import SearchProvider from "../../SearchContext";
 import Drawer from "../Drawer";
-import InputContainer from "../Search/components/InputContainer";
+import InputContainer from "../Search/components/Input";
 
 export default function TopBar() {
   const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
@@ -77,7 +77,7 @@ export default function TopBar() {
         }}
       >
         <Box mr={20} w="200px" h="100px">
-          <Logo type="text" />
+          <Logo type="text" fill />
         </Box>
         <InputContainer onClick={handleInputClick} mr={10} />
         <Button
