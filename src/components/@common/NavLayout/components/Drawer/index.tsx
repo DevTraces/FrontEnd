@@ -1,9 +1,9 @@
 import { Nav } from "@/components/@common/NavLayout/constants/nav";
 import { Box, Text } from "@chakra-ui/react";
 import { ComponentProps, forwardRef } from "react";
+import Search from "../Search";
 import Alert from "./components/Alert";
 import Saved from "./components/Saved";
-import Search from "./components/Search";
 
 type DrawerProps = {
   selectedNav: Nav["key"];
@@ -13,7 +13,11 @@ export default forwardRef<HTMLDivElement, DrawerProps>(
   ({ children, selectedNav, ...restProps }, ref) => {
     const cases: { key: Nav["key"]; Component: JSX.Element; title: string }[] =
       [
-        { key: "search", Component: <Search />, title: "검색" },
+        {
+          key: "search",
+          Component: <Search />,
+          title: "검색"
+        },
         { key: "alert", Component: <Alert />, title: "알림" },
         { key: "saved", Component: <Saved />, title: "저장한 목록" }
       ];
