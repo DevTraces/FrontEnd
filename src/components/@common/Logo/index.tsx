@@ -18,7 +18,7 @@ export default function Logo({ type, ...restProps }: LogoProps) {
   };
   return (
     <Link href="/">
-      <Box position="relative">
+      <Box position="relative" w="100%" h="100%">
         <Image
           src={ImgSrcs[type]}
           alt="ArtBubble Logo"
