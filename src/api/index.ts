@@ -1,118 +1,54 @@
-const END_POINT = "http://54.180.200.170:8080";
+import axios, { AxiosInstance } from "axios";
 
-type Params = {
-  path: string;
-  query?: { [key in string | number]: string | number };
-  mode?: "prod";
-};
+interface CustomInstance extends AxiosInstance {
+  get<T>(...params: Parameters<AxiosInstance["get"]>): Promise<T>;
+  delete<T>(...params: Parameters<AxiosInstance["delete"]>): Promise<T>;
+  post<T>(...params: Parameters<AxiosInstance["post"]>): Promise<T>;
+  put<T>(...params: Parameters<AxiosInstance["put"]>): Promise<T>;
+  patch<T>(...params: Parameters<AxiosInstance["patch"]>): Promise<T>;
+}
 
-type HttpRequest = <T = any>(params: Params) => Promise<T>;
+const axiosInstance = (baseURL: string = ""): CustomInstance => {
+  const accessToken =
+    typeof window !== "undefined"
+      ? window.sessionStorage.getItem("accessToken") ?? ""
+      : "";
 
-type GET = HttpRequest;
+  const instance = axios.create({
+    baseURL,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: accessToken?.replace(/"/g, "")
+    },
+    withCredentials: true,
+    transformResponse: async res => {
+      const json = JSON.parse(res);
 
-type DELETE = HttpRequest;
-
-type PATCH = POST;
-
-type PUT = POST;
-
-type POST = <T = any>(
-  params: Params & {
-    body?: { [key in PropertyKey]: any };
-  }
-) => Promise<T>;
-
-const defaultHeaders = {
-  "Content-Type": "application/json"
-};
-
-const getURL = (
-  path: Params["path"],
-  query?: Params["query"],
-  mode?: Params["mode"]
-) => {
-  const queryString = query
-    ? `?${Object.entries(query)
-        .map(([key, value]) => `${key}=${value}`)
-        .join("&")}`
-    : "";
-  const endpoint = mode === "prod" ? END_POINT : "";
-
-  return `${endpoint}${path}${queryString}`;
-};
-
-const handleResponse = async (
-  url: ReturnType<typeof getURL>,
-  res: Response
-) => {
-  if (!res.ok) {
-    const { errorMessage } = await res.json();
-
-    if (!errorMessage)
-      throw new Error(`${url} 에러에 errorMessage가 없습니다.`);
-
-    throw new Error(errorMessage);
-  }
-
-  const data = await res.json();
-
-  if (!Object.hasOwn(data, "data"))
-    throw new Error(`${url} 응답에 data 속성이 없습니다.`);
-
-  return data.data;
-};
-
-const get: GET = async ({ path, query, mode }) => {
-  const url = getURL(path, query, mode);
-  const res = await fetch(url, {
-    headers: defaultHeaders
+      if (Object.hasOwn(json, "errorCode")) {
+        if (json.errorCode === "ACCESS_TOKEN_EXPIRED") {
+          const {
+            data: { accessToken: newAccessToken }
+          } = await axios.post("/api/tokens/reissue");
+          sessionStorage.setItem("accessToken", newAccessToken);
+        }
+        throw json;
+      }
+      if (Object.hasOwn(json, "data")) {
+        return json.data;
+      }
+      return Promise.reject(
+        new Error("서버에서 올바르지 않은 형식의 에러가 응답되었습니다.")
+      );
+    }
   });
 
-  return handleResponse(url, res);
+  instance.interceptors.response.use(res => res.data);
+
+  return instance;
 };
 
-const post: POST = async ({ path, query, body = {}, mode }) => {
-  const url = getURL(path, query, mode);
-
-  const res = await fetch(url, {
-    method: "POST",
-    headers: defaultHeaders,
-    body: JSON.stringify(body)
-  });
-
-  return handleResponse(url, res);
+const api = {
+  dev: axiosInstance(),
+  prod: axiosInstance("http://54.180.200.170:8080")
 };
-
-const patch: PATCH = async ({ path, query, body = {}, mode }) => {
-  const url = getURL(path, query, mode);
-
-  const res = await fetch(url, {
-    method: "PATCH",
-    headers: defaultHeaders,
-    body: JSON.stringify(body)
-  });
-
-  return handleResponse(url, res);
-};
-
-const put: PUT = async ({ path, query, body = {}, mode }) => {
-  const url = getURL(path, query, mode);
-
-  const res = await fetch(url, {
-    method: "PUT",
-    headers: defaultHeaders,
-    body: JSON.stringify(body)
-  });
-
-  return handleResponse(url, res);
-};
-
-const api: { get: GET; post: POST; delete: DELETE; patch: PATCH; put: PUT } = {
-  get,
-  post,
-  delete: get,
-  patch,
-  put
-};
-
 export default api;

@@ -11,19 +11,15 @@ export type ReplyData = {
   modifiedAt: Date;
 };
 
-export const getRereplies = (feedId: number, replyId: number) => {
-  return api.get<ReplyData[]>({
-    path: `/api/feeds/${feedId}/replies/${replyId}/rereplies`
-  });
-};
+export const getRereplies = (feedId: number, replyId: number) =>
+  api.dev.get<ReplyData[]>(`/api/feeds/${feedId}/replies/${replyId}/rereplies`);
 
 export const postRereplies = (
   feedId: number,
   replyId: number,
   content: string
-) => {
-  return api.post<ReplyData[]>({
-    path: `/api/feeds/${feedId}/replies/${replyId}/rereplies`,
-    body: { content }
-  });
-};
+) =>
+  api.dev.post<ReplyData[]>(
+    `/api/feeds/${feedId}/replies/${replyId}/rereplies`,
+    { content }
+  );

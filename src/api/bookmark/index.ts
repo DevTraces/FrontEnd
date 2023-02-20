@@ -5,6 +5,5 @@ type BookmarkData = {
   imageUrl: string;
 };
 
-export const getBookmarkList = async () => {
-  return api.get<BookmarkData[]>({ path: "/api/bookmark" });
-};
+export const getBookmarkList = () =>
+  api.dev.get<BookmarkData[]>("/api/bookmark");

@@ -45,8 +45,8 @@ export default function Profile() {
   const nicknameMutation = useMutation({
     mutationFn: ({ nickname }: Pick<FormData, "nickname">) =>
       getNicknameDuplicateCheck(nickname as string),
-    onSuccess: res => {
-      if (res.isDuplicated)
+    onSuccess: ({ duplicatedNickname }) => {
+      if (duplicatedNickname)
         setError("nickname", { message: "이미 가입된 닉네임이에요" });
     }
   });
@@ -149,7 +149,11 @@ export default function Profile() {
             {...register("password", VALIDATION_RULE.password)}
           />
           <FormButton
-            isLoading={isSubmitting}
+            isLoading={
+              isSubmitting ||
+              nicknameMutation.isLoading ||
+              signupMutation.isLoading
+            }
             isDisabled={!isValid || !isDirty}
           >
             가입 완료

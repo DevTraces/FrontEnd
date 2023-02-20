@@ -1,8 +1,6 @@
 import api from "@/api";
 
-export async function getNicknameDuplicateCheck(nickname: string) {
-  return api.get<{ isDuplicated: boolean }>({
-    path: "/api/users/nickname/check",
-    query: { nickname }
+export const getNicknameDuplicateCheck = (nickname: string) =>
+  api.prod.get<{ duplicatedNickname: boolean }>("/api/users/nickname/check", {
+    params: { nickname }
   });
-}

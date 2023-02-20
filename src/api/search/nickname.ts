@@ -8,8 +8,7 @@ type UserResultData = {
 };
 
 export async function getNicknameResult(nickname: string) {
-  return api.get<UserResultData[]>({
-    path: "/api/search/nickname",
-    query: { keyword: nickname }
+  return api.dev.get<UserResultData[]>("/api/search/nickname", {
+    params: { keyword: nickname }
   });
 }

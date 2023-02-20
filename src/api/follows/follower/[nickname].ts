@@ -1,13 +1,11 @@
 import api from "@/api";
 import { FollowItemData } from "../following/[nickname]";
 
-export const getFollowerList = async (
+export const getFollowerList = (
   nickname: string,
   page: number,
   pageSize: number
-) => {
-  return api.get<FollowItemData[]>({
-    path: `/api/follows/follower/${nickname}`,
-    query: { page, pageSize }
+) =>
+  api.dev.get<FollowItemData[]>(`/api/follows/follower/${nickname}`, {
+    params: { page, pageSize }
   });
-};

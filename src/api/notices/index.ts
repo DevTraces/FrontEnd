@@ -5,6 +5,4 @@ type NoticeData = {
   noticeList: NoticeList;
 };
 
-export const getNotices = () => {
-  return api.get<NoticeData>({ path: "/api/notices" });
-};
+export const getNotices = () => api.dev.get<NoticeData>("/api/notices");

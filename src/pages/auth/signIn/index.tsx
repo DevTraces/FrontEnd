@@ -1,11 +1,13 @@
 import { postSignIn } from "@/api/auth/sign-in";
 import FormButton from "@/components/@common/FormButton";
-import FormLayout from "@/components/@common/FormLayout";
 import AuthTextInput from "@/components/@common/FormInput";
-import KakaoLoginButton from "@/components/auth/KakaoLoginButton";
+import FormLayout from "@/components/@common/FormLayout";
 import Logo from "@/components/@common/Logo";
+import KakaoLoginButton from "@/components/auth/KakaoLoginButton";
 import VALIDATION_RULE from "@/constants/auth/VALIDATION_RULE";
+import { APIError } from "@/types/error";
 import { Center, Divider, HStack, Text, useToast } from "@chakra-ui/react";
+import { useMutation } from "@tanstack/react-query";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -21,26 +23,31 @@ export default function SignIn() {
   const toast = useToast();
   const {
     register,
-    setError,
     formState: { isDirty, isSubmitting, errors, isValid },
     handleSubmit
   } = useForm<FormData>({ mode: "onChange" });
 
-  const handleFormSubmit = handleSubmit(async formData => {
-    try {
-      await postSignIn(formData.email, formData.password);
+  const signInMutation = useMutation({
+    mutationFn: ({ email, password }: FormData) => postSignIn(email, password),
+    onSuccess: () => {
       router.push("/feed");
-    } catch (e) {
-      let errorMsg = "Unknown error";
-      if (e instanceof Error) errorMsg = e.message;
-      setError("root", { message: errorMsg });
+    },
+    onError: (e: APIError) => {
       toast({
-        title: errorMsg,
+        title:
+          e.errorCode === "WRONG_EMAIL_OR_PASSWORD"
+            ? "이메일 혹은 비밀번호가 올바르지 않아요"
+            : "로그인에 실패했어요",
         status: "error",
-        duration: 1000
+        duration: 3000
       });
     }
   });
+
+  const handleFormSubmit = handleSubmit(formData =>
+    signInMutation.mutate(formData)
+  );
+
   return (
     <>
       <Head>
@@ -63,6 +70,7 @@ export default function SignIn() {
             isInvalid={!!errors.password}
             errorMessage={errors.password?.message}
             placeholder="비밀번호"
+            type="password"
             {...register("password", VALIDATION_RULE.password)}
           />
 

@@ -5,8 +5,7 @@ type AutoCompleteData = {
 };
 
 export async function getAutoCompleteResult(autocomplete: string) {
-  return api.get<AutoCompleteData>({
-    path: "/api/search/autocomplete",
-    query: { keyword: autocomplete }
+  return api.dev.get<AutoCompleteData>("/api/search/autocomplete", {
+    params: { keyword: autocomplete }
   });
 }
