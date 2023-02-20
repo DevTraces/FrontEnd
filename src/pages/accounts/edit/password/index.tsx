@@ -11,7 +11,7 @@ import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 
 type FormData = {
-  prevPassword: string;
+  currentPassword: string;
   newPassword: string;
   newPasswordConfirm: string;
 };
@@ -30,12 +30,12 @@ export default function EditPassword() {
 
   const passwordMutation = useMutation({
     mutationFn: ({
-      prevPassword,
+      currentPassword,
       newPassword
     }: {
-      prevPassword: string;
+      currentPassword: string;
       newPassword: string;
-    }) => patchPassword(prevPassword, newPassword),
+    }) => patchPassword(currentPassword, newPassword),
     onSuccess: () => {
       router.back();
     },
@@ -48,8 +48,8 @@ export default function EditPassword() {
     }
   });
 
-  const handleFormSubmit = handleSubmit(({ prevPassword, newPassword }) => {
-    passwordMutation.mutate({ prevPassword, newPassword });
+  const handleFormSubmit = handleSubmit(({ currentPassword, newPassword }) => {
+    passwordMutation.mutate({ currentPassword, newPassword });
   });
   return (
     <>
@@ -64,10 +64,10 @@ export default function EditPassword() {
           <FormInput
             type="password"
             labelText="이전 비밀번호"
-            isInvalid={!!errors.prevPassword}
+            isInvalid={!!errors.currentPassword}
             placeholder="이전 비밀번호"
-            errorMessage={errors.prevPassword?.message}
-            {...register("prevPassword", VALIDATION_RULE.password)}
+            errorMessage={errors.currentPassword?.message}
+            {...register("currentPassword", VALIDATION_RULE.password)}
           />
           <FormInput
             type="password"
