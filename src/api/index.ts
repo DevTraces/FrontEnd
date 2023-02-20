@@ -9,17 +9,36 @@ interface CustomInstance extends AxiosInstance {
 }
 
 const axiosInstance = (baseURL: string = ""): CustomInstance => {
+  const accessToken =
+    typeof window !== "undefined"
+      ? window.sessionStorage.getItem("accessToken")
+      : "";
+
   const instance = axios.create({
     baseURL,
-    headers: { "Content-Type": "application/json" },
-    transformResponse: res => {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: accessToken?.replaceAll('"', "")
+    },
+    withCredentials: true,
+    transformResponse: async res => {
       const json = JSON.parse(res);
-      if (!Object.hasOwn(json, "data")) {
-        // eslint-disable-next-line no-console
-        console.error(res);
-        throw new Error("응답에 data 속성이 없습니다.");
+
+      if (Object.hasOwn(json, "errorCode")) {
+        if (json.errorCode === "ACCESS_TOKEN_EXPIRED") {
+          const {
+            data: { accessToken: newAccessToken }
+          } = await axios.post("/api/tokens/reissue");
+          sessionStorage.setItem("accessToken", newAccessToken);
+        }
+        throw json;
       }
-      return json.data;
+      if (Object.hasOwn(json, "data")) {
+        return json.data;
+      }
+      return Promise.reject(
+        new Error("서버에서 올바르지 않은 형식의 에러가 응답되었습니다.")
+      );
     }
   });
 
