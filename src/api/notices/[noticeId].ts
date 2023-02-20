@@ -1,7 +1,4 @@
 import api from "..";
 
-export const deleteNotice = (noticeId: number) => {
-  return api.delete<null>({
-    path: `/api/notices/${noticeId}`
-  });
-};
+export const deleteNotice = (noticeId: number) =>
+  api.dev.delete<null>(`/api/notices/${noticeId}`);

@@ -2,13 +2,11 @@ import api from "@/api";
 import { EditorImage, FeedData } from "@/types/data/feed";
 
 export const getFeed = async (feedId: number) => {
-  return api.get<FeedData>({
-    path: `/api/feeds/${feedId}`
-  });
+  return api.dev.get<FeedData>(`/api/feeds/${feedId}`);
 };
 
 export const deleteFeed = (feedId: number) =>
-  api.delete({ path: `/api/feeds/${feedId}` });
+  api.dev.delete(`/api/feeds/${feedId}`);
 
 export const putFeed = (
   feedId: number,
@@ -17,8 +15,4 @@ export const putFeed = (
     images?: EditorImage[];
     hashtags?: string[];
   }
-) =>
-  api.put({
-    path: `/api/feeds/${feedId}`,
-    body: modifiedData
-  });
+) => api.dev.put(`/api/feeds/${feedId}`, modifiedData);
