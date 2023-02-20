@@ -1,16 +1,26 @@
 import { getFeeds } from "@/api/feeds/[nickname]";
+import userAtom from "@/atoms/userAtom";
 import NavLayout from "@/components/@common/NavLayout";
-import PostCard from "@/components/@common/PostCard";
+import FeedList from "@/components/feed/FeedList";
 import feedsKeys from "@/queryKeys/feedsKeys";
-import { Center, Flex } from "@chakra-ui/react";
+import { Center } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import Head from "next/head";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { useRecoilValue } from "recoil";
 
 export default function Feed() {
+  const user = useRecoilValue(userAtom);
+  const router = useRouter();
   const feedQuery = useQuery({
-    queryKey: feedsKeys.feeds("test"),
-    queryFn: () => getFeeds("test")
+    queryKey: feedsKeys.feeds(user.nickname),
+    queryFn: () => getFeeds(user.nickname)
   });
+
+  useEffect(() => {
+    if (user.nickname === "") router.push("/");
+  }, [router, user]);
 
   if (feedQuery.isError) return <>피드 에러</>;
   if (feedQuery.isLoading) return <>피드 로딩중</>;
@@ -22,23 +32,7 @@ export default function Feed() {
       </Head>
       <NavLayout>
         <Center>
-          <Flex direction="column" pt={20} gap={10} m="auto" mb={20}>
-            {feedQuery.data.map(feed => (
-              <PostCard
-                key={feed.feedId}
-                content={feed.content}
-                feedId={feed.feedId}
-                authorNickname={feed.authorNickname}
-                numberOfLike={feed.numberOfLike}
-                hashtags={feed.hashtags}
-                createdAt={feed.createdAt}
-                imageUrls={feed.imageUrls}
-                authorProfileImageUrl={feed.authorProfileImageUrl}
-                liked={feed.liked}
-                saved={feed.saved}
-              />
-            ))}
-          </Flex>
+          <FeedList feedsData={feedQuery.data} />
         </Center>
       </NavLayout>
     </>

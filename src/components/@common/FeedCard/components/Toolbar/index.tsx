@@ -1,6 +1,6 @@
 import { deleteBookmark, postBookmark } from "@/api/bookmark/[feedId]";
 import { deleteLike, postLike } from "@/api/like/[feedId]";
-import { PostCardData } from "@/types/data/feed";
+import feedAtom from "@/atoms/feedAtom";
 import { Button, Flex, Icon, useToast } from "@chakra-ui/react";
 import {
   faBookmark as faBookmarkBlank,
@@ -15,18 +15,17 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useMutation } from "@tanstack/react-query";
 import { ComponentProps, Dispatch, SetStateAction } from "react";
+import { useRecoilValue } from "recoil";
 
-type ToolbarProps = Pick<PostCardData, "liked" | "feedId" | "saved"> & {
+type ToolbarProps = {
   setIsReplyOpen: Dispatch<SetStateAction<boolean>>;
 } & ComponentProps<typeof Flex>;
 
 export default function Toolbar({
-  liked,
-  feedId,
-  saved,
   setIsReplyOpen,
   ...restProps
 }: ToolbarProps) {
+  const { liked, feedId, saved } = useRecoilValue(feedAtom);
   const toast = useToast();
 
   const like = useMutation({

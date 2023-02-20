@@ -6,7 +6,7 @@ export const getFeed = async (feedId: number) => {
 };
 
 export const deleteFeed = (feedId: number) =>
-  api.dev.delete(`/api/feeds/${feedId}`);
+  api.prod.delete(`/api/feeds/${feedId}`);
 
 export const putFeed = (
   feedId: number,

@@ -1,8 +1,8 @@
 import { getFeeds } from "@/api/feeds/[nickname]";
+import FeedList from "@/components/feed/FeedList";
 import feedsKeys from "@/queryKeys/feedsKeys";
 import { VStack } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
-import PostCard from "../../../@common/PostCard";
 
 type PostsProps = {
   nickname: string;
@@ -19,21 +19,7 @@ export default function Posts({ nickname }: PostsProps) {
 
   return (
     <VStack>
-      {feedsQuery.data.map(d => (
-        <PostCard
-          key={d.feedId}
-          content={d.content}
-          feedId={d.feedId}
-          authorNickname={d.authorNickname}
-          numberOfLike={d.numberOfLike}
-          hashtags={d.hashtags}
-          createdAt={d.createdAt}
-          imageUrls={d.imageUrls}
-          authorProfileImageUrl={d.authorProfileImageUrl}
-          liked={d.liked}
-          saved={d.saved}
-        />
-      ))}
+      <FeedList feedsData={feedsQuery.data} />
     </VStack>
   );
 }

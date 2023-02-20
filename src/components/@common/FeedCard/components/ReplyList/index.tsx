@@ -1,19 +1,20 @@
 import { getReplies, postReplies } from "@/api/feeds/[feedId]/replies";
+import feedAtom from "@/atoms/feedAtom";
 import VALIDATION_RULE from "@/constants/auth/VALIDATION_RULE";
 import feedsKeys from "@/queryKeys/feedsKeys";
-import { PostCardData } from "@/types/data/feed";
 import { Flex, useToast } from "@chakra-ui/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
+import { useRecoilValue } from "recoil";
 import ReplyInput from "./components/ReplyInput";
 import ReplyItem from "./components/ReplyItem";
 
-type ReplyListProps = Pick<PostCardData, "feedId">;
 type FormData = {
   content: string;
 };
 
-export default function ReplyList({ feedId }: ReplyListProps) {
+export default function ReplyList() {
+  const { feedId } = useRecoilValue(feedAtom);
   const queryClient = useQueryClient();
   const toast = useToast();
 
