@@ -22,7 +22,7 @@ export const NAVS: Nav[] = [
     key: "saved",
     icon: faBookmark,
     title: "저장한 목록",
-    href: "/someone/saved"
+    href: "/user/someone/saved"
   },
   { key: "newPost", icon: faPlus, title: "새 포스트", href: "/post/new" },
   {

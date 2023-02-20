@@ -15,7 +15,13 @@ export default function CircledImage({
 }: CircledImageProps) {
   return (
     <Circle size={size} overflow="hidden" position="relative" {...restProps}>
-      <Image alt={alt} src={src} fill style={{ objectFit: "cover" }} />
+      <Image
+        alt={alt}
+        src={src}
+        sizes={size}
+        fill
+        style={{ objectFit: "cover" }}
+      />
     </Circle>
   );
 }

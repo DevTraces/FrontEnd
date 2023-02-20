@@ -19,6 +19,7 @@ export default function SquaredImage({
         alt={alt}
         src={src}
         fill
+        sizes={size}
         style={{
           objectFit: "cover"
         }}

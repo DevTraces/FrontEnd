@@ -92,6 +92,7 @@ export default function ReplyItem({
             <Flex direction="column" gap="12px">
               {rerepliesQuery.data.map(r => (
                 <ReplyContent
+                  key={r.replyId}
                   authorNickname={r.authorNickname}
                   content={r.content}
                   onReplyClick={() => {
