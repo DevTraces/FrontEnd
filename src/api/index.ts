@@ -18,7 +18,7 @@ const axiosInstance = (baseURL: string = ""): CustomInstance => {
     baseURL,
     headers: {
       "Content-Type": "application/json",
-      Authorization: accessToken?.replace(/"/g, "")
+      Authorization: accessToken
     },
     withCredentials: true,
     transformResponse: async res => {
