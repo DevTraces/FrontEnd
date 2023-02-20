@@ -1,4 +1,7 @@
+import { getHashtagResult } from "@/api/search/hashtag";
+import CircledImage from "@/components/@common/CircledImage";
 import NavLayout from "@/components/@common/NavLayout";
+import searchKeys from "@/queryKeys/searchKeys";
 import {
   AspectRatio,
   Avatar,
@@ -10,53 +13,73 @@ import {
   Text,
   VStack
 } from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
 import Head from "next/head";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
-
-const sampleimgs = [
-  "https://images.unsplash.com/photo-1547891654-e66ed7ebb968?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80",
-  "https://images.unsplash.com/photo-1602532305019-3dbbd482dae9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=735&q=80",
-  "https://images.unsplash.com/photo-1673818855223-da6f705d825f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=627&q=80"
-];
 
 export default function TagResult() {
   const router = useRouter();
+  const tag = router.query.tag as string;
+
+  const tagQuery = useQuery({
+    queryKey: searchKeys.hashtags(tag),
+    queryFn: ({ queryKey }) => getHashtagResult(queryKey[1])
+  });
+
+  if (tagQuery.isError) return <>태그결과 에러</>;
+  if (tagQuery.isLoading) return <>태그결과 로딩중</>;
 
   return (
     <>
       <Head>
-        <title>ArtBubble | {router.query.tag} 검색 결과</title>
+        <title>ArtBubble | {tag} 검색 결과</title>
       </Head>
       <NavLayout>
-        <Container centerContent>
+        <Container centerContent mt={{ sm: "15px" }}>
           <VStack w="full" pt="30px" pb="40px">
             <HStack w="full" m="20px" gap="20px">
-              <Avatar boxSize="80px" />
+              {tagQuery.data.feedInfoList[0] ? (
+                <CircledImage
+                  src={tagQuery.data.feedInfoList[0].imageUrl}
+                  alt="대표이미지"
+                  size="80px"
+                />
+              ) : (
+                <Avatar boxSize="80px" />
+              )}
               <Flex gap="20px">
                 <VStack alignItems="flex-start">
-                  <Text fontWeight="bold">#{router.query.tag}</Text>
+                  <Text fontWeight="bold">#{tag}</Text>
                   <Text>
-                    게시물 <strong>6385</strong>
+                    게시물
+                    <strong> {tagQuery.data.totalNumberOfSearches}</strong>
                   </Text>
                 </VStack>
               </Flex>
             </HStack>
-            <Grid w="full" templateColumns="repeat(3, 1fr)" gap="10px">
-              {sampleimgs.map(img => (
-                <GridItem key={img} position="relative">
-                  <AspectRatio ratio={1 / 1}>
-                    <Image
-                      src={img}
-                      alt={`${router.query.tag}이미지`}
-                      sizes="100%"
-                      fill
-                      priority
-                    />
-                  </AspectRatio>
-                </GridItem>
-              ))}
-            </Grid>
+            {tagQuery.data.totalNumberOfSearches > 0 ? (
+              <Grid w="full" templateColumns="repeat(3, 1fr)" gap="10px">
+                {tagQuery.data.feedInfoList.map(({ feedId, imageUrl }) => (
+                  <GridItem key={feedId} position="relative">
+                    <Link href={`/post/${feedId}`}>
+                      <AspectRatio ratio={1 / 1}>
+                        <Image
+                          src={imageUrl}
+                          alt={`${tag}이미지`}
+                          sizes="100%"
+                          fill
+                          priority
+                        />
+                      </AspectRatio>
+                    </Link>
+                  </GridItem>
+                ))}
+              </Grid>
+            ) : (
+              <>검색 결과가 없습니다.</>
+            )}
           </VStack>
         </Container>
       </NavLayout>

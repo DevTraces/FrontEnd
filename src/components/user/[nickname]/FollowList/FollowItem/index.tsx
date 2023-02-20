@@ -4,7 +4,7 @@ import followsKeys from "@/queryKeys/followsKeys";
 import { Avatar, Button, HStack, Text, VStack } from "@chakra-ui/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
-import CircledImage from "../CircledImage";
+import CircledImage from "../../../../@common/CircledImage";
 
 type FollowItemProps = FollowItemData & {
   type: "follower" | "following";

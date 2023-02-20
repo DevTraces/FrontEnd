@@ -1,7 +1,7 @@
 import { ProfileData } from "@/types/data/user";
 import { Avatar, VStack, Button, Box, Text, HStack } from "@chakra-ui/react";
 import Link from "next/link";
-import CircledImage from "../CircledImage";
+import CircledImage from "../../../@common/CircledImage";
 
 type ProfileProps = ProfileData & React.ComponentProps<typeof VStack>;
 
