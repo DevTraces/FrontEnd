@@ -6,18 +6,24 @@ import feedsKeys from "@/queryKeys/feedsKeys";
 import { Center } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import Head from "next/head";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 import { useRecoilValue } from "recoil";
 
 export default function Feed() {
   const user = useRecoilValue(userAtom);
-
+  const router = useRouter();
   const feedQuery = useQuery({
     queryKey: feedsKeys.feeds(user.nickname),
     queryFn: () => getFeeds(user.nickname)
   });
 
+  useEffect(() => {
+    if (user.nickname === "") router.push("/");
+  }, [router, user]);
+
   if (feedQuery.isError) return <>피드 에러</>;
-  if (feedQuery.isLoading) return <>피드 로x딩중</>;
+  if (feedQuery.isLoading) return <>피드 로딩중</>;
 
   return (
     <>

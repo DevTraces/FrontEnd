@@ -5,7 +5,6 @@ const localStorage =
   typeof window !== "undefined" ? window.localStorage : undefined;
 
 const { persistAtom } = recoilPersist({
-  key: "user",
   storage: localStorage
 });
 
@@ -15,5 +14,8 @@ interface User {
 
 export default atom<User>({
   key: "userAtom",
+  default: {
+    nickname: ""
+  },
   effects_UNSTABLE: [persistAtom]
 });
