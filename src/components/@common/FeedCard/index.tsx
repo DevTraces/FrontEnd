@@ -2,7 +2,7 @@ import feedAtom from "@/atoms/feedAtom";
 import userAtom from "@/atoms/userAtom";
 import { FeedData } from "@/types/data/feed";
 import { Avatar, Flex, Text, useDisclosure } from "@chakra-ui/react";
-import { ComponentProps, createContext, useState } from "react";
+import { ComponentProps, useState } from "react";
 import { RecoilRoot, useRecoilValue } from "recoil";
 import Carousel from "./components/Carousel";
 import DeleteConfirmDialog from "./components/DeleteConfirmDialog";
@@ -14,8 +14,6 @@ import Toolbar from "./components/Toolbar";
 type FeedCardProps = {
   feedData: FeedData;
 } & ComponentProps<typeof Flex>;
-
-export const FeedContext = createContext<FeedData | null>(null);
 
 export default function FeedCard({ feedData, ...restProps }: FeedCardProps) {
   const user = useRecoilValue(userAtom);
