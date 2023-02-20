@@ -1,6 +1,6 @@
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from "@chakra-ui/react";
 import { useContext } from "react";
-import { NavTypeContext } from "../../NavTypeContext";
+import { NavTypeContext } from "../NavTypeContext";
 import InputContainer from "./components/Input";
 import TagAutoComplete from "./components/TagResult";
 import UserList from "./components/UserResult";

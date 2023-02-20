@@ -2,7 +2,7 @@ import { Box, Center } from "@chakra-ui/react";
 import BottomBar from "./components/BottomBar";
 import SideBar from "./components/SideBar";
 import TopBar from "./components/TopBar";
-import NavTypeProvider from "./NavTypeContext";
+import NavTypeProvider from "./components/NavTypeContext";
 
 export default function NavLayout({
   children,

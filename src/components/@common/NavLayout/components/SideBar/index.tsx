@@ -12,7 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { Nav, NAVS } from "../../constants/nav";
-import SearchProvider from "../../SearchContext";
+import SearchProvider from "../SearchContext";
 import Drawer from "../Drawer";
 
 export default function SideBar() {

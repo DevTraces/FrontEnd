@@ -8,7 +8,7 @@ import {
 import { faSearch, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useContext } from "react";
-import { SearchContext } from "../../../../SearchContext";
+import { SearchContext } from "../../../SearchContext";
 
 type InputContainerProps = React.ComponentProps<typeof InputGroup>;
 

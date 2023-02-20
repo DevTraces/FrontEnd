@@ -4,7 +4,7 @@ import { Circle, HStack, Text } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useContext } from "react";
-import { SearchContext } from "../../../../SearchContext";
+import { SearchContext } from "../../../SearchContext";
 import ResultContainer from "../ResultContainer";
 
 export default function TagAutoComplete() {
