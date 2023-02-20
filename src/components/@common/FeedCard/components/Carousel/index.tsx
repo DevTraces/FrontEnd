@@ -1,17 +1,19 @@
+import feedAtom from "@/atoms/feedAtom";
 import { Box, Flex, HStack } from "@chakra-ui/react";
 import {} from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 import { useState } from "react";
+import { useRecoilValue } from "recoil";
 import ArrowIconButton from "./ArrowIconButton";
 
 type CarouselProps = {
-  imgs: string[];
   boxSize: number;
 };
 
-export default function Carousel({ imgs, boxSize }: CarouselProps) {
+export default function Carousel({ boxSize }: CarouselProps) {
+  const { imageUrls } = useRecoilValue(feedAtom);
   const MIN_IMG_COUNT = 0;
-  const MAX_IMG_LENGTH = imgs.length - 1;
+  const MAX_IMG_LENGTH = imageUrls.length - 1;
 
   const [current, setCurrent] = useState(0);
 
@@ -23,8 +25,12 @@ export default function Carousel({ imgs, boxSize }: CarouselProps) {
 
   return (
     <Box bg="white" position="relative" overflow="hidden">
-      <Flex w={`${boxSize * imgs.length}px`} h={`${boxSize}px`} bg="gray.900">
-        {imgs.map((img, i) => (
+      <Flex
+        w={`${boxSize * imageUrls.length}px`}
+        h={`${boxSize}px`}
+        bg="gray.900"
+      >
+        {imageUrls.map((img, i) => (
           <Box key={img} position="relative" boxSize={`${boxSize}px`}>
             <Image
               src={img}
@@ -57,7 +63,7 @@ export default function Carousel({ imgs, boxSize }: CarouselProps) {
           left="50%"
           transform="translateX(-50%)"
         >
-          {imgs.map((img, i) => (
+          {imageUrls.map((img, i) => (
             <Box
               key={`index_${img}`}
               w={2}

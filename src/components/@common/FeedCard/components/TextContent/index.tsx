@@ -1,24 +1,14 @@
-import { PostCardData } from "@/types/data/feed";
-import { Button, Flex, HStack, Text, Box } from "@chakra-ui/react";
+import feedAtom from "@/atoms/feedAtom";
+import { Box, Button, Flex, HStack, Text } from "@chakra-ui/react";
 import Link from "next/link";
-import { ComponentProps, useEffect, useState } from "react";
-
-type TextContentProps = Pick<
-  PostCardData,
-  "numberOfLike" | "authorNickname" | "hashtags" | "createdAt" | "content"
-> &
-  ComponentProps<typeof Box>;
+import { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
 
 const MAX_PREVIEW_LENGTH = 10;
 
-export default function TextContent({
-  numberOfLike,
-  authorNickname,
-  hashtags,
-  content,
-  createdAt,
-  ...restProps
-}: TextContentProps) {
+export default function TextContent() {
+  const { numberOfLike, authorNickname, hashtags, content, createdAt } =
+    useRecoilValue(feedAtom);
   const [isMoreLoaded, setIsMoreLoaded] = useState(false);
   const contentPreview = content.slice(0, MAX_PREVIEW_LENGTH);
   const contentMore = content.slice(MAX_PREVIEW_LENGTH);
@@ -28,7 +18,7 @@ export default function TextContent({
   }, [setIsMoreLoaded, content]);
 
   return (
-    <Box px="12px" {...restProps} py="20px">
+    <Box px="12px" py="20px">
       <Text fontWeight="bold" textAlign="left">
         좋아요 {numberOfLike}개
       </Text>
