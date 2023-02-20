@@ -15,7 +15,7 @@ export default function ProfileInfo({
   profileImageUrl,
   ...restProps
 }: ProfileProps) {
-  const isMyProfile = nickname === "choonsik";
+  const isMyProfile = nickname === "codeisneverodd";
 
   return (
     <VStack gap="20px" {...restProps}>
