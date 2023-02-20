@@ -5,12 +5,12 @@ import FormButton from "@/components/@common/FormButton";
 import FormLayout from "@/components/@common/FormLayout";
 import AuthTextInput from "@/components/@common/FormInput";
 import VALIDATION_RULE from "@/constants/auth/VALIDATION_RULE";
-import { Center, Icon, Text, useToast } from "@chakra-ui/react";
+import { Center, Icon, Text, ToastId, useToast } from "@chakra-ui/react";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRecoilValue } from "recoil";
 import { useMutation } from "@tanstack/react-query";
@@ -23,6 +23,7 @@ export default function EmailAuth() {
   const [isClient, setIsClient] = useState(false);
   const router = useRouter();
   const toast = useToast();
+  const toastIdRef = useRef<ToastId>("");
   const user = useRecoilValue(signUpUserAtom);
 
   const {
@@ -38,15 +39,22 @@ export default function EmailAuth() {
 
   const emailAuthKeyMutation = useMutation({
     mutationFn: ({ email }: { email: string }) => postEmailAuthKey(email),
+    onMutate: () => {
+      toastIdRef.current = toast({
+        title: "인증코드 전송중",
+        status: "info",
+        duration: 5000
+      });
+    },
     onSuccess: () => {
-      toast({
+      toast.update(toastIdRef.current, {
         title: "인증코드가 전송되었습니다",
         status: "success",
         duration: 3000
       });
     },
     onError: () => {
-      toast({
+      toast.update(toastIdRef.current, {
         title: "인증코드 전송에 실패하였습니다",
         status: "error",
         duration: 3000
@@ -57,9 +65,9 @@ export default function EmailAuth() {
   const emailAuthKeyCheckMutation = useMutation({
     mutationFn: ({ email, authKey }: { email: string; authKey: string }) =>
       postEmailAuthKeyCheck(email, authKey),
-    onSuccess: res => {
-      if (res.isCorrect) {
-        router.push("/auth/profile");
+    onSuccess: ({ correct }) => {
+      if (correct) {
+        router.push("/auth/signUp/profile");
       } else {
         setError("authKey", { message: "인증코드가 올바르지 않습니다" });
       }
@@ -121,7 +129,7 @@ export default function EmailAuth() {
             {...register("authKey", VALIDATION_RULE.authKey)}
           />
           <FormButton
-            isLoading={isSubmitting}
+            isLoading={isSubmitting || emailAuthKeyCheckMutation.isLoading}
             isDisabled={!isDirty || !isValid}
           >
             다음
