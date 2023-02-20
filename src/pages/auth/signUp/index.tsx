@@ -1,5 +1,5 @@
 import { postEmailAuthKey } from "@/api/auth/email/auth-key";
-import { getEmailDuplicateCheck } from "@/api/auth/email/check";
+import { getEmailDuplicateCheck } from "@/api/users/email/check";
 import { signUpUserAtom } from "@/atoms/auth/signUpUser";
 import FormButton from "@/components/@common/FormButton";
 import AuthTextInput from "@/components/@common/FormInput";
@@ -45,8 +45,8 @@ export default function SignUp() {
 
   const duplicateCheckMutation = useMutation({
     mutationFn: ({ email }: { email: string }) => getEmailDuplicateCheck(email),
-    onSuccess: ({ isDuplicated }, { email }) => {
-      if (!isDuplicated) emailAuthKeyMutation.mutate({ email });
+    onSuccess: ({ duplicatedEmail }, { email }) => {
+      if (!duplicatedEmail) emailAuthKeyMutation.mutate({ email });
       else setError("email", { message: "이미 가입된 이메일입니다" });
     },
     onError: () => {
@@ -86,7 +86,11 @@ export default function SignUp() {
             {...register("email", VALIDATION_RULE.email)}
           />
           <FormButton
-            isLoading={isSubmitting}
+            isLoading={
+              isSubmitting ||
+              emailAuthKeyMutation.isLoading ||
+              duplicateCheckMutation.isLoading
+            }
             isDisabled={!isValid || !isDirty}
           >
             가입하기
