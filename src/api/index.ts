@@ -11,7 +11,7 @@ interface CustomInstance extends AxiosInstance {
 const axiosInstance = (baseURL: string = ""): CustomInstance => {
   const accessToken =
     typeof window !== "undefined"
-      ? window.sessionStorage.getItem("accessToken")
+      ? window.sessionStorage.getItem("accessToken") ?? ""
       : "";
 
   const instance = axios.create({
