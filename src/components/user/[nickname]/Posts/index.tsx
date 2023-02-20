@@ -19,7 +19,7 @@ export default function Posts({ nickname }: PostsProps) {
 
   return (
     <VStack>
-      <FeedList feedData={feedsQuery.data} />
+      <FeedList feedsData={feedsQuery.data} />
     </VStack>
   );
 }
