@@ -1,9 +1,9 @@
 import { ProfileTabName } from "@/types/data/user";
 import { Tab, Tabs, TabList, TabPanels, TabPanel } from "@chakra-ui/react";
 import router from "next/router";
-import FollowList from "../ProfileFeed/FollowList";
-import Posts from "../ProfileFeed/Posts";
-import Saved from "../ProfileFeed/Saved";
+import FollowList from "../FollowList";
+import Posts from "../Posts/Posts";
+import Saved from "../Saved";
 
 const selectedList: ProfileTabName[] = [
   "posts",
