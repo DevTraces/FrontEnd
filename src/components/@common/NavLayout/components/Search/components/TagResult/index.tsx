@@ -12,7 +12,7 @@ export default function TagAutoComplete() {
 
   const tagAutoCompleteQuery = useQuery({
     queryKey: searchKeys.autocomplete(search),
-    queryFn: ({ queryKey }) => getAutoCompleteResult(queryKey[1])
+    queryFn: ({ queryKey }) => getAutoCompleteResult(queryKey[1], 0)
   });
 
   if (tagAutoCompleteQuery.isError) return <>AutoComplete 에러 발생</>;

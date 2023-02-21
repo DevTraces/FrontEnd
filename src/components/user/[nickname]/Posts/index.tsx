@@ -11,7 +11,7 @@ type PostsProps = {
 export default function Posts({ nickname }: PostsProps) {
   const feedsQuery = useQuery({
     queryKey: feedsKeys.feeds(nickname),
-    queryFn: () => getFeeds(nickname)
+    queryFn: () => getFeeds(nickname, 0)
   });
 
   if (feedsQuery.isLoading) return <>Posts 로딩중...</>;

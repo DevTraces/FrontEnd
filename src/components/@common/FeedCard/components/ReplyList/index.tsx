@@ -19,7 +19,7 @@ export default function ReplyList() {
 
   const repliesQuery = useQuery({
     queryKey: feedsKeys.replies(feedId),
-    queryFn: () => getReplies(feedId)
+    queryFn: () => getReplies(feedId, 0)
   });
 
   const {
