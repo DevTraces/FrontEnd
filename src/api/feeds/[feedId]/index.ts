@@ -1,9 +1,8 @@
 import api from "@/api";
 import { EditorPublishData, FeedData, FileImage } from "@/types/data/feed";
 
-export const getFeed = async (feedId: number) => {
-  return api.prod.get<FeedData>(`/api/feeds/${feedId}`);
-};
+export const getFeed = async (feedId: number) =>
+  api.prod.get<FeedData>(`/api/feeds/${feedId}`);
 
 export const deleteFeed = (feedId: number) =>
   api.prod.delete(`/api/feeds/${feedId}`);

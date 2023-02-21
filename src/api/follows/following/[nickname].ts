@@ -10,8 +10,8 @@ export type FollowItemData = {
 export const getFollowingList = (
   nickname: string,
   page: number,
-  pageSize: number
+  pageSize: number = 10
 ) =>
-  api.dev.get<FollowItemData[]>(`/api/follows/following/${nickname}`, {
+  api.prod.get<FollowItemData[]>(`/api/follows/following/${nickname}`, {
     params: { page, pageSize }
   });

@@ -25,7 +25,7 @@ export default function TagResult() {
 
   const tagQuery = useQuery({
     queryKey: searchKeys.hashtags(tag),
-    queryFn: ({ queryKey }) => getHashtagResult(queryKey[1])
+    queryFn: ({ queryKey }) => getHashtagResult(queryKey[1], 0)
   });
 
   if (tagQuery.isError) return <>태그결과 에러</>;

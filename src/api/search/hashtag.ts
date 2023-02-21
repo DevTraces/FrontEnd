@@ -10,8 +10,11 @@ type HashTagResult = {
   feedInfoList: HashTagData[];
 };
 
-export async function getHashtagResult(hashtag: string) {
-  return api.dev.get<HashTagResult>("/api/search/hashtags", {
-    params: { keyword: hashtag }
+export const getHashtagResult = (
+  hashtag: string,
+  page: number,
+  pageSize: number = 10
+) =>
+  api.dev.get<HashTagResult>("/api/search/hashtags", {
+    params: { keyword: hashtag, page, pageSize }
   });
-}

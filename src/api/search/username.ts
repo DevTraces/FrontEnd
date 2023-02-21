@@ -7,8 +7,11 @@ type UserResultData = {
   profileImageUrl: string;
 };
 
-export async function getUsernameResult(username: string) {
-  return api.dev.get<UserResultData[]>("/api/search/username", {
-    params: { keyword: username }
+export const getUsernameResult = (
+  username: string,
+  page: number,
+  pageSize: number = 10
+) =>
+  api.dev.get<UserResultData[]>("/api/search/username", {
+    params: { keyword: username, page, pageSize }
   });
-}
