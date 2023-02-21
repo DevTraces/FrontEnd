@@ -1,3 +1,4 @@
+import userAtom from "@/atoms/userAtom";
 import Logo from "@/components/@common/Logo";
 import {
   Box,
@@ -10,12 +11,16 @@ import {
 } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
-import { Nav, NAVS } from "../../constants/nav";
-import SearchProvider from "../SearchContext";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useRecoilValue } from "recoil";
+import { generateNavs, Nav } from "../../constants/nav";
 import Drawer from "../Drawer";
+import SearchProvider from "../SearchContext";
 
 export default function SideBar() {
+  const user = useRecoilValue(userAtom);
+  const navs = useMemo(() => generateNavs(user.nickname), [user.nickname]);
+
   const router = useRouter();
   const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
   const [selectedNav, setSelectedNav] = useState<Nav["key"] | null>(null);
@@ -96,7 +101,7 @@ export default function SideBar() {
             </Show>
           </Flex>
 
-          {NAVS.map(({ key, title, icon, href }) => (
+          {navs.map(({ key, title, icon, href }) => (
             <Flex
               key={key}
               pl={10}

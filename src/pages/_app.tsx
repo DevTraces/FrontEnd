@@ -1,7 +1,9 @@
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { AppProps } from "next/app";
 import Script from "next/script";
+import { useState } from "react";
 import { RecoilRoot } from "recoil";
 
 const theme = extendTheme({
@@ -20,9 +22,8 @@ const theme = extendTheme({
   }
 });
 
-const queryClient = new QueryClient();
-
 export default function App({ Component, pageProps }: AppProps) {
+  const [queryClient] = useState(() => new QueryClient());
   const initKakao = () => {
     if (typeof window !== "undefined")
       window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY);
@@ -41,6 +42,7 @@ export default function App({ Component, pageProps }: AppProps) {
           />
         </ChakraProvider>
       </RecoilRoot>
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 }
