@@ -1,5 +1,5 @@
 import api from "@/api";
-import { ReplyData } from "./replies/[replyId]/rereplies";
+import { ReplyData } from "@/types/data/reply";
 
 export const getReplies = (feedId: number) =>
   api.prod.get<ReplyData[]>(`/api/feeds/${feedId}/replies?page=0&pageSize=10`);
