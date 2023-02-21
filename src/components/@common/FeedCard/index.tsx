@@ -1,7 +1,11 @@
 import feedAtom from "@/atoms/feedAtom";
 import userAtom from "@/atoms/userAtom";
+import useFeed from "@/hooks/useFeed";
+import feedsKeys from "@/queryKeys/feedsKeys";
 import { FeedData } from "@/types/data/feed";
 import { Avatar, Flex, Text, useDisclosure } from "@chakra-ui/react";
+import { useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/router";
 import { ComponentProps, useState } from "react";
 import { RecoilRoot, useRecoilValue } from "recoil";
 import Carousel from "./components/Carousel";
@@ -17,8 +21,16 @@ type FeedCardProps = {
 
 export default function FeedCard({ feedData, ...restProps }: FeedCardProps) {
   const user = useRecoilValue(userAtom);
-
+  const router = useRouter();
   const [isReplyOpen, setIsReplyOpen] = useState(false);
+
+  const queryClient = useQueryClient();
+
+  const { delete: deleteFeed } = useFeed({
+    onDelete: () => {
+      queryClient.invalidateQueries(feedsKeys.feeds(user.nickname));
+    }
+  });
 
   const {
     isOpen: isAlertOpen,
@@ -33,9 +45,13 @@ export default function FeedCard({ feedData, ...restProps }: FeedCardProps) {
       }}
     >
       <DeleteConfirmDialog
+        title="게시물"
         isOpen={isAlertOpen}
         onClose={onAlertClose}
-        onConfirm={onAlertClose}
+        onDelete={() => {
+          deleteFeed(feedData.feedId);
+          onAlertClose();
+        }}
       />
       <Flex
         direction="column"
@@ -49,7 +65,12 @@ export default function FeedCard({ feedData, ...restProps }: FeedCardProps) {
           <Avatar boxSize={10} />
           <Text fontWeight="bold">{feedData.authorNickname}</Text>
           {feedData.authorNickname === user.nickname && (
-            <MorePopover onDeleteClick={onAlertOpen} />
+            <MorePopover
+              onDeleteClick={onAlertOpen}
+              onEditClick={() => {
+                router.push(`/post/edit/${feedData.feedId}`);
+              }}
+            />
           )}
         </Flex>
         <Carousel boxSize={450} />
