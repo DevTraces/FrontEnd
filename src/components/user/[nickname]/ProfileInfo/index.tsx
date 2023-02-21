@@ -1,32 +1,34 @@
-import userAtom from "@/atoms/userAtom";
 import useAuth from "@/hooks/useAuth";
 import { ProfileData } from "@/types/data/user";
 import { Avatar, Box, Button, HStack, Text, VStack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useRecoilValue } from "recoil";
 import CircledImage from "../../../@common/CircledImage";
 
-type ProfileProps = ProfileData & React.ComponentProps<typeof VStack>;
+type ProfileProps = {
+  profileData: ProfileData;
+} & React.ComponentProps<typeof VStack>;
 
 export default function ProfileInfo({
-  nickname,
-  username,
-  description,
-  totalFeedNumber,
-  followerNumber,
-  followingNumber,
-  profileImageUrl,
+  profileData: {
+    nickname,
+    username,
+    description,
+    totalFeedNumber,
+    followerNumber,
+    followingNumber,
+    profileImageUrl
+  },
   ...restProps
 }: ProfileProps) {
   const router = useRouter();
-  const user = useRecoilValue(userAtom);
-  const isMyProfile = nickname === user.nickname;
+  const isMyProfile = true;
 
   const { signOut } = useAuth({
     onSignOut: () => {
       router.push("/");
     }
   });
+
   return (
     <VStack gap="20px" {...restProps}>
       <HStack gap="20px">
