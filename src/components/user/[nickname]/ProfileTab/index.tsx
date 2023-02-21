@@ -51,6 +51,8 @@ export default function ProfileTab({ nickname, selectedTab }: ProfileTabProps) {
     }
   };
 
+  if (!selectedTab) return null;
+
   return (
     <Tabs
       variant="line"

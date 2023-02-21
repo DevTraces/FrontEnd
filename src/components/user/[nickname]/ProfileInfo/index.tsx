@@ -1,24 +1,33 @@
-import userAtom from "@/atoms/userAtom";
+import useAuth from "@/hooks/useAuth";
 import { ProfileData } from "@/types/data/user";
 import { Avatar, Box, Button, HStack, Text, VStack } from "@chakra-ui/react";
-import Link from "next/link";
-import { useRecoilValue } from "recoil";
+import { useRouter } from "next/router";
 import CircledImage from "../../../@common/CircledImage";
 
-type ProfileProps = ProfileData & React.ComponentProps<typeof VStack>;
+type ProfileProps = {
+  profileData: ProfileData;
+} & React.ComponentProps<typeof VStack>;
 
 export default function ProfileInfo({
-  nickname,
-  username,
-  description,
-  totalFeedNumber,
-  followerNumber,
-  followingNumber,
-  profileImageUrl,
+  profileData: {
+    nickname,
+    username,
+    description,
+    totalFeedNumber,
+    followerNumber,
+    followingNumber,
+    profileImageUrl
+  },
   ...restProps
 }: ProfileProps) {
-  const user = useRecoilValue(userAtom);
-  const isMyProfile = nickname === user.nickname;
+  const router = useRouter();
+  const isMyProfile = true;
+
+  const { signOut } = useAuth({
+    onSignOut: () => {
+      router.push("/");
+    }
+  });
 
   return (
     <VStack gap="20px" {...restProps}>
@@ -34,16 +43,29 @@ export default function ProfileInfo({
               {username}
             </Text>
             {isMyProfile && (
-              <Link href={`/accounts/edit?nickname=${nickname}`}>
+              <>
                 <Button
                   bg="gray.200"
                   colorScheme="gray"
                   fontWeight="bold"
                   size="sm"
+                  onClick={() => {
+                    router.push(`/accounts/edit?nickname=${nickname}`);
+                  }}
                 >
                   프로필 편집
                 </Button>
-              </Link>
+                <Button
+                  bg="red.400"
+                  colorScheme="red"
+                  fontWeight="bold"
+                  color="white"
+                  size="sm"
+                  onClick={signOut}
+                >
+                  로그아웃
+                </Button>
+              </>
             )}
           </HStack>
           <Text fontSize="md" color="gray.500" mb="10px">
