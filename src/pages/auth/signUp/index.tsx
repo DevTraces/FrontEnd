@@ -76,7 +76,7 @@ export default function SignUp() {
         <Text fontSize="2xl" textAlign="center" wordBreak="keep-all">
           그림을 좋아하는 사람들과 소통하려면 가입하세요.
         </Text>
-        <KakaoLoginButton />
+        <KakaoLoginButton type="signUp" />
         <Divider />
         <form style={{ width: "100%" }} onSubmit={handleFormSubmit}>
           <AuthTextInput
