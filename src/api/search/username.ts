@@ -12,6 +12,6 @@ export const getUsernameResult = (
   page: number,
   pageSize: number = 10
 ) =>
-  api.dev.get<UserResultData[]>("/api/search/username", {
+  api.prod.get<UserResultData[]>("/api/search/username", {
     params: { keyword: username, page, pageSize }
   });
