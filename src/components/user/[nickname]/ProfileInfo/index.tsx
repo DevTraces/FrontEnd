@@ -1,7 +1,8 @@
 import userAtom from "@/atoms/userAtom";
+import useAuth from "@/hooks/useAuth";
 import { ProfileData } from "@/types/data/user";
 import { Avatar, Box, Button, HStack, Text, VStack } from "@chakra-ui/react";
-import Link from "next/link";
+import { useRouter } from "next/router";
 import { useRecoilValue } from "recoil";
 import CircledImage from "../../../@common/CircledImage";
 
@@ -17,9 +18,15 @@ export default function ProfileInfo({
   profileImageUrl,
   ...restProps
 }: ProfileProps) {
+  const router = useRouter();
   const user = useRecoilValue(userAtom);
   const isMyProfile = nickname === user.nickname;
 
+  const { signOut } = useAuth({
+    onSignOut: () => {
+      router.push("/");
+    }
+  });
   return (
     <VStack gap="20px" {...restProps}>
       <HStack gap="20px">
@@ -34,16 +41,29 @@ export default function ProfileInfo({
               {username}
             </Text>
             {isMyProfile && (
-              <Link href={`/accounts/edit?nickname=${nickname}`}>
+              <>
                 <Button
                   bg="gray.200"
                   colorScheme="gray"
                   fontWeight="bold"
                   size="sm"
+                  onClick={() => {
+                    router.push(`/accounts/edit?nickname=${nickname}`);
+                  }}
                 >
                   프로필 편집
                 </Button>
-              </Link>
+                <Button
+                  bg="red.400"
+                  colorScheme="red"
+                  fontWeight="bold"
+                  color="white"
+                  size="sm"
+                  onClick={signOut}
+                >
+                  로그아웃
+                </Button>
+              </>
             )}
           </HStack>
           <Text fontSize="md" color="gray.500" mb="10px">
