@@ -8,17 +8,20 @@ interface CustomInstance extends AxiosInstance {
   patch<T>(...params: Parameters<AxiosInstance["patch"]>): Promise<T>;
 }
 
-const axiosInstance = (baseURL: string = ""): CustomInstance => {
+const getAccessToken = () => {
   const accessToken =
     typeof window !== "undefined"
       ? window.sessionStorage.getItem("accessToken") ?? ""
       : "";
+  return accessToken;
+};
 
+const axiosInstance = (baseURL: string = ""): CustomInstance => {
   const instance = axios.create({
     baseURL,
     headers: {
       "Content-Type": "application/json",
-      Authorization: accessToken
+      Authorization: getAccessToken()
     },
     withCredentials: true,
     transformResponse: async res => {
@@ -41,7 +44,11 @@ const axiosInstance = (baseURL: string = ""): CustomInstance => {
       );
     }
   });
-
+  instance.interceptors.request.use(config => {
+    // eslint-disable-next-line no-param-reassign
+    config.headers.Authorization = getAccessToken();
+    return config;
+  });
   instance.interceptors.response.use(res => res.data);
 
   return instance;
