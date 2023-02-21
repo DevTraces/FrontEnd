@@ -79,7 +79,7 @@ export default function ReplyItem({
         onDeleteClick={() => deleteReply(replyId)}
         onEditClick={() => {}}
       />
-      <Accordion allowToggle data-herere="accordion">
+      <Accordion allowToggle>
         <AccordionItem border="none" pl="32px">
           <AccordionButton ref={openMoreBtnRef}>답글 더보기</AccordionButton>
           <AccordionPanel>
