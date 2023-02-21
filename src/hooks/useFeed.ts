@@ -1,5 +1,5 @@
 import { postFeeds } from "@/api/feeds";
-import { deleteFeed, putFeed } from "@/api/feeds/[feedId]";
+import { deleteFeed, postFeed } from "@/api/feeds/[feedId]";
 import feedsKeys from "@/queryKeys/feedsKeys";
 import { EditorPublishData } from "@/types/data/feed";
 import { useToast } from "@chakra-ui/react";
@@ -45,7 +45,7 @@ export default function useFeed({
     }: {
       feedId: number;
       data: Partial<EditorPublishData>;
-    }) => putFeed(feedId, data),
+    }) => postFeed(feedId, data),
     onSuccess: (data, { feedId }) => {
       toast({
         title: "게시물이 성공적으로 수정되었어요",

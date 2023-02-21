@@ -7,7 +7,7 @@ export const getFeed = async (feedId: number) =>
 export const deleteFeed = (feedId: number) =>
   api.prod.delete(`/api/feeds/${feedId}`);
 
-export const putFeed = (
+export const postFeed = (
   feedId: number,
   { images, textContent, tags }: Partial<EditorPublishData>
 ) => {
@@ -28,7 +28,7 @@ export const putFeed = (
   }
 
   if (tags) tags.forEach(tag => formData.append("hashtags", tag));
-  return api.prod.put(`/api/feeds/${feedId}`, formData, {
+  return api.prod.post(`/api/feeds/${feedId}`, formData, {
     headers: {
       "Content-Type": "multipart/form-data"
     }
