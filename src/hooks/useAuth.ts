@@ -30,9 +30,9 @@ export default function useAuth({
   const signInMutation = useMutation({
     mutationFn: ({ email, password }: SignInData) =>
       postSignIn(email, password),
-    onSuccess: ({ accessToken }) => {
+    onSuccess: ({ accessToken, nickname }) => {
       sessionStorage.setItem("accessToken", accessToken);
-      setUser({ nickname: "codeisneverodd" });
+      setUser({ nickname });
       onSignIn();
     },
     onError: (e: APIError) => {
@@ -49,9 +49,9 @@ export default function useAuth({
 
   const oAuthSignInMutation = useMutation({
     mutationFn: (oAuthToken: string) => postOAuth(oAuthToken),
-    onSuccess: ({ accessToken }) => {
+    onSuccess: ({ accessToken, nickname }) => {
       sessionStorage.setItem("accessToken", accessToken);
-      setUser({ nickname: "codeisneverodd" });
+      setUser({ nickname });
       onOAuthKakao();
     },
     onError: () => {
