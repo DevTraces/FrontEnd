@@ -21,9 +21,9 @@ export default function UserItem({
       }}
     >
       {profileImageUrl ? (
-        <CircledImage size="10" alt="프로필 이미지" src={profileImageUrl} />
+        <CircledImage size="40px" alt="프로필 이미지" src={profileImageUrl} />
       ) : (
-        <Avatar size="10" />
+        <Avatar boxSize="40px" />
       )}
       <Link href={`/user/${nickname}/posts`}>
         <VStack spacing="0" alignItems="start">
