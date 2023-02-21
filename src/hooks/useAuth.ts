@@ -1,8 +1,11 @@
 import { postSignIn } from "@/api/auth/sign-in";
+import { postOAuthSignIn } from "@/api/oauth/kakao/callback";
+import { postOAuthToken } from "@/api/oauth/token";
 import userAtom from "@/atoms/userAtom";
 import { APIError } from "@/types/error";
 import { useToast } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
+import { useCallback } from "react";
 import { useSetRecoilState } from "recoil";
 
 type SignInData = {
@@ -13,9 +16,13 @@ type SignInData = {
 type UseAuthParams = {
   onSignIn?: () => void;
   onSignOut?: () => void;
+  onOAuthKakao?: () => void;
 };
 
-export default function useAuth({ onSignIn = () => {} }: UseAuthParams = {}) {
+export default function useAuth({
+  onSignIn = () => {},
+  onOAuthKakao = () => {}
+}: UseAuthParams = {}) {
   const toast = useToast();
 
   const setUser = useSetRecoilState(userAtom);
@@ -40,8 +47,38 @@ export default function useAuth({ onSignIn = () => {} }: UseAuthParams = {}) {
     }
   });
 
+  const oAuthSignInMutation = useMutation({
+    mutationFn: (oAuthToken: string) => postOAuthSignIn(oAuthToken),
+    onSuccess: ({ accessToken }) => {
+      sessionStorage.setItem("accessToken", accessToken);
+      setUser({ nickname: "codeisneverodd" });
+      onOAuthKakao();
+    },
+    onError: () => {
+      toast({
+        title: "로그인에 실패했어요",
+        status: "error",
+        duration: 3000
+      });
+    }
+  });
+
+  const { mutate: oAuthKakaoSignInMutate } = useMutation({
+    mutationFn: (code: string) => postOAuthToken(code),
+    onSuccess: res => {
+      if (res.status === 200) {
+        const { access_token: oAuthToken } = res.data;
+        oAuthSignInMutation.mutate(oAuthToken);
+      }
+    }
+  });
+
   return {
     signIn: (data: SignInData) => signInMutation.mutate(data),
+    oAuthKakao: useCallback(
+      (code: string) => oAuthKakaoSignInMutate(code),
+      [oAuthKakaoSignInMutate]
+    ),
     signOut: () => {}
   };
 }
