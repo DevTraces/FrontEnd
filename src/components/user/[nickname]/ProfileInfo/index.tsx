@@ -1,6 +1,8 @@
+import userAtom from "@/atoms/userAtom";
 import { ProfileData } from "@/types/data/user";
-import { Avatar, VStack, Button, Box, Text, HStack } from "@chakra-ui/react";
+import { Avatar, Box, Button, HStack, Text, VStack } from "@chakra-ui/react";
 import Link from "next/link";
+import { useRecoilValue } from "recoil";
 import CircledImage from "../../../@common/CircledImage";
 
 type ProfileProps = ProfileData & React.ComponentProps<typeof VStack>;
@@ -15,7 +17,8 @@ export default function ProfileInfo({
   profileImageUrl,
   ...restProps
 }: ProfileProps) {
-  const isMyProfile = nickname === "codeisneverodd";
+  const user = useRecoilValue(userAtom);
+  const isMyProfile = nickname === user.nickname;
 
   return (
     <VStack gap="20px" {...restProps}>

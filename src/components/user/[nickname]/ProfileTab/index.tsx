@@ -1,6 +1,8 @@
+import userAtom from "@/atoms/userAtom";
 import { ProfileTabName } from "@/types/data/user";
 import { Tab, Tabs, TabList, TabPanels, TabPanel } from "@chakra-ui/react";
 import router from "next/router";
+import { useRecoilValue } from "recoil";
 import FollowList from "../FollowList";
 import Posts from "../Posts";
 import Saved from "../Saved";
@@ -18,7 +20,8 @@ type ProfileTabProps = {
 };
 
 export default function ProfileTab({ nickname, selectedTab }: ProfileTabProps) {
-  const isMyProfile = nickname === "choonsik";
+  const user = useRecoilValue(userAtom);
+  const isMyProfile = nickname === user.nickname;
 
   const tabList = isMyProfile
     ? selectedList
