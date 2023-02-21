@@ -12,6 +12,6 @@ export const getNicknameResult = (
   page: number,
   pageSize: number = 10
 ) =>
-  api.dev.get<UserResultData[]>("/api/search/nickname", {
+  api.prod.get<UserResultData[]>("/api/search/nickname", {
     params: { keyword: nickname, page, pageSize }
   });

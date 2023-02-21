@@ -21,7 +21,7 @@ export default function TagAutoComplete() {
   return (
     <ResultContainer>
       {search ? (
-        tagAutoCompleteQuery.data.autoCompleteWords.map(word => (
+        tagAutoCompleteQuery.data.map(word => (
           <Link key={word} href={`/explore/tags/${word}`}>
             <HStack
               w="100%"
