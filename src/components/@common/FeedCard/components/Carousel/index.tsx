@@ -12,10 +12,11 @@ type CarouselProps = {
 
 export default function Carousel({ boxSize }: CarouselProps) {
   const { imageUrls } = useRecoilValue(feedAtom);
-  const MIN_IMG_COUNT = 0;
-  const MAX_IMG_LENGTH = imageUrls.length - 1;
 
   const [current, setCurrent] = useState(0);
+  if (!imageUrls) return null;
+  const MIN_IMG_COUNT = 0;
+  const MAX_IMG_LENGTH = imageUrls.length - 1;
 
   const handleArrowClick = (direction: "left" | "right") => {
     if (direction === "left" && current > MIN_IMG_COUNT)
