@@ -43,17 +43,17 @@ export default function ReplyItem({
     formState: { errors }
   } = useForm<FormData>({ mode: "onChange" });
 
-  const { create: createRereply, delete: deleteRereply } = useRereply(
-    feedId,
-    replyId,
-    {
-      onCreate: () => {
-        reset();
-      }
+  const {
+    create: createRereply,
+    update: updateRereply,
+    delete: deleteRereply
+  } = useRereply(feedId, replyId, {
+    onCreate: () => {
+      reset();
     }
-  );
+  });
 
-  const { delete: deleteReply } = useReply(feedId);
+  const { update: updateReply, delete: deleteReply } = useReply(feedId);
 
   const handleFormSubmit = handleSubmit(({ newContent }) =>
     createRereply(newContent)
@@ -72,12 +72,12 @@ export default function ReplyItem({
       <ReplyContent
         authorNickname={authorNickname}
         content={content}
-        onReplyClick={async () => {
+        onReply={async () => {
           await openMoreBtnRef.current?.click();
           inputRef.current?.focus();
         }}
-        onDeleteClick={() => deleteReply(replyId)}
-        onEditClick={() => {}}
+        onDelete={() => deleteReply(replyId)}
+        onEdit={newContent => updateReply(replyId, newContent)}
       />
       <Accordion allowToggle>
         <AccordionItem border="none" pl="32px">
@@ -89,11 +89,11 @@ export default function ReplyItem({
                   key={r.rereplyId}
                   authorNickname={r.authorNickname}
                   content={r.content}
-                  onReplyClick={() => {
+                  onReply={() => {
                     inputRef.current?.focus();
                   }}
-                  onDeleteClick={() => deleteRereply(r.rereplyId)}
-                  onEditClick={() => {}}
+                  onDelete={() => deleteRereply(r.rereplyId)}
+                  onEdit={newContent => updateRereply(r.rereplyId, newContent)}
                 />
               ))}
             </Flex>
