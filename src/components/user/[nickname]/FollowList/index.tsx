@@ -19,8 +19,8 @@ export default function FollowList({ nickname, type }: FollowListProps) {
     queryFn: () =>
       // TODO: pagination 필요
       type === "follower"
-        ? getFollowerList(nickname, 1, 1)
-        : getFollowingList(nickname, 1, 1)
+        ? getFollowerList(nickname, 0, 1)
+        : getFollowingList(nickname, 0, 1)
   });
 
   if (followListQuery.isError) return <>FollowList 에러 발생</>;
