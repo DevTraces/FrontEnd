@@ -1,5 +1,5 @@
 import { postSignIn } from "@/api/auth/sign-in";
-import { postOAuthSignIn } from "@/api/oauth/kakao/callback";
+import { postOAuth } from "@/api/oauth/kakao/callback";
 import { postOAuthToken } from "@/api/oauth/token";
 import userAtom from "@/atoms/userAtom";
 import { APIError } from "@/types/error";
@@ -48,7 +48,7 @@ export default function useAuth({
   });
 
   const oAuthSignInMutation = useMutation({
-    mutationFn: (oAuthToken: string) => postOAuthSignIn(oAuthToken),
+    mutationFn: (oAuthToken: string) => postOAuth(oAuthToken),
     onSuccess: ({ accessToken }) => {
       sessionStorage.setItem("accessToken", accessToken);
       setUser({ nickname: "codeisneverodd" });
