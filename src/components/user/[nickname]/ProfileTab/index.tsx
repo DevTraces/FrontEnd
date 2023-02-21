@@ -18,7 +18,7 @@ type ProfileTabProps = {
 };
 
 export default function ProfileTab({ nickname, selectedTab }: ProfileTabProps) {
-  const isMyProfile = nickname === "choonsik";
+  const isMyProfile = nickname === "codeisneverodd";
 
   const tabList = isMyProfile
     ? selectedList

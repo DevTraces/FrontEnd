@@ -8,7 +8,7 @@ import Link from "next/link";
 export default function Saved() {
   const bookmarkQuery = useQuery({
     queryKey: bookmarkKeys.bookmarkList,
-    queryFn: getBookmarkList
+    queryFn: () => getBookmarkList(0)
   });
 
   if (bookmarkQuery.isError) return <>Bookmark에서 에러가 발생했습니다.</>;

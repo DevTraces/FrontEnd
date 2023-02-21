@@ -15,7 +15,7 @@ export default function Feed() {
   const router = useRouter();
   const feedQuery = useQuery({
     queryKey: feedsKeys.feeds(user.nickname),
-    queryFn: () => getFeeds(user.nickname)
+    queryFn: () => getFeeds(user.nickname, 0)
   });
 
   useEffect(() => {

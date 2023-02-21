@@ -17,8 +17,8 @@ export default function UserList({ target }: UserListProps) {
   const userQuery = useQuery({
     queryKey: searchKeys[target](search),
     queryFn: ({ queryKey }) => {
-      if (queryKey[0] === "nickname") return getNicknameResult(queryKey[1]);
-      return getUsernameResult(queryKey[1]);
+      if (queryKey[0] === "nickname") return getNicknameResult(queryKey[1], 0);
+      return getUsernameResult(queryKey[1], 0);
     }
   });
 

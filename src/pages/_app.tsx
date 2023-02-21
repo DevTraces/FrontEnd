@@ -24,7 +24,8 @@ const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }: AppProps) {
   const initKakao = () => {
-    window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY);
+    if (typeof window !== "undefined")
+      window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY);
   };
 
   return (
