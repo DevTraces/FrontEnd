@@ -37,7 +37,7 @@ export default function SignIn() {
         <Center color="black">
           <Logo type="full" height={50} />
         </Center>
-        <KakaoLoginButton />
+        <KakaoLoginButton type="signIn" />
         <Divider />
         <form style={{ width: "100%" }} onSubmit={handleSubmit(signIn)}>
           <AuthTextInput
