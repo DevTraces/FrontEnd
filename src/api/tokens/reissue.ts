@@ -1,7 +1,7 @@
 import api from "@/api";
 
-export async function postTokensReissue() {
-  return api.dev.post<{
+export const postTokensReissue = () =>
+  api.prod.post<{
     accessToken: string;
+    nickname: string;
   }>("/api/tokens/reissue");
-}

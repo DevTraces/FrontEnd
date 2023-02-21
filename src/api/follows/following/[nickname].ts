@@ -7,11 +7,11 @@ export type FollowItemData = {
   isFollowing: boolean;
 };
 
-export const getFollowingList: (
+export const getFollowingList = (
   nickname: string,
   page: number,
-  pageSize?: number
-) => Promise<FollowItemData[]> = (nickname, page, pageSize = 10) =>
-  api.dev.get<FollowItemData[]>(`/api/follows/following/${nickname}`, {
+  pageSize: number = 10
+) =>
+  api.prod.get<FollowItemData[]>(`/api/follows/following/${nickname}`, {
     params: { page, pageSize }
   });
