@@ -1,5 +1,6 @@
 import DeleteConfirmDialog from "@/components/@common/FeedCard/components/DeleteConfirmDialog";
 import MorePopover from "@/components/@common/FeedCard/components/MorePopover";
+import ReplyEditModal from "@/components/@common/FeedCard/components/ReplyEditModal";
 import { ReplyData } from "@/types/data/reply";
 import {
   Avatar,
@@ -13,22 +14,28 @@ import {
 import { MouseEventHandler } from "react";
 
 type ReplyContentProps = Pick<ReplyData, "authorNickname" | "content"> & {
-  onReplyClick: MouseEventHandler<HTMLButtonElement>;
-  onDeleteClick: () => void;
-  onEditClick: () => void;
+  onReply: MouseEventHandler<HTMLButtonElement>;
+  onDelete: () => void;
+  onEdit: (newContent: string) => void;
 };
 
 export default function ReplyContent({
   authorNickname,
   content,
-  onReplyClick,
-  onDeleteClick,
-  onEditClick
+  onReply,
+  onDelete,
+  onEdit
 }: ReplyContentProps) {
   const {
     isOpen: isAlertOpen,
     onOpen: onAlertOpen,
     onClose: onAlertClose
+  } = useDisclosure();
+
+  const {
+    isOpen: isEditOpen,
+    onOpen: onEditOpen,
+    onClose: onEditClose
   } = useDisclosure();
 
   return (
@@ -38,8 +45,18 @@ export default function ReplyContent({
         isOpen={isAlertOpen}
         onClose={onAlertClose}
         onDelete={() => {
-          onDeleteClick();
+          onDelete();
           onAlertClose();
+        }}
+      />
+      <ReplyEditModal
+        authorNickname={authorNickname}
+        defaultValue={content}
+        isOpen={isEditOpen}
+        onClose={onEditClose}
+        onPublish={newContent => {
+          onEdit(newContent);
+          onEditClose();
         }}
       />
 
@@ -63,11 +80,11 @@ export default function ReplyContent({
             <Box position="absolute" top="0" right="0">
               <MorePopover
                 onDeleteClick={onAlertOpen}
-                onEditClick={onEditClick}
+                onEditClick={onEditOpen}
               />
             </Box>
           </VStack>
-          <Button variant="ghost" size="sm" onClick={onReplyClick}>
+          <Button variant="ghost" size="sm" onClick={onReply}>
             답글 달기
           </Button>
         </Box>
