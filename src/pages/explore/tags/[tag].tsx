@@ -40,9 +40,9 @@ export default function TagResult() {
         <Container centerContent mt={{ sm: "15px" }}>
           <VStack w="full" pt="30px" pb="40px">
             <HStack w="full" m="20px" gap="20px">
-              {tagQuery.data.feedInfoList[0] ? (
+              {tagQuery.data.feedList && tagQuery.data.feedList[0] ? (
                 <CircledImage
-                  src={tagQuery.data.feedInfoList[0].imageUrl}
+                  src={tagQuery.data.feedList[0].imageUrl}
                   alt="대표이미지"
                   size="80px"
                 />
@@ -61,7 +61,7 @@ export default function TagResult() {
             </HStack>
             {tagQuery.data.totalNumberOfSearches > 0 ? (
               <Grid w="full" templateColumns="repeat(3, 1fr)" gap="10px">
-                {tagQuery.data.feedInfoList.map(({ feedId, imageUrl }) => (
+                {tagQuery.data.feedList?.map(({ feedId, imageUrl }) => (
                   <GridItem key={feedId} position="relative">
                     <Link href={`/post/${feedId}`}>
                       <AspectRatio ratio={1 / 1}>
