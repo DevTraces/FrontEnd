@@ -1,19 +1,17 @@
-import {
-  getRereplies,
-  postRereplies,
-  ReplyData
-} from "@/api/feeds/[feedId]/replies/[replyId]/rereplies";
+import { getRereplies } from "@/api/feeds/[feedId]/replies/[replyId]/rereplies";
 import VALIDATION_RULE from "@/constants/auth/VALIDATION_RULE";
+import useReply from "@/hooks/useReply";
+import useRereply from "@/hooks/useRereply";
 import feedsKeys from "@/queryKeys/feedsKeys";
+import { ReplyData } from "@/types/data/reply";
 import {
   Accordion,
   AccordionButton,
   AccordionItem,
   AccordionPanel,
-  Flex,
-  useToast
+  Flex
 } from "@chakra-ui/react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useRef } from "react";
 import { useForm } from "react-hook-form";
 import ReplyInput from "../ReplyInput";
@@ -31,8 +29,7 @@ export default function ReplyItem({
   content
 }: ReplyItemProps) {
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const queryClient = useQueryClient();
-  const toast = useToast();
+  const openMoreBtnRef = useRef<HTMLButtonElement | null>(null);
 
   const rerepliesQuery = useQuery({
     queryKey: feedsKeys.rereplies(feedId, replyId),
@@ -46,27 +43,21 @@ export default function ReplyItem({
     formState: { errors }
   } = useForm<FormData>({ mode: "onChange" });
 
-  const rereplyMutation = useMutation({
-    mutationFn: ({ newContent }: { newContent: string }) =>
-      postRereplies(feedId, replyId, newContent),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: feedsKeys.rereplies(feedId, replyId)
-      });
-      reset();
-    },
-    onError: () => {
-      toast({
-        title: "댓글 등록에 실패했어요",
-        status: "error",
-        duration: 1000
-      });
+  const { create: createRereply, delete: deleteRereply } = useRereply(
+    feedId,
+    replyId,
+    {
+      onCreate: () => {
+        reset();
+      }
     }
-  });
+  );
 
-  const handleFormSubmit = handleSubmit(({ newContent }) => {
-    rereplyMutation.mutate({ newContent });
-  });
+  const { delete: deleteReply } = useReply(feedId);
+
+  const handleFormSubmit = handleSubmit(({ newContent }) =>
+    createRereply(newContent)
+  );
 
   if (rerepliesQuery.isError) return <>ReplyList에서 에러 발생.</>;
   if (rerepliesQuery.isLoading) return <>ReplyList 로딩 중...</>;
@@ -81,27 +72,32 @@ export default function ReplyItem({
       <ReplyContent
         authorNickname={authorNickname}
         content={content}
-        onReplyClick={() => {
+        onReplyClick={async () => {
+          await openMoreBtnRef.current?.click();
           inputRef.current?.focus();
         }}
+        onDeleteClick={() => deleteReply(replyId)}
+        onEditClick={() => {}}
       />
       <Accordion allowToggle>
         <AccordionItem border="none" pl="32px">
-          <AccordionButton>답글 더보기</AccordionButton>
+          <AccordionButton ref={openMoreBtnRef}>답글 더보기</AccordionButton>
           <AccordionPanel>
             <Flex direction="column" gap="12px">
               {rerepliesQuery.data.map(r => (
                 <ReplyContent
-                  key={r.replyId}
+                  key={r.rereplyId}
                   authorNickname={r.authorNickname}
                   content={r.content}
                   onReplyClick={() => {
                     inputRef.current?.focus();
                   }}
+                  onDeleteClick={() => deleteRereply(r.rereplyId)}
+                  onEditClick={() => {}}
                 />
               ))}
             </Flex>
-            <form>
+            <form onSubmit={handleFormSubmit}>
               <ReplyInput
                 errorMessage={errors.newContent?.message}
                 isInvalid={!!errors.newContent}

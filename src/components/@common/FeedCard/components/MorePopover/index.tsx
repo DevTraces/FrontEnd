@@ -1,4 +1,3 @@
-import feedAtom from "@/atoms/feedAtom";
 import {
   Box,
   Icon,
@@ -10,8 +9,6 @@ import {
 } from "@chakra-ui/react";
 import { faEdit, faEllipsis, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import router from "next/router";
-import { useRecoilValue } from "recoil";
 import PopoverIconButton from "../PopoverIconButton";
 
 type MorePopoverProps = {
@@ -23,7 +20,6 @@ export default function MorePopover({
   onDeleteClick = () => {},
   onEditClick = () => {}
 }: MorePopoverProps) {
-  const { feedId } = useRecoilValue(feedAtom);
   const {
     isOpen: isPopoverOpen,
     onOpen: onPopoverOpen,
@@ -41,7 +37,7 @@ export default function MorePopover({
           aria-label="더보기"
           ml="auto"
           p="8px"
-          bg="white"
+          bg="transparent"
           onClick={onPopoverOpen}
           icon={
             <Icon
@@ -63,13 +59,7 @@ export default function MorePopover({
           >
             삭제
           </PopoverIconButton>
-          <PopoverIconButton
-            icon={faEdit}
-            onClick={() => {
-              router.push(`/post/edit/${feedId}`);
-              onEditClick();
-            }}
-          >
+          <PopoverIconButton icon={faEdit} onClick={onEditClick}>
             편집
           </PopoverIconButton>
         </Box>

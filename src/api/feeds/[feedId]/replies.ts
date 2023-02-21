@@ -1,11 +1,11 @@
 import api from "@/api";
-import { ReplyData } from "./replies/[replyId]/rereplies";
+import { ReplyData } from "@/types/data/reply";
 
 export const getReplies = (feedId: number) =>
-  api.dev.get<ReplyData[]>(`/api/feeds/${feedId}/replies`);
+  api.prod.get<ReplyData[]>(`/api/feeds/${feedId}/replies?page=0&pageSize=10`);
 
 export const postReplies = (feedId: number, content: string) =>
-  api.dev.post<ReplyData[]>(
+  api.prod.post<ReplyData[]>(
     `/api/feeds/${feedId}/replies`,
 
     { content }

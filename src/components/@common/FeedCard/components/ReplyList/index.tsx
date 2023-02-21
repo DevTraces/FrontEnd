@@ -1,9 +1,10 @@
-import { getReplies, postReplies } from "@/api/feeds/[feedId]/replies";
+import { getReplies } from "@/api/feeds/[feedId]/replies";
 import feedAtom from "@/atoms/feedAtom";
 import VALIDATION_RULE from "@/constants/auth/VALIDATION_RULE";
+import useReply from "@/hooks/useReply";
 import feedsKeys from "@/queryKeys/feedsKeys";
-import { Flex, useToast } from "@chakra-ui/react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Box, Flex } from "@chakra-ui/react";
+import { useQuery } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { useRecoilValue } from "recoil";
 import ReplyInput from "./components/ReplyInput";
@@ -15,8 +16,6 @@ type FormData = {
 
 export default function ReplyList() {
   const { feedId } = useRecoilValue(feedAtom);
-  const queryClient = useQueryClient();
-  const toast = useToast();
 
   const repliesQuery = useQuery({
     queryKey: feedsKeys.replies(feedId),
@@ -30,25 +29,13 @@ export default function ReplyList() {
     formState: { errors }
   } = useForm<FormData>({ mode: "onChange" });
 
-  const replyMutation = useMutation({
-    mutationFn: ({ content }: { content: string }) =>
-      postReplies(feedId, content),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: feedsKeys.replies(feedId) });
+  const { create: createReply } = useReply(feedId, {
+    onCreate: () => {
       reset();
-    },
-    onError: () => {
-      toast({
-        title: "댓글 등록에 실패했어요",
-        status: "error",
-        duration: 1000
-      });
     }
   });
 
-  const handleFormSubmit = handleSubmit(({ content }) => {
-    replyMutation.mutate({ content });
-  });
+  const handleFormSubmit = handleSubmit(({ content }) => createReply(content));
 
   if (repliesQuery.isError) return <>ReplyList에서 에러 발생.</>;
   if (repliesQuery.isLoading) return <>ReplyList 로딩 중...</>;
@@ -64,9 +51,11 @@ export default function ReplyList() {
           {...register("content", VALIDATION_RULE.replyContent)}
         />
       </form>
-      {repliesQuery.data.map(r => (
-        <ReplyItem key={r.replyId} {...r} />
-      ))}
+      <Box px="10px">
+        {repliesQuery.data.map(r => (
+          <ReplyItem key={r.replyId} {...r} />
+        ))}
+      </Box>
     </Flex>
   );
 }
