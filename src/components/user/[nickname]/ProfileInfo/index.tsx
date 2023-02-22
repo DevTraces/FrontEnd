@@ -1,7 +1,10 @@
+import userAtom from "@/atoms/userAtom";
 import useAuth from "@/hooks/useAuth";
+import useFollow from "@/hooks/useFollow";
 import { ProfileData } from "@/types/data/user";
 import { Avatar, Box, Button, HStack, Text, VStack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import { useRecoilValue } from "recoil";
 import CircledImage from "../../../@common/CircledImage";
 
 type ProfileProps = {
@@ -16,18 +19,22 @@ export default function ProfileInfo({
     totalFeedNumber,
     followerNumber,
     followingNumber,
-    profileImageUrl
+    profileImageUrl,
+    isFollowing
   },
   ...restProps
 }: ProfileProps) {
   const router = useRouter();
-  const isMyProfile = true;
+  const user = useRecoilValue(userAtom);
+  const isMyProfile = nickname === user.nickname;
 
   const { signOut } = useAuth({
     onSignOut: () => {
       router.push("/");
     }
   });
+
+  const { toggle: toggleFollow } = useFollow();
 
   return (
     <VStack gap="20px" {...restProps}>
@@ -42,6 +49,18 @@ export default function ProfileInfo({
             <Text fontWeight="bold" fontSize="xl">
               {username}
             </Text>
+            {!isMyProfile && (
+              <Button
+                variant="outline"
+                colorScheme="purple"
+                fontWeight="bold"
+                size="sm"
+                onClick={() => toggleFollow(isFollowing, nickname)}
+              >
+                {isFollowing ? "팔로우 취소" : "팔로우"}
+              </Button>
+            )}
+
             {isMyProfile && (
               <>
                 <Button
