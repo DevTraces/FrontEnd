@@ -5,24 +5,15 @@ import { useToast } from "@chakra-ui/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRecoilValue } from "recoil";
 
-const useLike: (
-  feedId: number,
-  config?: {
-    onlike?: () => void;
-    onUnlike?: () => void;
-  }
-) => {
-  like: () => void;
-  unlike: () => void;
-} = (feedId, { onlike = () => {}, onUnlike = () => {} } = {}) => {
+const useLike = ({ onlike = () => {}, onUnlike = () => {} } = {}) => {
   const { nickname } = useRecoilValue(userAtom);
   const toast = useToast();
 
   const queryClient = useQueryClient();
 
   const likeMutation = useMutation({
-    mutationFn: () => postLike(feedId),
-    onSuccess: async () => {
+    mutationFn: ({ feedId }: { feedId: number }) => postLike(feedId),
+    onSuccess: async (res, { feedId }) => {
       toast({
         title: "좋아요를 눌렀어요",
         status: "success",
@@ -46,8 +37,8 @@ const useLike: (
   });
 
   const unlikeMutation = useMutation({
-    mutationFn: () => deleteLike(feedId),
-    onSuccess: async () => {
+    mutationFn: ({ feedId }: { feedId: number }) => deleteLike(feedId),
+    onSuccess: async (res, { feedId }) => {
       toast({
         title: "좋아요를 취소했어요",
         status: "success",
@@ -71,8 +62,8 @@ const useLike: (
   });
 
   return {
-    like: () => likeMutation.mutate(),
-    unlike: () => unlikeMutation.mutate()
+    like: (feedId: number) => likeMutation.mutate({ feedId }),
+    unlike: (feedId: number) => unlikeMutation.mutate({ feedId })
   };
 };
 

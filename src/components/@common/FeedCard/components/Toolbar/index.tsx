@@ -27,17 +27,17 @@ export default function Toolbar({
   const { liked, feedId, bookMarked } = useRecoilValue(feedAtom);
   const toast = useToast();
 
-  const { bookmark, unbookmark } = useBookmark(feedId);
-  const { like, unlike } = useLike(feedId);
+  const { bookmark, unbookmark } = useBookmark();
+  const { like, unlike } = useLike();
 
   const handleBookmarkClick = () => {
-    if (bookMarked) unbookmark();
-    else bookmark();
+    if (bookMarked) unbookmark(feedId);
+    else bookmark(feedId);
   };
 
   const handleLikeClick = () => {
-    if (liked) unlike();
-    else like();
+    if (liked) unlike(feedId);
+    else like(feedId);
   };
 
   const handleShareClick = () => {

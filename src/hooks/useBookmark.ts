@@ -5,24 +5,18 @@ import { useToast } from "@chakra-ui/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRecoilValue } from "recoil";
 
-const useBookmark: (
-  feedId: number,
-  config?: {
-    onBookmark?: () => void;
-    onUnbookmark?: () => void;
-  }
-) => {
-  bookmark: () => void;
-  unbookmark: () => void;
-} = (feedId, { onBookmark = () => {}, onUnbookmark = () => {} } = {}) => {
+const useBookmark = ({
+  onBookmark = () => {},
+  onUnbookmark = () => {}
+} = {}) => {
   const { nickname } = useRecoilValue(userAtom);
   const toast = useToast();
 
   const queryClient = useQueryClient();
 
   const bookmarkMutation = useMutation({
-    mutationFn: () => postBookmark(feedId),
-    onSuccess: async () => {
+    mutationFn: ({ feedId }: { feedId: number }) => postBookmark(feedId),
+    onSuccess: async (res, { feedId }) => {
       toast({
         title: "북마크에 추가되었어요",
         status: "success",
@@ -46,8 +40,8 @@ const useBookmark: (
   });
 
   const unbookmarkMutation = useMutation({
-    mutationFn: () => deleteBookmark(feedId),
-    onSuccess: async () => {
+    mutationFn: ({ feedId }: { feedId: number }) => deleteBookmark(feedId),
+    onSuccess: async (data, { feedId }) => {
       toast({
         title: "북마크에서 삭제되었어요",
         status: "success",
@@ -71,8 +65,8 @@ const useBookmark: (
   });
 
   return {
-    bookmark: () => bookmarkMutation.mutate(),
-    unbookmark: () => unbookmarkMutation.mutate()
+    bookmark: (feedId: number) => bookmarkMutation.mutate({ feedId }),
+    unbookmark: (feedId: number) => unbookmarkMutation.mutate({ feedId })
   };
 };
 
