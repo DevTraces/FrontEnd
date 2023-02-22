@@ -8,4 +8,5 @@ export type ProfileData = {
   totalFeedNumber: number;
   followerNumber: number;
   followingNumber: number;
+  isFollowing: boolean;
 };

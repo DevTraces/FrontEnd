@@ -1,11 +1,5 @@
 import api from "@/api";
-
-export type FollowItemData = {
-  username: string;
-  nickname: string;
-  profileImageUrl: string;
-  isFollowing: boolean;
-};
+import { FollowItemData } from "@/types/data/follow";
 
 export const getFollowingList = (
   nickname: string,

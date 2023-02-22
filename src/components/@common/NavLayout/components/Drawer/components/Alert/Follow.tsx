@@ -1,10 +1,9 @@
-import { postFollow } from "@/api/follows/[nickname]";
 import CircledImage from "@/components/@common/CircledImage";
+import useFollow from "@/hooks/useFollow";
 import { FollowNotice } from "@/types/data/notice";
-import { Text, Avatar, HStack, Icon, Button, Box } from "@chakra-ui/react";
+import { Avatar, Box, Button, HStack, Icon, Text } from "@chakra-ui/react";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import getDateFormat from "../../utils/date";
 
@@ -15,10 +14,7 @@ export default function Follow({
   createdAt
 }: FollowNotice) {
   const router = useRouter();
-
-  const follow = useMutation({
-    mutationFn: postFollow
-  });
+  const { follow } = useFollow();
 
   const handleFollowNoticeClick = () => {
     router.push(`/user/${senderNickname}/posts`);
@@ -26,7 +22,7 @@ export default function Follow({
 
   const handleFollowClick: React.MouseEventHandler<HTMLButtonElement> = e => {
     e.stopPropagation();
-    follow.mutate(senderNickname);
+    follow(senderNickname);
   };
 
   return (
