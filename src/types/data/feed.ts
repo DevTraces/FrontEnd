@@ -8,7 +8,7 @@ export type FeedData = {
   imageUrls: string[];
   authorProfileImageUrl: string;
   liked: boolean;
-  saved: boolean;
+  bookMarked: boolean;
   modifiedAt: Date;
   numberOfReply?: number;
 };

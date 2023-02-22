@@ -5,16 +5,15 @@ import ProfileTab from "@/components/user/[nickname]/ProfileTab";
 import usersKeys from "@/queryKeys/usersKeys";
 import { ProfileTabName } from "@/types/data/user";
 import { useQuery } from "@tanstack/react-query";
+import { GetServerSideProps } from "next";
 import Head from "next/head";
-import { useRouter } from "next/router";
 
-export default function Profile() {
-  const router = useRouter();
-  const { nickname, selectedTab } = router.query as {
-    nickname: string;
-    selectedTab: ProfileTabName;
-  };
+type ServerSideProps = {
+  nickname: string;
+  selectedTab: ProfileTabName;
+};
 
+export default function Profile({ nickname, selectedTab }: ServerSideProps) {
   const profileQuery = useQuery({
     queryKey: usersKeys.userProfile(nickname),
     queryFn: () => getUserProfile(nickname)
@@ -35,3 +34,7 @@ export default function Profile() {
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ query }) => ({
+  props: query
+});

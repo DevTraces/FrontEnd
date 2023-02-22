@@ -2,7 +2,7 @@ import CircledImage from "@/components/@common/CircledImage";
 import { LikeNotice } from "@/types/data/notice";
 import { Text, Avatar, HStack, Box } from "@chakra-ui/react";
 import Link from "next/link";
-import getDateFormat from "../../utils/date";
+import getDateFormat from "../../../../../../../utils/date";
 import SquaredImage from "../SquaredImage";
 
 export default function Like({

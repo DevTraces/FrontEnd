@@ -5,13 +5,13 @@ import feedsKeys from "@/queryKeys/feedsKeys";
 import { Center } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import Head from "next/head";
-import { useRouter } from "next/router";
+import { GetServerSideProps } from "next/types";
 
-export default function Feed() {
-  const router = useRouter();
+type ServerSideProps = {
+  feedId: string;
+};
 
-  const { feedId } = router.query as { feedId: string };
-
+export default function Feed({ feedId }: ServerSideProps) {
   const feedQuery = useQuery({
     queryKey: feedsKeys.feed(+feedId),
     queryFn: () => getFeed(+feedId)
@@ -23,7 +23,7 @@ export default function Feed() {
   return (
     <>
       <Head>
-        <title>포스트 {router.query.pid}</title>
+        <title>포스트 {feedQuery.data.authorNickname}</title>
       </Head>
       <NavLayout>
         <Center mt="40px">
@@ -33,3 +33,7 @@ export default function Feed() {
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ query }) => ({
+  props: query
+});

@@ -1,4 +1,5 @@
 import feedAtom from "@/atoms/feedAtom";
+import getDateFormat from "@/utils/date";
 import { Box, Button, Flex, HStack, Text } from "@chakra-ui/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -46,7 +47,7 @@ export default function TextContent() {
           </Button>
         )}
         <Text fontSize="12px" color="gray">
-          {createdAt.toLocaleString()}
+          {getDateFormat(createdAt)}
         </Text>
       </Flex>
     </Box>
