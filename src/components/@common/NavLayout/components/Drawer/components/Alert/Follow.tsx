@@ -6,7 +6,7 @@ import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/router";
-import getDateFormat from "../../utils/date";
+import getDateFormat from "../../../../../../../utils/date";
 
 export default function Follow({
   senderNickname,

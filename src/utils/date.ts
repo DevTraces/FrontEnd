@@ -1,6 +1,6 @@
 const DAY_TIME = 1000 * 60 * 60 * 24;
 
-const getDateFormat = (date: string) => {
+const getDateFormat = (date: Date | string) => {
   const now = new Date();
   const target = new Date(date);
 
