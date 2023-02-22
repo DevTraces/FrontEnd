@@ -1,10 +1,8 @@
 import feedAtom from "@/atoms/feedAtom";
 import userAtom from "@/atoms/userAtom";
 import useFeed from "@/hooks/useFeed";
-import feedsKeys from "@/queryKeys/feedsKeys";
 import { FeedData } from "@/types/data/feed";
 import { Avatar, Flex, Text, useDisclosure } from "@chakra-ui/react";
-import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { ComponentProps, useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
@@ -29,18 +27,7 @@ export default function FeedCard({ feedData, ...restProps }: FeedCardProps) {
     setFeed(feedData);
   }, [feedData, setFeed]);
 
-  const queryClient = useQueryClient();
-
-  const { delete: deleteFeed } = useFeed({
-    onDelete: () => {
-      if (router.pathname.includes("/post")) {
-        router.push("/feed");
-      } else {
-        queryClient.invalidateQueries(feedsKeys.feed(feedData.feedId));
-        queryClient.invalidateQueries(feedsKeys.feeds(user.nickname));
-      }
-    }
-  });
+  const { delete: deleteFeed } = useFeed();
 
   const {
     isOpen: isAlertOpen,
