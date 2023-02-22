@@ -14,15 +14,16 @@ import {
   VStack
 } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
+import { GetServerSideProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
 
-export default function TagResult() {
-  const router = useRouter();
-  const tag = router.query.tag as string;
+type ServerSideProps = {
+  tag: string;
+};
 
+export default function TagResult({ tag }: ServerSideProps) {
   const tagQuery = useQuery({
     queryKey: searchKeys.hashtags(tag),
     queryFn: ({ queryKey }) => getHashtagResult(queryKey[1], 0)
@@ -86,3 +87,7 @@ export default function TagResult() {
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ query }) => ({
+  props: query
+});

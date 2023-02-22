@@ -4,13 +4,17 @@ import FeedEditor from "@/components/post/FeedEditor";
 import useFeed from "@/hooks/useFeed";
 import feedsKeys from "@/queryKeys/feedsKeys";
 import { useQuery } from "@tanstack/react-query";
+import { GetServerSideProps } from "next";
 
 import Head from "next/head";
 import { useRouter } from "next/router";
 
-export default function FeedEdit() {
+type ServerSideProps = {
+  feedId: string;
+};
+
+export default function FeedEdit({ feedId }: ServerSideProps) {
   const router = useRouter();
-  const { feedId } = router.query as { feedId: string };
 
   const feedQuery = useQuery({
     queryKey: feedsKeys.feed(+feedId),
@@ -38,3 +42,7 @@ export default function FeedEdit() {
     </NavLayout>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ query }) => ({
+  props: query
+});
