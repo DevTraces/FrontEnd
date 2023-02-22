@@ -10,7 +10,7 @@ type FeedData = {
   numberOfLike: number;
   numberOfReply: number;
   liked: boolean;
-  saved: boolean;
+  bookMarked: boolean;
   createdAt: Date;
   modifiedAt: Date;
 };
@@ -37,7 +37,7 @@ export default function handler(
         numberOfLike: 1,
         numberOfReply: 1,
         liked: true,
-        saved: false,
+        bookMarked: false,
         createdAt: new Date(),
         modifiedAt: new Date()
       }
@@ -62,7 +62,7 @@ export default function handler(
         numberOfLike: 1,
         numberOfReply: 1,
         liked: true,
-        saved: true,
+        bookMarked: true,
         createdAt: new Date(),
         modifiedAt: new Date()
       }

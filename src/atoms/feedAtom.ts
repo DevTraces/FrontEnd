@@ -13,7 +13,7 @@ export default atom<FeedData>({
     imageUrls: [],
     authorProfileImageUrl: "string",
     liked: true,
-    saved: true,
+    bookMarked: true,
     modifiedAt: new Date(),
     numberOfReply: 1
   }

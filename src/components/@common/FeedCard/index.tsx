@@ -6,8 +6,8 @@ import { FeedData } from "@/types/data/feed";
 import { Avatar, Flex, Text, useDisclosure } from "@chakra-ui/react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";
-import { ComponentProps, useState } from "react";
-import { RecoilRoot, useRecoilValue } from "recoil";
+import { ComponentProps, useEffect, useState } from "react";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import Carousel from "./components/Carousel";
 import DeleteConfirmDialog from "./components/DeleteConfirmDialog";
 import MorePopover from "./components/MorePopover";
@@ -23,12 +23,22 @@ export default function FeedCard({ feedData, ...restProps }: FeedCardProps) {
   const user = useRecoilValue(userAtom);
   const router = useRouter();
   const [isReplyOpen, setIsReplyOpen] = useState(false);
+  const setFeed = useSetRecoilState(feedAtom);
+
+  useEffect(() => {
+    setFeed(feedData);
+  }, [feedData, setFeed]);
 
   const queryClient = useQueryClient();
 
   const { delete: deleteFeed } = useFeed({
     onDelete: () => {
-      queryClient.invalidateQueries(feedsKeys.feeds(user.nickname));
+      if (router.pathname.includes("/post")) {
+        router.push("/feed");
+      } else {
+        queryClient.invalidateQueries(feedsKeys.feed(feedData.feedId));
+        queryClient.invalidateQueries(feedsKeys.feeds(user.nickname));
+      }
     }
   });
 
@@ -39,11 +49,7 @@ export default function FeedCard({ feedData, ...restProps }: FeedCardProps) {
   } = useDisclosure();
 
   return (
-    <RecoilRoot
-      initializeState={snapshot => {
-        snapshot.set(feedAtom, feedData);
-      }}
-    >
+    <>
       <DeleteConfirmDialog
         title="게시물"
         isOpen={isAlertOpen}
@@ -78,6 +84,6 @@ export default function FeedCard({ feedData, ...restProps }: FeedCardProps) {
         <Toolbar setIsReplyOpen={setIsReplyOpen} />
         {isReplyOpen && <ReplyList />}
       </Flex>
-    </RecoilRoot>
+    </>
   );
 }
