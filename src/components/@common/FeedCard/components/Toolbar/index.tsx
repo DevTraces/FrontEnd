@@ -1,6 +1,6 @@
-import { deleteBookmark, postBookmark } from "@/api/bookmark/[feedId]";
-import { deleteLike, postLike } from "@/api/like/[feedId]";
 import feedAtom from "@/atoms/feedAtom";
+import useBookmark from "@/hooks/useBookmark";
+import useLike from "@/hooks/useLike";
 import { Button, Flex, Icon, useToast } from "@chakra-ui/react";
 import {
   faBookmark as faBookmarkBlank,
@@ -13,7 +13,6 @@ import {
   faLink
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useMutation } from "@tanstack/react-query";
 import { ComponentProps, Dispatch, SetStateAction } from "react";
 import { useRecoilValue } from "recoil";
 
@@ -25,33 +24,24 @@ export default function Toolbar({
   setIsReplyOpen,
   ...restProps
 }: ToolbarProps) {
-  const { liked, feedId, saved } = useRecoilValue(feedAtom);
+  const { liked, feedId, bookMarked } = useRecoilValue(feedAtom);
   const toast = useToast();
 
-  const like = useMutation({
-    mutationFn: () => {
-      if (liked) return deleteLike(feedId);
-      return postLike(feedId);
-    }
-  });
+  const { bookmark, unbookmark } = useBookmark(feedId);
+  const { like, unlike } = useLike(feedId);
 
-  const bookmark = useMutation({
-    mutationFn: () => {
-      if (saved) return deleteBookmark(feedId);
-      return postBookmark(feedId);
-    },
-    onSuccess: async () => {
-      toast({
-        title: saved ? "저장목록에서 삭제했어요." : "저장목록에 추가했어요.",
-        status: "success",
-        duration: 2000,
-        isClosable: true
-      });
-    }
-  });
+  const handleBookmarkClick = () => {
+    if (bookMarked) unbookmark();
+    else bookmark();
+  };
+
+  const handleLikeClick = () => {
+    if (liked) unlike();
+    else like();
+  };
 
   const handleShareClick = () => {
-    navigator.clipboard.writeText(`http://localhost:3000/feed/${feedId}`);
+    navigator.clipboard.writeText(`http://localhost:3000/post/${feedId}`);
     toast({
       title: "링크가 복사되었어요.",
       status: "success",
@@ -72,7 +62,7 @@ export default function Toolbar({
             boxSize={6}
           />
         }
-        onClick={() => like.mutate()}
+        onClick={handleLikeClick}
       >
         좋아요
       </Button>
@@ -98,12 +88,12 @@ export default function Toolbar({
         leftIcon={
           <Icon
             as={FontAwesomeIcon}
-            icon={saved ? faBookmarkFilled : faBookmarkBlank}
-            color={saved ? "primary" : "black"}
+            icon={bookMarked ? faBookmarkFilled : faBookmarkBlank}
+            color={bookMarked ? "primary" : "black"}
             boxSize={6}
           />
         }
-        onClick={() => bookmark.mutate()}
+        onClick={handleBookmarkClick}
       >
         북마크
       </Button>
