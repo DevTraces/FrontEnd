@@ -28,10 +28,10 @@ const axiosInstance = (baseURL: string = ""): CustomInstance => {
       const json = JSON.parse(res);
 
       if (Object.hasOwn(json, "errorCode")) {
-        if (json.errorCode === "ACCESS_TOKEN_EXPIRED") {
+        if (json.errorCode === "EXPIRED_ACCESS_TOKEN") {
           const {
             data: { accessToken: newAccessToken }
-          } = await axios.post("/api/tokens/reissue");
+          } = await axios.post("http://54.180.200.170:8080/api/tokens/reissue");
           sessionStorage.setItem("accessToken", newAccessToken);
         }
         throw json;
