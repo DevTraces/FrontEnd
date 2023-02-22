@@ -15,7 +15,7 @@ interface User {
 export default atom<User>({
   key: "userAtom",
   default: {
-    nickname: ""
+    nickname: "nouser"
   },
   effects_UNSTABLE: [persistAtom]
 });

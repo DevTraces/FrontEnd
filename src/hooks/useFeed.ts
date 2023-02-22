@@ -78,7 +78,7 @@ export default function useFeed({
         duration: 1000
       });
 
-      if (router.pathname.includes("/post")) {
+      if (router.pathname.includes("/post/")) {
         router.push("/feed");
       } else {
         queryClient.invalidateQueries(feedsKeys.feed(feedId));
