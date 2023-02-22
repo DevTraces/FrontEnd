@@ -19,8 +19,8 @@ export default function FollowList({ nickname, type }: FollowListProps) {
     queryFn: () =>
       // TODO: pagination 필요
       type === "follower"
-        ? getFollowerList(nickname, 0, 1)
-        : getFollowingList(nickname, 0, 1)
+        ? getFollowerList(nickname, 0, 10)
+        : getFollowingList(nickname, 0, 10)
   });
 
   if (followListQuery.isError) return <>FollowList 에러 발생</>;
@@ -29,7 +29,7 @@ export default function FollowList({ nickname, type }: FollowListProps) {
   return (
     <VStack>
       {followListQuery.data.map(d => (
-        <FollowItem key={d.nickname} type={type} {...d} />
+        <FollowItem key={d.nickname} followItemData={d} />
       ))}
     </VStack>
   );

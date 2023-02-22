@@ -1,60 +1,23 @@
-import { FollowItemData } from "@/api/follows/following/[nickname]";
-import { deleteFollow, postFollow } from "@/api/follows/[nickname]";
-import followsKeys from "@/queryKeys/followsKeys";
+import userAtom from "@/atoms/userAtom";
+import useFollow from "@/hooks/useFollow";
+import { FollowItemData } from "@/types/data/follow";
 import { Avatar, Button, HStack, Text, VStack } from "@chakra-ui/react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
+import { useRecoilValue } from "recoil";
 import CircledImage from "../../../../@common/CircledImage";
 
-type FollowItemProps = FollowItemData & {
-  type: "follower" | "following";
+type FollowItemProps = {
+  followItemData: FollowItemData;
   isPending?: boolean;
 };
 
 export default function FollowItem({
-  username,
-  nickname,
-  profileImageUrl,
-  isFollowing,
-  type,
+  followItemData: { username, nickname, profileImageUrl, following },
   isPending = false
 }: FollowItemProps) {
-  const queryClient = useQueryClient();
-
-  const toggleFollow = useMutation({
-    mutationFn: () => {
-      if (!isFollowing) postFollow(nickname);
-      return deleteFollow(nickname);
-    },
-    onMutate: async () => {
-      await queryClient.cancelQueries({ queryKey: [type, nickname] });
-      const prevFollows = queryClient.getQueryData([type, nickname]);
-      queryClient.setQueryData(
-        [type, nickname],
-        (old: FollowItemData[] | undefined) =>
-          old?.map(o =>
-            o.nickname === nickname ? { ...o, isFollowing: !isFollowing } : o
-          )
-      );
-
-      return { prevFollows };
-    },
-    onError: (err, variables, context) => {
-      queryClient.setQueryData([type, nickname], context?.prevFollows);
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({
-        queryKey:
-          type === "follower"
-            ? followsKeys.followerList(nickname)
-            : followsKeys.followingList(nickname)
-      });
-    }
-  });
-
-  const handleFollowClick = () => {
-    toggleFollow.mutate();
-  };
+  const user = useRecoilValue(userAtom);
+  const isMyProfile = nickname === user.nickname;
+  const { toggle: toggleFollow } = useFollow();
 
   return (
     <HStack w="300px" justifyContent="space-between">
@@ -77,15 +40,19 @@ export default function FollowItem({
           <Text color="gray">@{nickname}</Text>
         </VStack>
       </Link>
-      <Button
-        w="100px"
-        colorScheme={isFollowing ? "blackAlpha" : "blue"}
-        fontWeight="bold"
-        onClick={handleFollowClick}
-      >
-        {isFollowing && "팔로잉"}
-        {!isFollowing && (isPending ? "수락" : "팔로우")}
-      </Button>
+      {!isMyProfile && (
+        <Button
+          size="md"
+          fontSize="sm"
+          variant={following ? "outline" : "solid"}
+          colorScheme={following ? "red" : "blue"}
+          fontWeight="bold"
+          onClick={() => toggleFollow(following, nickname)}
+        >
+          {following && "언팔로우"}
+          {!following && (isPending ? "수락" : "팔로우")}
+        </Button>
+      )}
     </HStack>
   );
 }
