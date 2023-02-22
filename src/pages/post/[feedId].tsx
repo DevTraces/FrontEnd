@@ -14,7 +14,7 @@ export default function Feed() {
 
   const feedQuery = useQuery({
     queryKey: feedsKeys.feed(+feedId),
-    queryFn: () => getFeed(+feedId)
+    queryFn: () => (feedId ? getFeed(+feedId) : null)
   });
 
   if (feedQuery.isError) return <>피드 에러</>;
@@ -27,7 +27,7 @@ export default function Feed() {
       </Head>
       <NavLayout>
         <Center mt="40px">
-          <FeedCard feedData={feedQuery.data} />
+          {feedQuery.data && <FeedCard feedData={feedQuery.data} />}
         </Center>
       </NavLayout>
     </>
