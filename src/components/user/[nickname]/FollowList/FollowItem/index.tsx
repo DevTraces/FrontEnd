@@ -8,12 +8,10 @@ import CircledImage from "../../../../@common/CircledImage";
 
 type FollowItemProps = {
   followItemData: FollowItemData;
-  isPending?: boolean;
 };
 
 export default function FollowItem({
-  followItemData: { username, nickname, profileImageUrl, following },
-  isPending = false
+  followItemData: { username, nickname, profileImageUrl, following }
 }: FollowItemProps) {
   const user = useRecoilValue(userAtom);
   const isMyProfile = nickname === user.nickname;
@@ -49,8 +47,7 @@ export default function FollowItem({
           fontWeight="bold"
           onClick={() => toggleFollow(following, nickname)}
         >
-          {following && "언팔로우"}
-          {!following && (isPending ? "수락" : "팔로우")}
+          {following ? "언팔로우" : "팔로우"}
         </Button>
       )}
     </HStack>
