@@ -1,5 +1,5 @@
 import api from "@/api";
-import { FollowItemData } from "../following/[nickname]";
+import { FollowItemData } from "@/types/data/follow";
 
 export const getFollowerList = (
   nickname: string,
