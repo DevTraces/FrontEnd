@@ -1,26 +1,21 @@
-import { postEmailAuthKey } from "@/api/auth/email/auth-key";
-import { getEmailDuplicateCheck } from "@/api/users/email/check";
-import { signUpUserAtom } from "@/atoms/auth/signUpUser";
 import FormButton from "@/components/@common/FormButton";
 import AuthTextInput from "@/components/@common/FormInput";
 import FormLayout from "@/components/@common/FormLayout";
 import Logo from "@/components/@common/Logo";
 import KakaoLoginButton from "@/components/auth/KakaoLoginButton";
 import VALIDATION_RULE from "@/constants/auth/VALIDATION_RULE";
-import { Center, Divider, Text, useToast } from "@chakra-ui/react";
-import { useMutation } from "@tanstack/react-query";
+import useAuth from "@/hooks/useAuth";
+import useCheck from "@/hooks/useCheck";
+import { Center, Divider, Text } from "@chakra-ui/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { FormEventHandler } from "react";
 import { useForm } from "react-hook-form";
-import { useSetRecoilState } from "recoil";
 
 type FormData = { email: string };
 
 export default function SignUp() {
   const router = useRouter();
-  const setSignUpUser = useSetRecoilState(signUpUserAtom);
-  const toast = useToast();
   const {
     handleSubmit,
     register,
@@ -28,40 +23,34 @@ export default function SignUp() {
     formState: { errors, isSubmitting, isValid, isDirty }
   } = useForm<FormData>({ mode: "onChange" });
 
-  const emailAuthKeyMutation = useMutation({
-    mutationFn: ({ email }: { email: string }) => postEmailAuthKey(email),
-    onSuccess: (data, { email }) => {
-      setSignUpUser(prev => ({ ...prev, email }));
-      router.push("/auth/signUp/emailAuth");
-    },
-    onError: () => {
-      toast({
-        title: "인증코드 전송중 오류가 발생했습니다",
-        status: "error",
-        duration: 3000
-      });
-    }
-  });
+  const { sendEmailAuthKeyMutation } = useAuth();
+  const { emailDuplicateMutation } = useCheck();
 
-  const duplicateCheckMutation = useMutation({
-    mutationFn: ({ email }: { email: string }) => getEmailDuplicateCheck(email),
-    onSuccess: ({ duplicatedEmail }, { email }) => {
-      if (!duplicatedEmail) emailAuthKeyMutation.mutate({ email });
-      else setError("email", { message: "이미 가입된 이메일입니다" });
-    },
-    onError: () => {
-      toast({
-        title: "이메일 중복체크중 오류가 발생했습니다",
-        status: "error",
-        duration: 3000
-      });
-    }
-  });
+  const sendEmailAuthkey = (email: string) => {
+    sendEmailAuthKeyMutation.mutate(
+      { email },
+      {
+        onSuccess: () => {
+          router.push("/auth/signUp/emailAuth");
+        }
+      }
+    );
+  };
+
+  const checkEmailDuplicated = (email: string) => {
+    emailDuplicateMutation.mutate(
+      { email },
+      {
+        onSuccess: ({ duplicatedEmail }) => {
+          if (!duplicatedEmail) sendEmailAuthkey(email);
+          else setError("email", { message: "이미 가입된 이메일입니다" });
+        }
+      }
+    );
+  };
 
   const handleFormSubmit: FormEventHandler<HTMLFormElement> = handleSubmit(
-    ({ email }) => {
-      duplicateCheckMutation.mutate({ email });
-    }
+    ({ email }) => checkEmailDuplicated(email)
   );
 
   return (
@@ -88,8 +77,8 @@ export default function SignUp() {
           <FormButton
             isLoading={
               isSubmitting ||
-              emailAuthKeyMutation.isLoading ||
-              duplicateCheckMutation.isLoading
+              sendEmailAuthKeyMutation.isLoading ||
+              emailDuplicateMutation.isLoading
             }
             isDisabled={!isValid || !isDirty}
           >
