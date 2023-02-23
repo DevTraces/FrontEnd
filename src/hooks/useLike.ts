@@ -5,7 +5,7 @@ import { useToast } from "@chakra-ui/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRecoilValue } from "recoil";
 
-const useLike = ({ onlike = () => {}, onUnlike = () => {} } = {}) => {
+const useLike = () => {
   const { nickname } = useRecoilValue(userAtom);
   const toast = useToast();
 
@@ -25,7 +25,6 @@ const useLike = ({ onlike = () => {}, onUnlike = () => {} } = {}) => {
       queryClient.invalidateQueries({
         queryKey: feedsKeys.feed(feedId)
       });
-      onlike();
     },
     onError: () => {
       toast({
@@ -50,7 +49,6 @@ const useLike = ({ onlike = () => {}, onUnlike = () => {} } = {}) => {
       queryClient.invalidateQueries({
         queryKey: feedsKeys.feed(feedId)
       });
-      onUnlike();
     },
     onError: () => {
       toast({
@@ -62,8 +60,8 @@ const useLike = ({ onlike = () => {}, onUnlike = () => {} } = {}) => {
   });
 
   return {
-    like: (feedId: number) => likeMutation.mutate({ feedId }),
-    unlike: (feedId: number) => unlikeMutation.mutate({ feedId })
+    likeMutation,
+    unlikeMutation
   };
 };
 

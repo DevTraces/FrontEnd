@@ -5,10 +5,7 @@ import { useToast } from "@chakra-ui/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRecoilValue } from "recoil";
 
-const useBookmark = ({
-  onBookmark = () => {},
-  onUnbookmark = () => {}
-} = {}) => {
+const useBookmark = () => {
   const { nickname } = useRecoilValue(userAtom);
   const toast = useToast();
 
@@ -28,7 +25,6 @@ const useBookmark = ({
       queryClient.invalidateQueries({
         queryKey: feedsKeys.feed(feedId)
       });
-      onBookmark();
     },
     onError: () => {
       toast({
@@ -53,7 +49,6 @@ const useBookmark = ({
       queryClient.invalidateQueries({
         queryKey: feedsKeys.feed(feedId)
       });
-      onUnbookmark();
     },
     onError: () => {
       toast({
@@ -65,8 +60,8 @@ const useBookmark = ({
   });
 
   return {
-    bookmark: (feedId: number) => bookmarkMutation.mutate({ feedId }),
-    unbookmark: (feedId: number) => unbookmarkMutation.mutate({ feedId })
+    bookmarkMutation,
+    unbookmarkMutation
   };
 };
 

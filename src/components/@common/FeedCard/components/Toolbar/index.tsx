@@ -27,18 +27,17 @@ export default function Toolbar({
   const { liked, feedId, bookMarked } = useRecoilValue(feedAtom);
   const toast = useToast();
 
-  const { bookmark, unbookmark } = useBookmark();
-  const { like, unlike } = useLike();
+  const { bookmarkMutation, unbookmarkMutation } = useBookmark();
+  const { likeMutation, unlikeMutation } = useLike();
 
-  const handleBookmarkClick = () => {
-    if (bookMarked) unbookmark(feedId);
-    else bookmark(feedId);
-  };
+  const bookmark = () => bookmarkMutation.mutate({ feedId });
+  const unbookmark = () => unbookmarkMutation.mutate({ feedId });
+  const like = () => likeMutation.mutate({ feedId });
+  const unlike = () => unlikeMutation.mutate({ feedId });
 
-  const handleLikeClick = () => {
-    if (liked) unlike(feedId);
-    else like(feedId);
-  };
+  const handleBookmarkClick = bookMarked ? unbookmark : bookmark;
+
+  const handleLikeClick = liked ? unlike : like;
 
   const handleShareClick = () => {
     navigator.clipboard.writeText(`http://localhost:3000/post/${feedId}`);
