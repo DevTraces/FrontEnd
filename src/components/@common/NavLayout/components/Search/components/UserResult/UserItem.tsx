@@ -1,5 +1,5 @@
-import CircledImage from "@/components/@common/CircledImage";
-import { Avatar, HStack, Text, VStack } from "@chakra-ui/react";
+import ProfileAvatar from "@/components/@common/ProfileAvatar";
+import { HStack, Text, VStack } from "@chakra-ui/react";
 import Link from "next/link";
 
 type UserItemProps = {
@@ -20,11 +20,8 @@ export default function UserItem({
         background: "gray.100"
       }}
     >
-      {profileImageUrl ? (
-        <CircledImage size="40px" alt="프로필 이미지" src={profileImageUrl} />
-      ) : (
-        <Avatar boxSize="40px" />
-      )}
+      <ProfileAvatar size="40px" alt="프로필 이미지" src={profileImageUrl} />
+
       <Link href={`/user/${nickname}/posts`}>
         <VStack spacing="0" alignItems="start">
           <Text fontWeight="bold">{nickname}</Text>
