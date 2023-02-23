@@ -1,87 +1,75 @@
-import { postSignUp } from "@/api/auth/sign-up";
-import { getNicknameDuplicateCheck } from "@/api/users/nickname/check";
 import { SignUpUser, signUpUserAtom } from "@/atoms/auth/signUpUser";
 import FormButton from "@/components/@common/FormButton";
-import FormLayout from "@/components/@common/FormLayout";
 import AuthTextInput from "@/components/@common/FormInput";
+import FormLayout from "@/components/@common/FormLayout";
+import ImageAddAvatar from "@/components/auth/ImageAddAvatar";
 import VALIDATION_RULE from "@/constants/auth/VALIDATION_RULE";
-import { Avatar, Button, Input, useToast, VStack } from "@chakra-ui/react";
-import { useMutation } from "@tanstack/react-query";
+import useAuth from "@/hooks/useAuth";
+import useCheck from "@/hooks/useCheck";
+import useImagePreviews from "@/hooks/useImagePreviews";
+import { FileImage } from "@/types/data/feed";
+import { useToast, VStack } from "@chakra-ui/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRecoilValue } from "recoil";
 
-type FormData = Pick<SignUpUser, "nickname" | "username" | "password"> & {
-  profileImages: FileList;
-};
+type FormData = Pick<SignUpUser, "nickname" | "username" | "password">;
 
 export default function Profile() {
   const router = useRouter();
   const signUpUser = useRecoilValue(signUpUserAtom);
-  const imgRef = useRef<HTMLInputElement | null>(null);
-  const [previewImg, setPreviewImg] = useState("");
   const toast = useToast();
 
   const {
     handleSubmit,
     register,
     setError,
-    watch,
     formState: { errors, isSubmitting, isValid, isDirty }
   } = useForm<FormData>({
     mode: "onChange"
   });
 
-  const profileImages = watch("profileImages");
+  const { images, imagePreviews, addImage, clearAllImages } =
+    useImagePreviews();
 
-  useEffect(() => {
-    if (profileImages && profileImages.length > 0) {
-      setPreviewImg(URL.createObjectURL(profileImages[0]));
-    }
-  }, [profileImages]);
+  const { signUpMutation } = useAuth();
 
-  const nicknameMutation = useMutation({
-    mutationFn: ({ nickname }: Pick<FormData, "nickname">) =>
-      getNicknameDuplicateCheck(nickname as string),
-    onSuccess: ({ duplicatedNickname }) => {
-      if (duplicatedNickname)
-        setError("nickname", { message: "이미 가입된 닉네임이에요" });
-    }
+  const { nicknameDuplicateMutation } = useCheck();
+
+  const signUp = (user: SignUpUser) =>
+    signUpMutation.mutate(user, {
+      onSuccess: () => {
+        router.push("/auth/signIn");
+        toast({
+          title: "성공적으로 가입되었습니다.",
+          status: "success",
+          duration: 3000
+        });
+      }
+    });
+
+  const nicknameDuplicateCheck = (nickname: string) => {
+    nicknameDuplicateMutation.mutate(
+      { nickname },
+      {
+        onSuccess: ({ duplicatedNickname }) => {
+          if (duplicatedNickname)
+            setError("nickname", {
+              message: "이미 가입된 닉네임이에요"
+            });
+        }
+      }
+    );
+  };
+
+  const handleFormSubmit = handleSubmit(formData => {
+    signUp({
+      ...signUpUser,
+      ...formData,
+      profileImage: (images[0] as FileImage).src
+    });
   });
-
-  const signupMutation = useMutation({
-    mutationFn: (user: SignUpUser) => postSignUp(user),
-    onSuccess: () => {
-      router.push("/auth/signIn");
-      toast({
-        title: "성공적으로 가입되었습니다.",
-        status: "success",
-        duration: 3000
-      });
-    },
-    onError: () => {
-      toast({
-        title: "회원가입에 실패하였습니다",
-        status: "error",
-        duration: 3000
-      });
-    }
-  });
-
-  const { ref: profileImagesRef, ...profileImagesRegisterRest } =
-    register("profileImages");
-
-  const handleFormSubmit = handleSubmit(
-    ({ profileImages: pImgs, ...formData }) => {
-      signupMutation.mutate({
-        ...signUpUser,
-        ...formData,
-        profileImage: pImgs[0]
-      });
-    }
-  );
 
   return (
     <>
@@ -92,31 +80,12 @@ export default function Profile() {
       <FormLayout>
         <form onSubmit={handleFormSubmit} style={{ width: "100%" }}>
           <VStack mb="12px">
-            {previewImg !== "" ? (
-              <Avatar size="2xl" src={previewImg} />
-            ) : (
-              <Avatar size="2xl" />
-            )}
-            <Button
-              variant="ghost"
-              colorScheme="none"
-              color="primary"
-              type="button"
-              onClick={async () => {
-                imgRef.current?.click();
+            <ImageAddAvatar
+              onImageInput={file => {
+                clearAllImages();
+                addImage(file);
               }}
-            >
-              사진 업로드
-            </Button>
-            <Input
-              type="file"
-              display="none"
-              accept="image/*"
-              {...profileImagesRegisterRest}
-              ref={e => {
-                profileImagesRef(e);
-                imgRef.current = e;
-              }}
+              previewImg={imagePreviews[0]?.url}
             />
           </VStack>
           <AuthTextInput
@@ -128,8 +97,7 @@ export default function Profile() {
             {...register("nickname", {
               ...VALIDATION_RULE.nickname,
               onBlur: e => {
-                if (!errors.nickname)
-                  nicknameMutation.mutate({ nickname: e.target.value });
+                if (!errors.nickname) nicknameDuplicateCheck(e.target.value);
               }
             })}
           />
@@ -151,8 +119,8 @@ export default function Profile() {
           <FormButton
             isLoading={
               isSubmitting ||
-              nicknameMutation.isLoading ||
-              signupMutation.isLoading
+              nicknameDuplicateMutation.isLoading ||
+              signUpMutation.isLoading
             }
             isDisabled={!isValid || !isDirty}
           >
