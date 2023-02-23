@@ -49,12 +49,9 @@ export default function Alert() {
     }
   });
 
-  if (alertQuery.isLoading) return <>알림 로딩중</>;
-  if (alertQuery.isError) return <>알림 에러</>;
-
   return (
     <VStack spacing="30px">
-      {alertQuery.data.noticeList.map(alert => (
+      {alertQuery.data?.noticeList.map(alert => (
         <Flex
           key={alert.noticeId}
           w="full"

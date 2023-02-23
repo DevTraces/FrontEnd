@@ -37,9 +37,6 @@ export default function ReplyList() {
 
   const handleFormSubmit = handleSubmit(({ content }) => createReply(content));
 
-  if (repliesQuery.isError) return <>ReplyList에서 에러 발생.</>;
-  if (repliesQuery.isLoading) return <>ReplyList 로딩 중...</>;
-
   return (
     <Flex direction="column">
       <form onSubmit={handleFormSubmit}>
@@ -52,9 +49,8 @@ export default function ReplyList() {
         />
       </form>
       <Box px="10px">
-        {repliesQuery.data.map(r => (
-          <ReplyItem key={r.replyId} {...r} />
-        ))}
+        {repliesQuery.data &&
+          repliesQuery.data.map(r => <ReplyItem key={r.replyId} {...r} />)}
       </Box>
     </Flex>
   );

@@ -27,18 +27,17 @@ export default function FeedEdit({ feedId }: ServerSideProps) {
     }
   });
 
-  if (feedQuery.isError) return <>피드 에러</>;
-  if (feedQuery.isLoading) return <>로딩중</>;
-
   return (
     <NavLayout>
       <Head>
         <title>게시물 수정</title>
       </Head>
-      <FeedEditor
-        onPublish={data => updateFeed(+feedId, data)}
-        prevFeedData={feedQuery.data}
-      />
+      {feedQuery.data && (
+        <FeedEditor
+          onPublish={data => updateFeed(+feedId, data)}
+          prevFeedData={feedQuery.data}
+        />
+      )}
     </NavLayout>
   );
 }

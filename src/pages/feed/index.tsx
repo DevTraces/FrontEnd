@@ -22,9 +22,6 @@ export default function Feed() {
     if (user.nickname === "") router.push("/");
   }, [router, user]);
 
-  if (feedQuery.isError) return <>피드 에러</>;
-  if (feedQuery.isLoading) return <>피드 로딩중</>;
-
   return (
     <>
       <Head>
@@ -32,7 +29,7 @@ export default function Feed() {
       </Head>
       <NavLayout>
         <Center>
-          <FeedList feedsData={feedQuery.data} />
+          {feedQuery.data && <FeedList feedsData={feedQuery.data} />}
         </Center>
       </NavLayout>
     </>

@@ -37,9 +37,6 @@ export default function Setting() {
     }
   });
 
-  if (profileQuery.isLoading) return <>Setting 로딩 중...</>;
-  if (profileQuery.isError) return <>Setting 에러발생</>;
-
   return (
     <NavLayout>
       <Head>
@@ -63,30 +60,35 @@ export default function Setting() {
               <Avatar size="2xl" />
               <Button bg="white">프로필 사진 변경</Button>
             </VStack>
-            <FormTextInput
-              isInvalid={!!errors.username}
-              labelText="이름"
-              helperText="사람들이 이름, 별명 또는 비즈니스 이름 등 회원님의 알려진 이름을 사용하여 회원님의 계정을 찾을 수 있도록 도와주세요."
-              errorMessage={errors.username?.message}
-              defaultValue={profileQuery.data.username}
-              {...register("username", VALIDATION_RULE.username)}
-            />
-            <FormTextInput
-              isInvalid={!!errors.nickname}
-              labelText="사용자 이름"
-              helperText="고유하게 사용할 이름이에요."
-              errorMessage={errors.nickname?.message}
-              defaultValue={profileQuery.data.nickname}
-              {...register("username", VALIDATION_RULE.nickname)}
-            />
-            <FormTextarea
-              isInvalid={!!errors.description}
-              labelText="자기소개"
-              helperText="고유하게 사용할 이름이에요."
-              errorMessage={errors.description?.message}
-              defaultValue={profileQuery.data.description}
-              {...register("description", VALIDATION_RULE.description)}
-            />
+            {profileQuery.data && (
+              <>
+                <FormTextInput
+                  isInvalid={!!errors.username}
+                  labelText="이름"
+                  helperText="사람들이 이름, 별명 또는 비즈니스 이름 등 회원님의 알려진 이름을 사용하여 회원님의 계정을 찾을 수 있도록 도와주세요."
+                  errorMessage={errors.username?.message}
+                  defaultValue={profileQuery.data.username}
+                  {...register("username", VALIDATION_RULE.username)}
+                />
+                <FormTextInput
+                  isInvalid={!!errors.nickname}
+                  labelText="사용자 이름"
+                  helperText="고유하게 사용할 이름이에요."
+                  errorMessage={errors.nickname?.message}
+                  defaultValue={profileQuery.data.nickname}
+                  {...register("username", VALIDATION_RULE.nickname)}
+                />
+                <FormTextarea
+                  isInvalid={!!errors.description}
+                  labelText="자기소개"
+                  helperText="고유하게 사용할 이름이에요."
+                  errorMessage={errors.description?.message}
+                  defaultValue={profileQuery.data.description}
+                  {...register("description", VALIDATION_RULE.description)}
+                />
+              </>
+            )}
+
             <Box>
               <Text fontSize="16px" lineHeight="40px" color="black">
                 비밀번호

@@ -19,16 +19,15 @@ export default function Profile({ nickname, selectedTab }: ServerSideProps) {
     queryFn: () => getUserProfile(nickname)
   });
 
-  if (profileQuery.isError) return <>Profile에서 에러가 발생했습니다</>;
-  if (profileQuery.isLoading) return <>Profile 로딩중...</>;
-
   return (
     <>
       <Head>
         <title>Arterest | {nickname}님의 프로필</title>
       </Head>
       <NavLayout maxW="750px">
-        <ProfileInfo profileData={profileQuery.data} p="20px" pt="100px" />
+        {profileQuery.data && (
+          <ProfileInfo profileData={profileQuery.data} p="20px" pt="100px" />
+        )}
         <ProfileTab nickname={nickname} selectedTab={selectedTab} />
       </NavLayout>
     </>

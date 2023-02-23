@@ -59,9 +59,6 @@ export default function ReplyItem({
     createRereply(newContent)
   );
 
-  if (rerepliesQuery.isError) return <>ReplyList에서 에러 발생.</>;
-  if (rerepliesQuery.isLoading) return <>ReplyList 로딩 중...</>;
-
   const { ref: newContentRef, ...newContentRegisterRest } = register(
     "newContent",
     VALIDATION_RULE.replyContent
@@ -84,7 +81,7 @@ export default function ReplyItem({
           <AccordionButton ref={openMoreBtnRef}>답글 더보기</AccordionButton>
           <AccordionPanel>
             <Flex direction="column" gap="12px">
-              {rerepliesQuery.data.map(r => (
+              {rerepliesQuery.data?.map(r => (
                 <ReplyContent
                   key={r.rereplyId}
                   authorNickname={r.authorNickname}

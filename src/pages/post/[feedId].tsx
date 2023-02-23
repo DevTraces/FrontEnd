@@ -17,17 +17,14 @@ export default function Feed({ feedId }: ServerSideProps) {
     queryFn: () => getFeed(+feedId)
   });
 
-  if (feedQuery.isError) return <>피드 에러</>;
-  if (feedQuery.isLoading) return <>로딩중</>;
-
   return (
     <>
       <Head>
-        <title>포스트 {feedQuery.data.authorNickname}</title>
+        <title>포스트 {feedQuery.data?.authorNickname ?? ""}</title>
       </Head>
       <NavLayout>
         <Center mt="40px">
-          <FeedCard feedData={feedQuery.data} />
+          {feedQuery.data && <FeedCard feedData={feedQuery.data} />}
         </Center>
       </NavLayout>
     </>
