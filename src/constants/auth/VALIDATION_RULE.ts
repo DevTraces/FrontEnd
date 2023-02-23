@@ -13,7 +13,7 @@ const VALIDATION_RULE: { [key in PossibleKeys]: RegisterOptions } = {
   email: {
     required: "이메일을 입력해야해요",
     pattern: {
-      value: /[a-zA-Z0-9]+@[a-zA-]+\.[a-z]{2,3}/,
+      value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
       message: "이메일 형식을 지켜주세요"
     }
   },
@@ -25,15 +25,23 @@ const VALIDATION_RULE: { [key in PossibleKeys]: RegisterOptions } = {
   nickname: {
     required: "닉네임이 필요해요",
     pattern: {
-      value: /^[a-zA-Z0-9]*$/,
-      message: "영어와 숫자만 사용할 수 있어요"
+      value: /^[a-zA-Z][a-zA-Z0-9.]{1,30}$/,
+      message: "30자 이하의 영어, 숫자, 점(.)만 가능해요"
     }
   },
   username: {
-    required: "이름이 필요해요"
+    required: "이름이 필요해요",
+    pattern: {
+      value: /^.{1,30}$/,
+      message: "30자 이하로만 가능해요"
+    }
   },
   password: {
-    required: "비밀번호가 필요해요"
+    required: "비밀번호가 필요해요",
+    pattern: {
+      value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+      message: "8자리 이상, 알파벳 1개 이상, 숫자 1개 이상이 포함되어야 해요"
+    }
   },
   description: {
     maxLength: {
