@@ -37,5 +37,10 @@ export default function useImagePreviews(imageUrls: string[] = []) {
     setImagePreviews(prev => prev.filter(p => p.imageId !== imageId));
   };
 
-  return { images, imagePreviews, addImage, removeImage };
+  const clearAllImages = () => {
+    setImages([]);
+    setImagePreviews([]);
+  };
+
+  return { images, imagePreviews, addImage, removeImage, clearAllImages };
 }
