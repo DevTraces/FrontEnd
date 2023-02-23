@@ -1,10 +1,10 @@
 import userAtom from "@/atoms/userAtom";
 import useFollow from "@/hooks/useFollow";
 import { FollowItemData } from "@/types/data/follow";
-import { Avatar, Button, HStack, Text, VStack } from "@chakra-ui/react";
+import { Button, HStack, Text, VStack } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRecoilValue } from "recoil";
-import CircledImage from "../../../../@common/CircledImage";
+import ProfileAvatar from "../../../../@common/ProfileAvatar";
 
 type FollowItemProps = {
   followItemData: FollowItemData;
@@ -15,7 +15,9 @@ export default function FollowItem({
 }: FollowItemProps) {
   const user = useRecoilValue(userAtom);
   const isMyProfile = nickname === user.nickname;
-  const { toggle: toggleFollow } = useFollow();
+  const { toggleMutation } = useFollow();
+  const toggleFollow = (isFollowing: boolean) =>
+    toggleMutation(isFollowing).mutate({ nickname });
 
   return (
     <HStack w="300px" justifyContent="space-between">
@@ -28,11 +30,8 @@ export default function FollowItem({
           width: "100%"
         }}
       >
-        {profileImageUrl ? (
-          <CircledImage src={profileImageUrl} size="50px" alt="프로필 이미지" />
-        ) : (
-          <Avatar boxSize={10} src={profileImageUrl} />
-        )}
+        <ProfileAvatar src={profileImageUrl} size="50px" alt="프로필 이미지" />
+
         <VStack alignItems="flex-start">
           <Text fontWeight="bold">{username}</Text>
           <Text color="gray">@{nickname}</Text>
@@ -45,7 +44,7 @@ export default function FollowItem({
           variant={following ? "outline" : "solid"}
           colorScheme={following ? "red" : "blue"}
           fontWeight="bold"
-          onClick={() => toggleFollow(following, nickname)}
+          onClick={() => toggleFollow(following)}
         >
           {following ? "언팔로우" : "팔로우"}
         </Button>
