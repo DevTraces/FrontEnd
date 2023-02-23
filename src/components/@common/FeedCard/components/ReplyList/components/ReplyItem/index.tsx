@@ -25,7 +25,7 @@ type FormData = {
   newContent: string;
 };
 export default function ReplyItem({
-  replyData: { feedId, replyId, authorNickname, content }
+  replyData: { feedId, replyId, authorNickname, content, authorProfileImageUrl }
 }: ReplyItemProps) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const openMoreBtnRef = useRef<HTMLButtonElement | null>(null);
@@ -43,16 +43,37 @@ export default function ReplyItem({
   } = useForm<FormData>({ mode: "onChange" });
 
   const {
-    create: createRereply,
-    update: updateRereply,
-    delete: deleteRereply
-  } = useRereply(feedId, replyId, {
-    onCreate: () => {
-      reset();
-    }
-  });
+    createMutation: createRereplyMutation,
+    updateMutation: updateRereplyMutation,
+    deleteMutation: deleteRereplyMutation
+  } = useRereply(feedId, replyId);
 
-  const { update: updateReply, delete: deleteReply } = useReply(feedId);
+  const {
+    updateMutation: updateReplyMutation,
+    deleteMutation: deleteReplyMutation
+  } = useReply(feedId);
+
+  const updateReply = (targetReplyId: number, newContent: string) =>
+    updateReplyMutation.mutate({ replyId: targetReplyId, content: newContent });
+
+  const deleteReply = (targetReplyId: number) =>
+    deleteReplyMutation.mutate({ replyId: targetReplyId });
+
+  const createRereply = (newContent: string) =>
+    createRereplyMutation.mutate(
+      { content: newContent },
+      {
+        onSuccess: () => {
+          reset();
+        }
+      }
+    );
+
+  const updateRereply = (rereplyId: number, newContent: string) =>
+    updateRereplyMutation.mutate({ rereplyId, content: newContent });
+
+  const deleteRereply = (rereplyId: number) =>
+    deleteRereplyMutation.mutate({ rereplyId });
 
   const handleFormSubmit = handleSubmit(({ newContent }) =>
     createRereply(newContent)
@@ -67,6 +88,7 @@ export default function ReplyItem({
     <Flex direction="column" gap="12px">
       <ReplyContent
         authorNickname={authorNickname}
+        authorProfileImageUrl={authorProfileImageUrl}
         content={content}
         onReply={async () => {
           await openMoreBtnRef.current?.click();
@@ -83,6 +105,7 @@ export default function ReplyItem({
               {rerepliesQuery.data?.map(r => (
                 <ReplyContent
                   key={r.rereplyId}
+                  authorProfileImageUrl={r.authorProfileImageUrl}
                   authorNickname={r.authorNickname}
                   content={r.content}
                   onReply={() => {

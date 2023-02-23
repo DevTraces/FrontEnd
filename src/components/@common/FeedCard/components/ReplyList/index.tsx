@@ -29,11 +29,17 @@ export default function ReplyList() {
     formState: { errors }
   } = useForm<FormData>({ mode: "onChange" });
 
-  const { create: createReply } = useReply(feedId, {
-    onCreate: () => {
-      reset();
-    }
-  });
+  const { createMutation } = useReply(feedId);
+
+  const createReply = (content: string) =>
+    createMutation.mutate(
+      { content },
+      {
+        onSuccess: () => {
+          reset();
+        }
+      }
+    );
 
   const handleFormSubmit = handleSubmit(({ content }) => createReply(content));
 
