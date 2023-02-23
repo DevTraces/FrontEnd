@@ -25,7 +25,7 @@ export default function UserList({ target }: UserListProps) {
   return (
     <ResultContainer>
       {search ? (
-        userQuery.data?.map(d => <UserItem key={d.userId} {...d} />)
+        userQuery.data?.map(d => <UserItem key={d.userId} userResult={d} />)
       ) : (
         <>검색어를 입력해주세요.</>
       )}

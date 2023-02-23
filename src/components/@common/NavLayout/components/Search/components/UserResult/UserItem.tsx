@@ -1,17 +1,14 @@
 import ProfileAvatar from "@/components/@common/ProfileAvatar";
+import { UserSearchResultData } from "@/types/data/search";
 import { HStack, Text, VStack } from "@chakra-ui/react";
 import Link from "next/link";
 
 type UserItemProps = {
-  nickname: string;
-  username: string;
-  profileImageUrl: string;
+  userResult: UserSearchResultData;
 };
 
 export default function UserItem({
-  nickname,
-  username,
-  profileImageUrl
+  userResult: { nickname, username, profileImageUrl }
 }: UserItemProps) {
   return (
     <HStack
