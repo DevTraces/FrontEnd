@@ -1,10 +1,9 @@
 import { getHashtagResult } from "@/api/search/hashtag";
-import CircledImage from "@/components/@common/CircledImage";
+import ProfileAvatar from "@/components/@common/ProfileAvatar";
 import NavLayout from "@/components/@common/NavLayout";
 import searchKeys from "@/queryKeys/searchKeys";
 import {
   AspectRatio,
-  Avatar,
   Container,
   Flex,
   Grid,
@@ -40,14 +39,12 @@ export default function TagResult({ tag }: ServerSideProps) {
             {tagQuery.data && (
               <>
                 <HStack w="full" m="20px" gap="20px">
-                  {tagQuery.data.feedList && tagQuery.data.feedList[0] ? (
-                    <CircledImage
+                  {tagQuery.data.feedList && (
+                    <ProfileAvatar
                       src={tagQuery.data.feedList[0].imageUrl}
                       alt="대표이미지"
                       size="80px"
                     />
-                  ) : (
-                    <Avatar boxSize="80px" />
                   )}
                   <Flex gap="20px">
                     <VStack alignItems="flex-start">
