@@ -17,16 +17,15 @@ import { useForm } from "react-hook-form";
 import ReplyInput from "../ReplyInput";
 import ReplyContent from "./components/ReplyContent";
 
-type ReplyItemProps = ReplyData;
+type ReplyItemProps = {
+  replyData: ReplyData;
+};
 
 type FormData = {
   newContent: string;
 };
 export default function ReplyItem({
-  feedId,
-  replyId,
-  authorNickname,
-  content
+  replyData: { feedId, replyId, authorNickname, content }
 }: ReplyItemProps) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const openMoreBtnRef = useRef<HTMLButtonElement | null>(null);

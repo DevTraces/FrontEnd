@@ -49,8 +49,9 @@ export default function ReplyList() {
         />
       </form>
       <Box px="10px">
-        {repliesQuery.data &&
-          repliesQuery.data.map(r => <ReplyItem key={r.replyId} {...r} />)}
+        {repliesQuery.data?.map(r => (
+          <ReplyItem key={r.replyId} replyData={r} />
+        ))}
       </Box>
     </Flex>
   );
