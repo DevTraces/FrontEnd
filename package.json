@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint && tsc --noemit",
     "prepare": "husky install",
-    "pre-commit": "yarn lint"
+    "pre-commit": "yarn lint",
+    "openapi": "openapi-generator-cli generate -i http://54.180.200.170:8080/v2/api-docs -g typescript-axios -o ./models -c ./openapi.json --skip-validate-spec"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.0.17",
@@ -21,6 +22,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.2.1",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@next/font": "13.1.6",
+    "@openapitools/openapi-generator-cli": "2.5.2",
     "@tanstack/react-query": "4.24.4",
     "@tanstack/react-query-devtools": "^4.24.9",
     "@types/node": "18.11.18",
