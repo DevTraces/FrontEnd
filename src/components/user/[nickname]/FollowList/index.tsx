@@ -23,12 +23,9 @@ export default function FollowList({ nickname, type }: FollowListProps) {
         : getFollowingList(nickname, 0, 10)
   });
 
-  if (followListQuery.isError) return <>FollowList 에러 발생</>;
-  if (followListQuery.isLoading) return <>FollowList 로딩 중...</>;
-
   return (
     <VStack>
-      {followListQuery.data.map(d => (
+      {followListQuery.data?.map(d => (
         <FollowItem key={d.nickname} followItemData={d} />
       ))}
     </VStack>

@@ -22,13 +22,10 @@ export default function UserList({ target }: UserListProps) {
     }
   });
 
-  if (userQuery.isError) return <>UserList 에러 발생</>;
-  if (userQuery.isLoading) return <>UserList 로딩 중...</>;
-
   return (
     <ResultContainer>
       {search ? (
-        userQuery.data.map(d => <UserItem key={d.userId} {...d} />)
+        userQuery.data?.map(d => <UserItem key={d.userId} userResult={d} />)
       ) : (
         <>검색어를 입력해주세요.</>
       )}

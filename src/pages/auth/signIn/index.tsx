@@ -5,6 +5,7 @@ import Logo from "@/components/@common/Logo";
 import KakaoLoginButton from "@/components/auth/KakaoLoginButton";
 import VALIDATION_RULE from "@/constants/auth/VALIDATION_RULE";
 import useAuth from "@/hooks/useAuth";
+import { SignInData } from "@/types/data/auth";
 import { Center, Divider, HStack, Text } from "@chakra-ui/react";
 import Head from "next/head";
 import Link from "next/link";
@@ -22,11 +23,13 @@ export default function SignIn() {
     password: string;
   }>({ mode: "onChange" });
 
-  const { signIn } = useAuth({
-    onSignIn: () => {
-      router.push("/feed");
-    }
-  });
+  const { signInMutation } = useAuth();
+  const signIn = (data: SignInData) =>
+    signInMutation.mutate(data, {
+      onSuccess: () => {
+        router.push("/feed");
+      }
+    });
 
   return (
     <>
@@ -55,7 +58,7 @@ export default function SignIn() {
           />
 
           <FormButton
-            isLoading={isSubmitting}
+            isLoading={isSubmitting || signInMutation.isLoading}
             isDisabled={!isValid || !isDirty}
           >
             로그인

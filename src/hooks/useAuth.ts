@@ -1,7 +1,10 @@
+import { postEmailAuthKey } from "@/api/auth/email/auth-key";
 import { postSignIn } from "@/api/auth/sign-in";
 import { postSignOut } from "@/api/auth/sign-out";
+import { postSignUp } from "@/api/auth/sign-up";
 import { postOAuth } from "@/api/oauth/kakao/callback";
 import { postOAuthToken } from "@/api/oauth/token";
+import { SignUpUser, signUpUserAtom } from "@/atoms/auth/signUpUser";
 import userAtom from "@/atoms/userAtom";
 import { APIError } from "@/types/error";
 import { useToast } from "@chakra-ui/react";
@@ -9,34 +12,30 @@ import { useMutation } from "@tanstack/react-query";
 import { useCallback } from "react";
 import { useResetRecoilState, useSetRecoilState } from "recoil";
 
-type SignInData = {
-  email: string;
-  password: string;
-};
-
-type UseAuthParams = {
-  onSignIn?: () => void;
-  onSignOut?: () => void;
-  onOAuthKakao?: () => void;
-};
-
-export default function useAuth({
-  onSignIn = () => {},
-  onSignOut = () => {},
-  onOAuthKakao = () => {}
-}: UseAuthParams = {}) {
+export default function useAuth({ onOAuthKakao = () => {} } = {}) {
   const toast = useToast();
 
   const setUser = useSetRecoilState(userAtom);
   const resetUser = useResetRecoilState(userAtom);
+  const setSignUpUser = useSetRecoilState(signUpUserAtom);
+
+  const signUpMutation = useMutation({
+    mutationFn: (user: SignUpUser) => postSignUp(user),
+    onError: () => {
+      toast({
+        title: "회원가입에 실패하였습니다",
+        status: "error",
+        duration: 3000
+      });
+    }
+  });
 
   const signInMutation = useMutation({
-    mutationFn: ({ email, password }: SignInData) =>
+    mutationFn: ({ email, password }: { email: string; password: string }) =>
       postSignIn(email, password),
     onSuccess: ({ accessToken, nickname }) => {
       sessionStorage.setItem("accessToken", accessToken);
       setUser({ nickname });
-      onSignIn();
     },
     onError: (e: APIError) => {
       toast({
@@ -51,11 +50,10 @@ export default function useAuth({
   });
 
   const signOutMutation = useMutation({
-    mutationFn: () => postSignOut(),
+    mutationFn: postSignOut,
     onSuccess: () => {
       sessionStorage.removeItem("accessToken");
       resetUser();
-      onSignOut();
     },
     onError: () => {
       toast({
@@ -90,12 +88,28 @@ export default function useAuth({
     }
   });
 
+  const sendEmailAuthKeyMutation = useMutation({
+    mutationFn: ({ email }: { email: string }) => postEmailAuthKey(email),
+    onSuccess: (data, { email }) => {
+      setSignUpUser(prev => ({ ...prev, email }));
+    },
+    onError: () => {
+      toast({
+        title: "인증코드 전송중 오류가 발생했습니다",
+        status: "error",
+        duration: 3000
+      });
+    }
+  });
+
   return {
-    signIn: (data: SignInData) => signInMutation.mutate(data),
-    signOut: () => signOutMutation.mutate(),
+    signUpMutation,
+    signInMutation,
+    signOutMutation,
     oAuthKakao: useCallback(
       (code: string) => oAuthKakaoSignInMutate(code),
       [oAuthKakaoSignInMutate]
-    )
+    ),
+    sendEmailAuthKeyMutation
   };
 }

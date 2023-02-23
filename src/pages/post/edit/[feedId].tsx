@@ -3,6 +3,7 @@ import NavLayout from "@/components/@common/NavLayout";
 import FeedEditor from "@/components/post/FeedEditor";
 import useFeed from "@/hooks/useFeed";
 import feedsKeys from "@/queryKeys/feedsKeys";
+import { EditorPublishData } from "@/types/data/feed";
 import { useQuery } from "@tanstack/react-query";
 import { GetServerSideProps } from "next";
 
@@ -21,24 +22,29 @@ export default function FeedEdit({ feedId }: ServerSideProps) {
     queryFn: () => getFeed(+feedId)
   });
 
-  const { update: updateFeed } = useFeed({
-    onUpdate: () => {
-      router.push("/feed");
-    }
-  });
+  const { updateMutation } = useFeed();
 
-  if (feedQuery.isError) return <>피드 에러</>;
-  if (feedQuery.isLoading) return <>로딩중</>;
+  const updateFeed = (data: Partial<EditorPublishData>) =>
+    updateMutation.mutate(
+      { feedId: +feedId, data },
+      {
+        onSuccess: () => {
+          router.push("/feed");
+        }
+      }
+    );
 
   return (
     <NavLayout>
       <Head>
         <title>게시물 수정</title>
       </Head>
-      <FeedEditor
-        onPublish={data => updateFeed(+feedId, data)}
-        prevFeedData={feedQuery.data}
-      />
+      {feedQuery.data && (
+        <FeedEditor
+          onPublish={data => updateFeed(data)}
+          prevFeedData={feedQuery.data}
+        />
+      )}
     </NavLayout>
   );
 }

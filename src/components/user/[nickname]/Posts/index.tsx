@@ -14,12 +14,9 @@ export default function Posts({ nickname }: PostsProps) {
     queryFn: () => getFeeds(nickname, 0)
   });
 
-  if (feedsQuery.isLoading) return <>Posts 로딩중...</>;
-  if (feedsQuery.isError) return <>Posts 에서 에러가 발생했습니다.</>;
-
   return (
     <VStack>
-      <FeedList feedsData={feedsQuery.data} />
+      {feedsQuery.data && <FeedList feedsData={feedsQuery.data} />}
     </VStack>
   );
 }

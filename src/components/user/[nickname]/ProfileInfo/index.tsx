@@ -2,10 +2,10 @@ import userAtom from "@/atoms/userAtom";
 import useAuth from "@/hooks/useAuth";
 import useFollow from "@/hooks/useFollow";
 import { ProfileData } from "@/types/data/user";
-import { Avatar, Box, Button, HStack, Text, VStack } from "@chakra-ui/react";
+import { Box, Button, HStack, Text, VStack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useRecoilValue } from "recoil";
-import CircledImage from "../../../@common/CircledImage";
+import ProfileAvatar from "../../../@common/ProfileAvatar";
 
 type ProfileProps = {
   profileData: ProfileData;
@@ -28,22 +28,22 @@ export default function ProfileInfo({
   const user = useRecoilValue(userAtom);
   const isMyProfile = nickname === user.nickname;
 
-  const { signOut } = useAuth({
-    onSignOut: () => {
-      router.push("/");
-    }
-  });
+  const { signOutMutation } = useAuth();
+  const signOut = () =>
+    signOutMutation.mutate(undefined, {
+      onSuccess: () => {
+        router.push("/");
+      }
+    });
 
-  const { toggle: toggleFollow } = useFollow();
+  const { toggleMutation } = useFollow();
+  const toggleFollow = () => toggleMutation(isFollowing).mutate({ nickname });
 
   return (
     <VStack gap="20px" {...restProps}>
       <HStack gap="20px">
-        {profileImageUrl ? (
-          <CircledImage src={profileImageUrl} size="80px" alt="프로필 이미지" />
-        ) : (
-          <Avatar boxSize="80px" />
-        )}
+        <ProfileAvatar src={profileImageUrl} size="80px" alt="프로필 이미지" />
+
         <Box>
           <HStack h="50px">
             <Text fontWeight="bold" fontSize="xl">
@@ -55,7 +55,7 @@ export default function ProfileInfo({
                 colorScheme="purple"
                 fontWeight="bold"
                 size="sm"
-                onClick={() => toggleFollow(isFollowing, nickname)}
+                onClick={toggleFollow}
               >
                 {isFollowing ? "팔로우 취소" : "팔로우"}
               </Button>

@@ -29,16 +29,19 @@ export default function ReplyList() {
     formState: { errors }
   } = useForm<FormData>({ mode: "onChange" });
 
-  const { create: createReply } = useReply(feedId, {
-    onCreate: () => {
-      reset();
-    }
-  });
+  const { createMutation } = useReply(feedId);
+
+  const createReply = (content: string) =>
+    createMutation.mutate(
+      { content },
+      {
+        onSuccess: () => {
+          reset();
+        }
+      }
+    );
 
   const handleFormSubmit = handleSubmit(({ content }) => createReply(content));
-
-  if (repliesQuery.isError) return <>ReplyList에서 에러 발생.</>;
-  if (repliesQuery.isLoading) return <>ReplyList 로딩 중...</>;
 
   return (
     <Flex direction="column">
@@ -52,8 +55,8 @@ export default function ReplyList() {
         />
       </form>
       <Box px="10px">
-        {repliesQuery.data.map(r => (
-          <ReplyItem key={r.replyId} {...r} />
+        {repliesQuery.data?.map(r => (
+          <ReplyItem key={r.replyId} replyData={r} />
         ))}
       </Box>
     </Flex>

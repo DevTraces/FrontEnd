@@ -1,17 +1,14 @@
-import CircledImage from "@/components/@common/CircledImage";
-import { Avatar, HStack, Text, VStack } from "@chakra-ui/react";
+import ProfileAvatar from "@/components/@common/ProfileAvatar";
+import { UserSearchResultData } from "@/types/data/search";
+import { HStack, Text, VStack } from "@chakra-ui/react";
 import Link from "next/link";
 
 type UserItemProps = {
-  nickname: string;
-  username: string;
-  profileImageUrl: string;
+  userResult: UserSearchResultData;
 };
 
 export default function UserItem({
-  nickname,
-  username,
-  profileImageUrl
+  userResult: { nickname, username, profileImageUrl }
 }: UserItemProps) {
   return (
     <HStack
@@ -20,11 +17,8 @@ export default function UserItem({
         background: "gray.100"
       }}
     >
-      {profileImageUrl ? (
-        <CircledImage size="40px" alt="프로필 이미지" src={profileImageUrl} />
-      ) : (
-        <Avatar boxSize="40px" />
-      )}
+      <ProfileAvatar size="40px" alt="프로필 이미지" src={profileImageUrl} />
+
       <Link href={`/user/${nickname}/posts`}>
         <VStack spacing="0" alignItems="start">
           <Text fontWeight="bold">{nickname}</Text>

@@ -11,12 +11,9 @@ export default function Saved() {
     queryFn: () => getBookmarkList(0)
   });
 
-  if (bookmarkQuery.isError) return <>Bookmark에서 에러가 발생했습니다.</>;
-  if (bookmarkQuery.isLoading) return <>Bookmark 로딩중..</>;
-
   return (
     <Grid w="full" templateColumns="repeat(3, 1fr)" gap="10px">
-      {bookmarkQuery.data.map(({ feedId, imageUrl }) => (
+      {bookmarkQuery.data?.map(({ feedId, imageUrl }) => (
         <GridItem key={feedId} position="relative">
           <Link href={`/post/${feedId}`}>
             <AspectRatio ratio={1 / 1}>

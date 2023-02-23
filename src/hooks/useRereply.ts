@@ -7,21 +7,7 @@ import feedsKeys from "@/queryKeys/feedsKeys";
 import { useToast } from "@chakra-ui/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-type UseRereplyConfig = {
-  onCreate?: () => void;
-  onUpdate?: () => void;
-  onDelete?: () => void;
-};
-
-export default function useRereply(
-  feedId: number,
-  replyId: number,
-  {
-    onCreate = () => {},
-    onUpdate = () => {},
-    onDelete = () => {}
-  }: UseRereplyConfig = {}
-) {
+export default function useRereply(feedId: number, replyId: number) {
   const queryClient = useQueryClient();
   const toast = useToast();
 
@@ -32,7 +18,6 @@ export default function useRereply(
       queryClient.invalidateQueries({
         queryKey: feedsKeys.rereplies(feedId, replyId)
       });
-      onCreate();
     },
     onError: () => {
       toast({
@@ -55,7 +40,6 @@ export default function useRereply(
       queryClient.invalidateQueries({
         queryKey: feedsKeys.rereplies(feedId, replyId)
       });
-      onUpdate();
     },
     onError: () => {
       toast({
@@ -73,7 +57,6 @@ export default function useRereply(
       queryClient.invalidateQueries({
         queryKey: feedsKeys.rereplies(feedId, replyId)
       });
-      onDelete();
     },
     onError: () => {
       toast({
@@ -84,9 +67,8 @@ export default function useRereply(
     }
   });
   return {
-    create: (content: string) => createMutation.mutate({ content }),
-    update: (rereplyId: number, content: string) =>
-      updateMutation.mutate({ rereplyId, content }),
-    delete: (rereplyId: number) => deleteMutation.mutate({ rereplyId })
+    createMutation,
+    updateMutation,
+    deleteMutation
   };
 }

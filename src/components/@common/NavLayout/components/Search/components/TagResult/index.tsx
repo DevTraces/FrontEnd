@@ -15,13 +15,10 @@ export default function TagAutoComplete() {
     queryFn: ({ queryKey }) => getAutoCompleteResult(queryKey[1], 0)
   });
 
-  if (tagAutoCompleteQuery.isError) return <>AutoComplete 에러 발생</>;
-  if (tagAutoCompleteQuery.isLoading) return <>AutoComplete 로딩 중...</>;
-
   return (
     <ResultContainer>
       {search ? (
-        tagAutoCompleteQuery.data.map(word => (
+        tagAutoCompleteQuery.data?.map(word => (
           <Link key={word} href={`/explore/tags/${word}`}>
             <HStack
               w="100%"

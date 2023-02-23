@@ -17,16 +17,15 @@ import { useForm } from "react-hook-form";
 import ReplyInput from "../ReplyInput";
 import ReplyContent from "./components/ReplyContent";
 
-type ReplyItemProps = ReplyData;
+type ReplyItemProps = {
+  replyData: ReplyData;
+};
 
 type FormData = {
   newContent: string;
 };
 export default function ReplyItem({
-  feedId,
-  replyId,
-  authorNickname,
-  content
+  replyData: { feedId, replyId, authorNickname, content, authorProfileImageUrl }
 }: ReplyItemProps) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const openMoreBtnRef = useRef<HTMLButtonElement | null>(null);
@@ -44,23 +43,41 @@ export default function ReplyItem({
   } = useForm<FormData>({ mode: "onChange" });
 
   const {
-    create: createRereply,
-    update: updateRereply,
-    delete: deleteRereply
-  } = useRereply(feedId, replyId, {
-    onCreate: () => {
-      reset();
-    }
-  });
+    createMutation: createRereplyMutation,
+    updateMutation: updateRereplyMutation,
+    deleteMutation: deleteRereplyMutation
+  } = useRereply(feedId, replyId);
 
-  const { update: updateReply, delete: deleteReply } = useReply(feedId);
+  const {
+    updateMutation: updateReplyMutation,
+    deleteMutation: deleteReplyMutation
+  } = useReply(feedId);
+
+  const updateReply = (targetReplyId: number, newContent: string) =>
+    updateReplyMutation.mutate({ replyId: targetReplyId, content: newContent });
+
+  const deleteReply = (targetReplyId: number) =>
+    deleteReplyMutation.mutate({ replyId: targetReplyId });
+
+  const createRereply = (newContent: string) =>
+    createRereplyMutation.mutate(
+      { content: newContent },
+      {
+        onSuccess: () => {
+          reset();
+        }
+      }
+    );
+
+  const updateRereply = (rereplyId: number, newContent: string) =>
+    updateRereplyMutation.mutate({ rereplyId, content: newContent });
+
+  const deleteRereply = (rereplyId: number) =>
+    deleteRereplyMutation.mutate({ rereplyId });
 
   const handleFormSubmit = handleSubmit(({ newContent }) =>
     createRereply(newContent)
   );
-
-  if (rerepliesQuery.isError) return <>ReplyList에서 에러 발생.</>;
-  if (rerepliesQuery.isLoading) return <>ReplyList 로딩 중...</>;
 
   const { ref: newContentRef, ...newContentRegisterRest } = register(
     "newContent",
@@ -71,6 +88,7 @@ export default function ReplyItem({
     <Flex direction="column" gap="12px">
       <ReplyContent
         authorNickname={authorNickname}
+        authorProfileImageUrl={authorProfileImageUrl}
         content={content}
         onReply={async () => {
           await openMoreBtnRef.current?.click();
@@ -84,9 +102,10 @@ export default function ReplyItem({
           <AccordionButton ref={openMoreBtnRef}>답글 더보기</AccordionButton>
           <AccordionPanel>
             <Flex direction="column" gap="12px">
-              {rerepliesQuery.data.map(r => (
+              {rerepliesQuery.data?.map(r => (
                 <ReplyContent
                   key={r.rereplyId}
+                  authorProfileImageUrl={r.authorProfileImageUrl}
                   authorNickname={r.authorNickname}
                   content={r.content}
                   onReply={() => {

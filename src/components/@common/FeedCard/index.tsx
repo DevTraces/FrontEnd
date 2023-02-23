@@ -27,7 +27,9 @@ export default function FeedCard({ feedData, ...restProps }: FeedCardProps) {
     setFeed(feedData);
   }, [feedData, setFeed]);
 
-  const { delete: deleteFeed } = useFeed();
+  const { deleteMutation } = useFeed();
+
+  const deleteFeed = (feedId: number) => deleteMutation.mutate({ feedId });
 
   const {
     isOpen: isAlertOpen,

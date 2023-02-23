@@ -1,9 +1,9 @@
+import ProfileAvatar from "@/components/@common/ProfileAvatar";
 import DeleteConfirmDialog from "@/components/@common/FeedCard/components/DeleteConfirmDialog";
 import MorePopover from "@/components/@common/FeedCard/components/MorePopover";
 import ReplyEditModal from "@/components/@common/FeedCard/components/ReplyEditModal";
 import { ReplyData } from "@/types/data/reply";
 import {
-  Avatar,
   Box,
   Button,
   HStack,
@@ -11,9 +11,13 @@ import {
   useDisclosure,
   VStack
 } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { MouseEventHandler } from "react";
 
-type ReplyContentProps = Pick<ReplyData, "authorNickname" | "content"> & {
+type ReplyContentProps = Pick<
+  ReplyData,
+  "authorNickname" | "content" | "authorProfileImageUrl"
+> & {
   onReply: MouseEventHandler<HTMLButtonElement>;
   onDelete: () => void;
   onEdit: (newContent: string) => void;
@@ -21,11 +25,14 @@ type ReplyContentProps = Pick<ReplyData, "authorNickname" | "content"> & {
 
 export default function ReplyContent({
   authorNickname,
+  authorProfileImageUrl,
   content,
   onReply,
   onDelete,
   onEdit
 }: ReplyContentProps) {
+  const router = useRouter();
+  const userProfileLink = `/user/${authorNickname}/posts`;
   const {
     isOpen: isAlertOpen,
     onOpen: onAlertOpen,
@@ -61,7 +68,12 @@ export default function ReplyContent({
       />
 
       <HStack alignItems="flex-start">
-        <Avatar boxSize="40px" />
+        <ProfileAvatar
+          src={authorProfileImageUrl}
+          size="40px"
+          alt="프로필 이미지"
+          onClick={() => router.push(userProfileLink)}
+        />
         <Box w="full">
           <VStack
             alignItems="flex-start"
@@ -73,7 +85,12 @@ export default function ReplyContent({
             width="full"
             position="relative"
           >
-            <Text mr={2} fontWeight="bold">
+            <Text
+              onClick={() => router.push(userProfileLink)}
+              mr={2}
+              fontWeight="bold"
+              cursor="pointer"
+            >
               {authorNickname}
             </Text>
             <Text textAlign="left">{content}</Text>
