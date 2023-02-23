@@ -8,17 +8,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import { useRecoilValue } from "recoil";
 
-type UseFeedDeleteParams = {
-  onCreate?: () => void;
-  onUpdate?: () => void;
-  onDelete?: () => void;
-};
-
-export default function useFeed({
-  onCreate = () => {},
-  onUpdate = () => {},
-  onDelete = () => {}
-}: UseFeedDeleteParams = {}) {
+export default function useFeed() {
   const router = useRouter();
   const { nickname } = useRecoilValue(userAtom);
   const toast = useToast();
@@ -32,7 +22,6 @@ export default function useFeed({
         status: "success",
         duration: 1000
       });
-      onCreate();
     },
     onError: () => {
       toast({
@@ -58,7 +47,6 @@ export default function useFeed({
         duration: 1000
       });
       queryClient.invalidateQueries({ queryKey: feedsKeys.feed(feedId) });
-      onUpdate();
     },
     onError: () => {
       toast({
@@ -84,8 +72,6 @@ export default function useFeed({
         queryClient.invalidateQueries(feedsKeys.feed(feedId));
         queryClient.invalidateQueries(feedsKeys.feeds(nickname));
       }
-
-      onDelete();
     },
     onError: () => {
       toast({
@@ -97,9 +83,8 @@ export default function useFeed({
   });
 
   return {
-    create: (data: EditorPublishData) => createMutation.mutate(data),
-    update: (feedId: number, data: Partial<EditorPublishData>) =>
-      updateMutation.mutate({ feedId, data }),
-    delete: (feedId: number) => deleteMutation.mutate({ feedId })
+    createMutation,
+    updateMutation,
+    deleteMutation
   };
 }
