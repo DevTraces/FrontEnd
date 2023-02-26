@@ -49,7 +49,13 @@ export default function Toolbar({
   };
 
   return (
-    <Flex gap={4} justifyContent="space-between" w="full" {...restProps}>
+    <Flex
+      gap={4}
+      justifyContent="space-between"
+      w="full"
+      py="12px"
+      {...restProps}
+    >
       <Button
         variant="ghost"
         colorScheme="none"

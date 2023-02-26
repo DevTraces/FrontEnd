@@ -6,6 +6,7 @@ import { ReplyData } from "@/types/data/reply";
 import {
   Box,
   Button,
+  Flex,
   HStack,
   Text,
   useDisclosure,
@@ -74,7 +75,7 @@ export default function ReplyContent({
           alt="프로필 이미지"
           onClick={() => router.push(userProfileLink)}
         />
-        <Box w="full">
+        <Flex w="full" direction="column" alignItems="start">
           <VStack
             alignItems="flex-start"
             bg="gray.100"
@@ -104,7 +105,7 @@ export default function ReplyContent({
           <Button variant="ghost" size="sm" onClick={onReply}>
             답글 달기
           </Button>
-        </Box>
+        </Flex>
       </HStack>
     </>
   );
