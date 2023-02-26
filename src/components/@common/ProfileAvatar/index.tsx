@@ -5,7 +5,7 @@ import { ComponentProps, useState } from "react";
 type ImageSrc = ComponentProps<typeof Image>["src"];
 
 type ProfileAvatarProps = {
-  src: ImageSrc;
+  src?: ImageSrc;
   size: number | string;
   alt: string;
   fallbackSrc?: ImageSrc;
