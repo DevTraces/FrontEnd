@@ -57,20 +57,25 @@ export default function FeedCard({ feedData, ...restProps }: FeedCardProps) {
         zIndex="base"
         {...restProps}
       >
-        <Flex
-          alignItems="center"
-          gap={4}
-          px="12px"
-          py="20px"
-          onClick={() => router.push(`/user/${feedData.authorNickname}/posts`)}
-          cursor="pointer"
-        >
+        <Flex alignItems="center" gap={4} px="12px" py="20px">
           <ProfileAvatar
             src={feedData.authorProfileImageUrl}
             size="40px"
             alt="프로필 이미지"
+            onClick={() =>
+              router.push(`/user/${feedData.authorNickname}/posts`)
+            }
+            cursor="pointer"
           />
-          <Text fontWeight="bold">{feedData.authorNickname}</Text>
+          <Text
+            fontWeight="bold"
+            onClick={() =>
+              router.push(`/user/${feedData.authorNickname}/posts`)
+            }
+            cursor="pointer"
+          >
+            {feedData.authorNickname}
+          </Text>
           {feedData.authorNickname === user.nickname && (
             <MorePopover
               onDeleteClick={onAlertOpen}
