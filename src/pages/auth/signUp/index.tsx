@@ -1,52 +1,91 @@
-import AuthButton from "@/components/auth/AuthButton";
-import AuthLayout from "@/components/auth/AuthLayout";
-import AuthTextInput from "@/components/auth/AuthTextInput";
-import {
-  Center,
-  Flex,
-  FormControl,
-  FormErrorMessage,
-  FormHelperText,
-  Text,
-  Divider
-} from "@chakra-ui/react";
+import FormButton from "@/components/@common/FormButton";
+import AuthTextInput from "@/components/@common/FormInput";
+import FormLayout from "@/components/@common/FormLayout";
+import Logo from "@/components/@common/Logo";
+import KakaoLoginButton from "@/components/auth/KakaoLoginButton";
+import VALIDATION_RULE from "@/constants/auth/VALIDATION_RULE";
+import useAuth from "@/hooks/useAuth";
+import useCheck from "@/hooks/useCheck";
+import { Center, Divider, Text } from "@chakra-ui/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { FormEventHandler } from "react";
+import { useForm } from "react-hook-form";
+
+type FormData = { email: string };
 
 export default function SignUp() {
   const router = useRouter();
-  const isError = false;
+  const {
+    handleSubmit,
+    register,
+    setError,
+    formState: { errors, isSubmitting, isValid, isDirty }
+  } = useForm<FormData>({ mode: "onChange" });
+
+  const { sendEmailAuthKeyMutation } = useAuth();
+  const { emailDuplicateMutation } = useCheck();
+
+  const sendEmailAuthkey = (email: string) => {
+    sendEmailAuthKeyMutation.mutate(
+      { email },
+      {
+        onSuccess: () => {
+          router.push("/auth/signUp/emailAuth");
+        }
+      }
+    );
+  };
+
+  const checkEmailDuplicated = (email: string) => {
+    emailDuplicateMutation.mutate(
+      { email },
+      {
+        onSuccess: ({ duplicatedEmail }) => {
+          if (!duplicatedEmail) sendEmailAuthkey(email);
+          else setError("email", { message: "이미 가입된 이메일입니다" });
+        }
+      }
+    );
+  };
+
+  const handleFormSubmit: FormEventHandler<HTMLFormElement> = handleSubmit(
+    ({ email }) => checkEmailDuplicated(email)
+  );
 
   return (
     <>
       <Head>
-        <title>Arterest | Sign Up</title>
+        <title>ArtBubble | Sign Up</title>
       </Head>
-      <AuthLayout>
-        <Center>Arterest</Center>
-        <Text>그림을 좋아하는 사람들과 소통하려면 가입하세요.</Text>
-        <AuthButton bg="yellow.500" color="white">
-          카카오 계정으로 시작하기
-        </AuthButton>
+      <FormLayout>
+        <Center>
+          <Logo type="full" height={50} />
+        </Center>
+        <Text fontSize="2xl" textAlign="center" wordBreak="keep-all">
+          그림을 좋아하는 사람들과 소통하려면 가입하세요.
+        </Text>
+        <KakaoLoginButton type="signUp" />
         <Divider />
-        <FormControl as={Flex} direction="column" isInvalid={isError}>
-          <AuthTextInput type="email" placeholder="이메일 주소" />
-          {!isError ? (
-            <FormHelperText />
-          ) : (
-            <FormErrorMessage>Email is required.</FormErrorMessage>
-          )}
-          <AuthButton
-            bg="red.900"
-            color="white"
-            onClick={() => {
-              router.push("signUp/emailAuth");
-            }}
+        <form style={{ width: "100%" }} onSubmit={handleFormSubmit}>
+          <AuthTextInput
+            placeholder="이메일"
+            isInvalid={!!errors.email}
+            errorMessage={errors.email?.message}
+            {...register("email", VALIDATION_RULE.email)}
+          />
+          <FormButton
+            isLoading={
+              isSubmitting ||
+              sendEmailAuthKeyMutation.isLoading ||
+              emailDuplicateMutation.isLoading
+            }
+            isDisabled={!isValid || !isDirty}
           >
             가입하기
-          </AuthButton>
-        </FormControl>
-      </AuthLayout>
+          </FormButton>
+        </form>
+      </FormLayout>
     </>
   );
 }

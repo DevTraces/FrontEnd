@@ -1,68 +1,78 @@
-import AuthButton from "@/components/auth/AuthButton";
-import AuthLayout from "@/components/auth/AuthLayout";
-import AuthTextInput from "@/components/auth/AuthTextInput";
-import {
-  Center,
-  FormControl,
-  FormErrorMessage,
-  FormHelperText,
-  Divider,
-  Wrap,
-  VStack
-} from "@chakra-ui/react";
+import FormButton from "@/components/@common/FormButton";
+import AuthTextInput from "@/components/@common/FormInput";
+import FormLayout from "@/components/@common/FormLayout";
+import Logo from "@/components/@common/Logo";
+import KakaoLoginButton from "@/components/auth/KakaoLoginButton";
+import VALIDATION_RULE from "@/constants/auth/VALIDATION_RULE";
+import useAuth from "@/hooks/useAuth";
+import { SignInData } from "@/types/data/auth";
+import { Center, Divider, HStack, Text } from "@chakra-ui/react";
 import Head from "next/head";
+import Link from "next/link";
 import { useRouter } from "next/router";
+import { useForm } from "react-hook-form";
 
 export default function SignIn() {
   const router = useRouter();
-  const isError = false;
+  const {
+    register,
+    formState: { isDirty, isSubmitting, errors, isValid },
+    handleSubmit
+  } = useForm<{
+    email: string;
+    password: string;
+  }>({ mode: "onChange" });
+
+  const { signInMutation } = useAuth();
+  const signIn = (data: SignInData) =>
+    signInMutation.mutate(data, {
+      onSuccess: () => {
+        router.push("/feed");
+      }
+    });
 
   return (
     <>
       <Head>
-        <title>Arterest | Sign In</title>
+        <title>ArtBubble | Sign In</title>
       </Head>
-      <AuthLayout>
-        <Center color="black">Arterest</Center>
-        <AuthButton bg="yellow.500" onClick={() => {}}>
-          카카오 계정으로 로그인
-        </AuthButton>
+      <FormLayout>
+        <Center color="black">
+          <Logo type="full" height={50} />
+        </Center>
+        <KakaoLoginButton type="signIn" />
         <Divider />
-        <FormControl as={VStack} isInvalid={isError}>
-          <AuthTextInput type="email" placeholder="이메일 주소" />
-          {!isError ? (
-            <FormHelperText />
-          ) : (
-            <FormErrorMessage>Email is required.</FormErrorMessage>
-          )}
-          <AuthTextInput type="password" placeholder="비밀번호" />
-          {!isError ? (
-            <FormHelperText />
-          ) : (
-            <FormErrorMessage>Password is required.</FormErrorMessage>
-          )}
-          <Wrap w="full">
-            <AuthButton
-              bg="red.900"
-              color="white"
-              onClick={() => {
-                router.push("/feed");
-              }}
-            >
-              로그인
-            </AuthButton>
-            <AuthButton
-              bg="red.900"
-              color="white"
-              onClick={() => {
-                router.push("signUp");
-              }}
-            >
-              가입하기
-            </AuthButton>
-          </Wrap>
-        </FormControl>
-      </AuthLayout>
+        <form style={{ width: "100%" }} onSubmit={handleSubmit(signIn)}>
+          <AuthTextInput
+            isInvalid={!!errors.email}
+            errorMessage={errors.email?.message}
+            placeholder="이메일"
+            {...register("email", VALIDATION_RULE.email)}
+          />
+          <AuthTextInput
+            isInvalid={!!errors.password}
+            errorMessage={errors.password?.message}
+            placeholder="비밀번호"
+            type="password"
+            {...register("password", { required: "비밀번호가 필요해요" })}
+          />
+
+          <FormButton
+            isLoading={isSubmitting || signInMutation.isLoading}
+            isDisabled={!isValid || !isDirty}
+          >
+            로그인
+          </FormButton>
+        </form>
+
+        <Divider />
+        <HStack>
+          <Text>아직 계정이 없으신가요?</Text>
+          <Text color="primary" fontWeight="bold">
+            <Link href="/auth/signUp">계정 만들기</Link>
+          </Text>
+        </HStack>
+      </FormLayout>
     </>
   );
 }
