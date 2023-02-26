@@ -2,10 +2,11 @@ import feedAtom from "@/atoms/feedAtom";
 import userAtom from "@/atoms/userAtom";
 import useFeed from "@/hooks/useFeed";
 import { FeedData } from "@/types/data/feed";
-import { Avatar, Flex, Text, useDisclosure } from "@chakra-ui/react";
+import { Flex, Text, useDisclosure } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { ComponentProps, useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
+import ProfileAvatar from "../ProfileAvatar";
 import Carousel from "./components/Carousel";
 import DeleteConfirmDialog from "./components/DeleteConfirmDialog";
 import MorePopover from "./components/MorePopover";
@@ -56,8 +57,19 @@ export default function FeedCard({ feedData, ...restProps }: FeedCardProps) {
         zIndex="base"
         {...restProps}
       >
-        <Flex alignItems="center" gap={4} px="12px" py="20px">
-          <Avatar boxSize={10} />
+        <Flex
+          alignItems="center"
+          gap={4}
+          px="12px"
+          py="20px"
+          onClick={() => router.push(`/user/${feedData.authorNickname}/posts`)}
+          cursor="pointer"
+        >
+          <ProfileAvatar
+            src={feedData.authorProfileImageUrl}
+            size="40px"
+            alt="프로필 이미지"
+          />
           <Text fontWeight="bold">{feedData.authorNickname}</Text>
           {feedData.authorNickname === user.nickname && (
             <MorePopover
