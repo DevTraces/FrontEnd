@@ -54,7 +54,7 @@ export default function SignIn() {
             errorMessage={errors.password?.message}
             placeholder="비밀번호"
             type="password"
-            {...register("password", VALIDATION_RULE.password)}
+            {...register("password", { required: "비밀번호가 필요해요" })}
           />
 
           <FormButton
