@@ -69,7 +69,7 @@ export default function ProfileInfo({
                   fontWeight="bold"
                   size="sm"
                   onClick={() => {
-                    router.push(`/accounts/edit?nickname=${nickname}`);
+                    router.push(`/accounts/edit`);
                   }}
                 >
                   프로필 편집
