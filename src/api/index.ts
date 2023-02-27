@@ -56,6 +56,6 @@ const axiosInstance = (baseURL: string = ""): CustomInstance => {
 
 const api = {
   dev: axiosInstance(),
-  prod: axiosInstance("http://54.180.200.170:8080")
+  prod: axiosInstance("https://api.artbubble-zerobase.com")
 };
 export default api;
