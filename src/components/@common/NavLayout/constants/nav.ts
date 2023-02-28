@@ -8,7 +8,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 export interface Nav {
-  key: "feed" | "search" | "alert" | "saved" | "newPost" | "profile";
+  key: "feed" | "search" | "alert" | "saved" | "new" | "posts";
   icon: typeof faHome;
   title: string;
   href: `/${string}`;
@@ -25,9 +25,9 @@ export const generateNavs = (nickname: string): Nav[] => {
       title: "저장한 목록",
       href: `/user/${nickname}/saved`
     },
-    { key: "newPost", icon: faPlus, title: "새 포스트", href: "/post/new" },
+    { key: "new", icon: faPlus, title: "새 포스트", href: "/post/new" },
     {
-      key: "profile",
+      key: "posts",
       icon: faUser,
       title: "프로필",
       href: `/user/${nickname}/posts`

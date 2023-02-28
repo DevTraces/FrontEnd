@@ -10,7 +10,7 @@ export default function BottomBar() {
   const nickname = currentUser.getNickname();
   const navs = useMemo(() => generateNavs(nickname), [nickname]);
   const router = useRouter();
-  const selectedKeys: Nav["key"][] = ["feed", "saved", "newPost", "profile"];
+  const selectedKeys: Nav["key"][] = ["feed", "saved", "new", "posts"];
   const selectedNavs = navs.filter(nav => selectedKeys.includes(nav.key));
 
   return (
@@ -30,13 +30,13 @@ export default function BottomBar() {
         md: "none"
       }}
     >
-      {selectedNavs.map(({ icon, href }) => (
+      {selectedNavs.map(({ key, icon, href }) => (
         <Link key={href} href={href}>
           <Icon
             as={FontAwesomeIcon}
             icon={icon}
             boxSize={6}
-            color={router.pathname === href ? "primary" : "black"}
+            color={router.asPath.includes(key) ? "primary" : "black"}
           />
         </Link>
       ))}
