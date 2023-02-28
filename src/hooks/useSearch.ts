@@ -1,11 +1,12 @@
 import searchValueAtom from "@/atoms/searchValueAtom";
 import { SearchValue } from "@/types/data/search";
+import { useRef } from "react";
 import { useRecoilState } from "recoil";
 
-let timeoutId = null as unknown as ReturnType<typeof setTimeout>;
 const SEARCH_DEBOUNCE_TIME = 500;
 
 export default function useSearch() {
+  const timeoutIdRef = useRef<ReturnType<typeof setTimeout>>();
   const [searchValue, setSearchValue] = useRecoilState(searchValueAtom);
 
   const changeType = (type: SearchValue["type"]) => {
@@ -13,14 +14,14 @@ export default function useSearch() {
   };
 
   const search = (keyword: string) => {
-    if (timeoutId) clearTimeout(timeoutId);
+    if (timeoutIdRef.current) clearTimeout(timeoutIdRef.current);
 
     setSearchValue(prev => ({
       ...prev,
       isTyping: keyword !== ""
     }));
 
-    timeoutId = setTimeout(() => {
+    timeoutIdRef.current = setTimeout(() => {
       setSearchValue(prev => ({
         ...prev,
         isTyping: false,
