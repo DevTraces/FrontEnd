@@ -19,13 +19,7 @@ const axiosInstance = (baseURL: string = ""): CustomInstance => {
     withCredentials: true,
     transformResponse: async res => {
       const json = JSON.parse(res);
-
-      if (Object.hasOwn(json, "data")) {
-        return json.data;
-      }
-      return Promise.reject(
-        new Error("서버에서 올바르지 않은 형식의 에러가 응답되었습니다.")
-      );
+      return json.data;
     }
   });
 
@@ -38,12 +32,12 @@ const axiosInstance = (baseURL: string = ""): CustomInstance => {
       } = err;
       if (status !== 401 || config.sent) return Promise.reject(err);
 
+      config.sent = true;
       if (status === 401)
         axios.post(`${API_ENDPOINT}/api/tokens/reissue`, null, {
           withCredentials: true
         });
 
-      config.sent = true;
       return axios(config);
     }
   );
