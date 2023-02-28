@@ -1,16 +1,15 @@
 import { postFeeds } from "@/api/feeds";
 import { deleteFeed, postFeed } from "@/api/feeds/[feedId]";
-import userAtom from "@/atoms/userAtom";
 import feedsKeys from "@/queryKeys/feedsKeys";
 import { EditorPublishData } from "@/types/data/feed";
 import { useToast } from "@chakra-ui/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import currentUser from "@/utils/currentUser";
 import { useRouter } from "next/router";
-import { useRecoilValue } from "recoil";
 
 export default function useFeed() {
   const router = useRouter();
-  const { nickname } = useRecoilValue(userAtom);
+  const nickname = currentUser.getNickname();
   const toast = useToast();
   const queryClient = useQueryClient();
 

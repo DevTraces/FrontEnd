@@ -1,8 +1,11 @@
 import { getUserProfile } from "@/api/users/profile/[nickname]";
-import FormTextarea from "@/components/@common/FormTextarea";
 import FormTextInput from "@/components/@common/FormInput";
-import { ProfileData } from "@/types/data/user";
+import FormTextarea from "@/components/@common/FormTextarea";
+import NavLayout from "@/components/@common/NavLayout";
 import VALIDATION_RULE from "@/constants/auth/VALIDATION_RULE";
+import usersKeys from "@/queryKeys/usersKeys";
+import { ProfileData } from "@/types/data/user";
+import currentUser from "@/utils/currentUser";
 import {
   Avatar,
   Box,
@@ -16,14 +19,12 @@ import { useQuery } from "@tanstack/react-query";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
-import NavLayout from "@/components/@common/NavLayout";
-import usersKeys from "@/queryKeys/usersKeys";
 
 type FormData = Pick<ProfileData, "username" | "nickname" | "description">;
 
 export default function Setting() {
   const router = useRouter();
-  const { nickname } = router.query as { nickname: string };
+  const nickname = currentUser.getNickname();
 
   const {
     register,

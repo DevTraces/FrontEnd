@@ -1,4 +1,3 @@
-import userAtom from "@/atoms/userAtom";
 import Logo from "@/components/@common/Logo";
 import {
   Box,
@@ -10,16 +9,16 @@ import {
   useOutsideClick
 } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import currentUser from "@/utils/currentUser";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useRecoilValue } from "recoil";
 import { generateNavs, Nav } from "../../constants/nav";
 import Drawer from "../Drawer";
 import SearchProvider from "../SearchContext";
 
 export default function SideBar() {
-  const user = useRecoilValue(userAtom);
-  const navs = useMemo(() => generateNavs(user.nickname), [user.nickname]);
+  const nickname = currentUser.getNickname();
+  const navs = useMemo(() => generateNavs(nickname), [nickname]);
 
   const router = useRouter();
   const { isOpen, onToggle, onClose, onOpen } = useDisclosure();

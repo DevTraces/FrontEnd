@@ -1,11 +1,11 @@
 import feedAtom from "@/atoms/feedAtom";
-import userAtom from "@/atoms/userAtom";
 import useFeed from "@/hooks/useFeed";
 import { FeedData } from "@/types/data/feed";
+import currentUser from "@/utils/currentUser";
 import { Flex, Text, useDisclosure } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { ComponentProps, useEffect, useState } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import ProfileAvatar from "../ProfileAvatar";
 import Carousel from "./components/Carousel";
 import DeleteConfirmDialog from "./components/DeleteConfirmDialog";
@@ -19,7 +19,7 @@ type FeedCardProps = {
 } & ComponentProps<typeof Flex>;
 
 export default function FeedCard({ feedData, ...restProps }: FeedCardProps) {
-  const user = useRecoilValue(userAtom);
+  const nickname = currentUser.getNickname();
   const router = useRouter();
   const [isReplyOpen, setIsReplyOpen] = useState(false);
   const setFeed = useSetRecoilState(feedAtom);
@@ -71,7 +71,7 @@ export default function FeedCard({ feedData, ...restProps }: FeedCardProps) {
             alt="프로필 이미지"
           />
           <Text fontWeight="bold">{feedData.authorNickname}</Text>
-          {feedData.authorNickname === user.nickname && (
+          {feedData.authorNickname === nickname && (
             <MorePopover
               onDeleteClick={onAlertOpen}
               onEditClick={() => {

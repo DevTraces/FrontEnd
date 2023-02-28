@@ -1,12 +1,12 @@
 import { deleteBookmark, postBookmark } from "@/api/bookmark/[feedId]";
-import userAtom from "@/atoms/userAtom";
 import feedsKeys from "@/queryKeys/feedsKeys";
 import { useToast } from "@chakra-ui/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useRecoilValue } from "recoil";
+import currentUser from "@/utils/currentUser";
 
 const useBookmark = () => {
-  const { nickname } = useRecoilValue(userAtom);
+  const nickname = currentUser.getNickname();
+
   const toast = useToast();
 
   const queryClient = useQueryClient();
