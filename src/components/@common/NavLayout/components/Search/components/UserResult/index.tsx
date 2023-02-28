@@ -33,11 +33,12 @@ export default function UserList({ target }: UserListProps) {
 
   return (
     <ResultContainer>
-      {userQuery.data && userQuery.data.length > 0 ? (
+      {userQuery.data ? (
         <>
           {userQuery.data.map(d => (
             <UserItem key={d.nickname} userResult={d} />
           ))}
+
           <Text>아래의 유저를 팔로우 해보세요</Text>
           {followSuggestionQuery.data?.map(d => (
             <UserItem key={d.nickname} userResult={d} />
