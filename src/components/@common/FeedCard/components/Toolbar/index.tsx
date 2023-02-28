@@ -24,16 +24,18 @@ export default function Toolbar({
   setIsReplyOpen,
   ...restProps
 }: ToolbarProps) {
-  const { liked, feedId, bookMarked } = useRecoilValue(feedAtom);
+  const { liked, feedId, bookMarked, authorNickname } =
+    useRecoilValue(feedAtom);
   const toast = useToast();
 
   const { bookmarkMutation, unbookmarkMutation } = useBookmark();
   const { likeMutation, unlikeMutation } = useLike();
 
-  const bookmark = () => bookmarkMutation.mutate({ feedId });
-  const unbookmark = () => unbookmarkMutation.mutate({ feedId });
-  const like = () => likeMutation.mutate({ feedId });
-  const unlike = () => unlikeMutation.mutate({ feedId });
+  const bookmark = () => bookmarkMutation.mutate({ feedId, authorNickname });
+  const unbookmark = () =>
+    unbookmarkMutation.mutate({ feedId, authorNickname });
+  const like = () => likeMutation.mutate({ feedId, authorNickname });
+  const unlike = () => unlikeMutation.mutate({ feedId, authorNickname });
 
   const handleBookmarkClick = bookMarked ? unbookmark : bookmark;
 
