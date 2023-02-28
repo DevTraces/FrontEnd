@@ -1,96 +1,68 @@
-import { postEmailAuthKey } from "@/api/auth/email/auth-key";
-import { postEmailAuthKeyCheck } from "@/api/auth/email/auth-key/check";
 import { signUpUserAtom } from "@/atoms/auth/signUpUser";
 import FormButton from "@/components/@common/FormButton";
 import FormLayout from "@/components/@common/FormLayout";
-import AuthTextInput from "@/components/@common/FormInput";
-import VALIDATION_RULE from "@/constants/auth/VALIDATION_RULE";
-import { Center, Icon, Text, ToastId, useToast } from "@chakra-ui/react";
+import useAuth from "@/hooks/useAuth";
+import useCheck from "@/hooks/useCheck";
+import {
+  Center,
+  HStack,
+  Icon,
+  PinInput,
+  PinInputField,
+  Text
+} from "@chakra-ui/react";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
-import { useMutation } from "@tanstack/react-query";
-
-interface FormData {
-  authKey: string;
-}
 
 export default function EmailAuth() {
-  const [isClient, setIsClient] = useState(false);
   const router = useRouter();
-  const toast = useToast();
-  const toastIdRef = useRef<ToastId>("");
+
+  const [isClient, setIsClient] = useState(false);
+  const [authKey, setAuthKey] = useState("");
+  const [isDirty, setIsDirty] = useState(false);
+
   const user = useRecoilValue(signUpUserAtom);
 
-  const {
-    handleSubmit,
-    register,
-    setError,
-    formState: { errors, isSubmitting, isDirty, isValid }
-  } = useForm<FormData>({ mode: "onChange" });
+  const { emailAuthKeyCheckMutation } = useCheck();
+  const { sendEmailAuthKeyMutation } = useAuth();
+
+  const isAuthKeyValid = authKey.length === 6 && isDirty;
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
-  const emailAuthKeyMutation = useMutation({
-    mutationFn: ({ email }: { email: string }) => postEmailAuthKey(email),
-    onMutate: () => {
-      toastIdRef.current = toast({
-        title: "인증코드 전송중",
-        status: "info",
-        duration: 5000
-      });
-    },
-    onSuccess: () => {
-      toast.update(toastIdRef.current, {
-        title: "인증코드가 전송되었습니다",
-        status: "success",
-        duration: 3000
-      });
-    },
-    onError: () => {
-      toast.update(toastIdRef.current, {
-        title: "인증코드 전송에 실패하였습니다",
-        status: "error",
-        duration: 3000
-      });
-    }
-  });
-
-  const emailAuthKeyCheckMutation = useMutation({
-    mutationFn: ({ email, authKey }: { email: string; authKey: string }) =>
-      postEmailAuthKeyCheck(email, authKey),
-    onSuccess: ({ correct }) => {
-      if (correct) {
-        router.push("/auth/signUp/profile");
-      } else {
-        setError("authKey", { message: "인증코드가 올바르지 않습니다" });
-      }
-    },
-    onError: () => {
-      setError("authKey", {
-        message: "인증코드 확인중 에러가 발생하였습니다."
-      });
-    }
-  });
-
   if (!isClient) return null;
 
   const handleResendClick = () => {
     if (!user.email) return;
-    emailAuthKeyMutation.mutate({ email: user.email });
+    sendEmailAuthKeyMutation.mutate({ email: user.email });
   };
 
-  const handleFormSubmit = handleSubmit(async formData => {
-    if (!user.email) return;
-    const { authKey } = formData;
-    emailAuthKeyCheckMutation.mutate({ email: user.email, authKey });
-  });
+  const handleAutKeyInputChange = (value: string) => {
+    setIsDirty(true);
+    setAuthKey(value);
+  };
+
+  const handleSubmit = () => {
+    setIsDirty(false);
+    if (isAuthKeyValid)
+      emailAuthKeyCheckMutation.mutate(
+        {
+          email: user.email as string,
+          authKey
+        },
+        {
+          onSuccess: ({ correct }) => {
+            if (correct) router.push("/auth/signUp/profile");
+          }
+        }
+      );
+  };
 
   return (
     <>
@@ -120,21 +92,24 @@ export default function EmailAuth() {
             코드 재전송
           </Text>
         </Text>
-        <form onSubmit={handleFormSubmit} style={{ width: "100%" }}>
-          <AuthTextInput
-            type="text"
-            isInvalid={!!errors.authKey}
-            placeholder="인증 코드"
-            errorMessage={errors.authKey?.message}
-            {...register("authKey", VALIDATION_RULE.authKey)}
-          />
-          <FormButton
-            isLoading={isSubmitting || emailAuthKeyCheckMutation.isLoading}
-            isDisabled={!isDirty || !isValid}
-          >
-            다음
-          </FormButton>
-        </form>
+        <HStack>
+          <PinInput otp onChange={handleAutKeyInputChange}>
+            <PinInputField />
+            <PinInputField />
+            <PinInputField />
+            <PinInputField />
+            <PinInputField />
+            <PinInputField />
+          </PinInput>
+        </HStack>
+
+        <FormButton
+          isLoading={emailAuthKeyCheckMutation.isLoading}
+          isDisabled={!isAuthKeyValid}
+          onClick={() => handleSubmit()}
+        >
+          다음
+        </FormButton>
       </FormLayout>
     </>
   );
