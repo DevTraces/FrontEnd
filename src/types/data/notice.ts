@@ -21,23 +21,23 @@ export type FollowNotice = NoticeBase<"FOLLOW"> & {
 };
 
 export type ReplyNotice = NoticeBase<"REPLY"> & {
-  nickname: string;
-  content: string;
+  senderNickname: string;
+  replyContent: string;
   feedId: number;
   replyId: number;
-  replierProfileImageUrl: string;
+  senderProfileImageUrl: string;
   feedFirstImageUrl: string;
 };
 
 export type ReReplyNotice = NoticeBase<"REREPLY"> & {
-  nickname: string;
-  content: string;
+  senderNickname: string;
+  rereplyContent: string;
   feedId: number;
   replyId: number;
   feedFirstImageUrl: string;
   reReplyId: number;
   noticeTarget: string;
-  rereplierImageUrl: string;
+  senderProfileImageUrl: string;
 };
 
 export type NoticesCount = { noticeNumber: number };
