@@ -2,14 +2,14 @@ import { getUserProfile } from "@/api/users/profile/[nickname]";
 import FormTextInput from "@/components/@common/FormInput";
 import FormTextarea from "@/components/@common/FormTextarea";
 import NavLayout from "@/components/@common/NavLayout";
-import VALIDATION_RULE from "@/constants/auth/VALIDATION_RULE";
-import usersKeys from "@/queryKeys/usersKeys";
-import currentUser from "@/utils/currentUser";
 import ProfileAvatarEdit from "@/components/@common/ProfileAvatarEdit";
+import VALIDATION_RULE from "@/constants/auth/VALIDATION_RULE";
 import useImagePreviews from "@/hooks/useImagePreviews";
 import useProfile from "@/hooks/useProfile";
+import usersKeys from "@/queryKeys/usersKeys";
 import { FileImage } from "@/types/data/feed";
 import { ProfileData, ProfilePatchData } from "@/types/data/user";
+import currentUser from "@/utils/currentUser";
 import {
   Box,
   Button,
@@ -20,7 +20,6 @@ import {
   VStack
 } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
-import dynamic from "next/dynamic";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
