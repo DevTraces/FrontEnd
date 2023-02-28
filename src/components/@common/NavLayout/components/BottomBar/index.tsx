@@ -1,15 +1,14 @@
-import userAtom from "@/atoms/userAtom";
 import { Flex, Icon } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import currentUser from "@/utils/currentUser";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
-import { useRecoilValue } from "recoil";
 import { generateNavs, Nav } from "../../constants/nav";
 
 export default function BottomBar() {
-  const user = useRecoilValue(userAtom);
-  const navs = useMemo(() => generateNavs(user.nickname), [user]);
+  const nickname = currentUser.getNickname();
+  const navs = useMemo(() => generateNavs(nickname), [nickname]);
   const router = useRouter();
   const selectedKeys: Nav["key"][] = ["feed", "saved", "newPost", "profile"];
   const selectedNavs = navs.filter(nav => selectedKeys.includes(nav.key));

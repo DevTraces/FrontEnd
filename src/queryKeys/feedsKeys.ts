@@ -3,5 +3,6 @@ export default {
   feeds: (nickname: string) => ["feeds", nickname] as const,
   replies: (feedId: number) => ["feeds", "replies", feedId] as const,
   rereplies: (feedId: number, replyId: number) =>
-    ["feeds", "rereplies", feedId, replyId] as const
+    ["feeds", "rereplies", feedId, replyId] as const,
+  likeUsers: (feedId: number) => ["feeds", "likes", feedId] as const
 };

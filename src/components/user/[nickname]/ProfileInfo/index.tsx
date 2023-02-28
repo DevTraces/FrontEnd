@@ -1,10 +1,9 @@
-import userAtom from "@/atoms/userAtom";
 import useAuth from "@/hooks/useAuth";
 import useFollow from "@/hooks/useFollow";
 import { ProfileData } from "@/types/data/user";
 import { Box, Button, HStack, Text, VStack } from "@chakra-ui/react";
+import currentUser from "@/utils/currentUser";
 import { useRouter } from "next/router";
-import { useRecoilValue } from "recoil";
 import ProfileAvatar from "../../../@common/ProfileAvatar";
 
 type ProfileProps = {
@@ -25,8 +24,7 @@ export default function ProfileInfo({
   ...restProps
 }: ProfileProps) {
   const router = useRouter();
-  const user = useRecoilValue(userAtom);
-  const isMyProfile = nickname === user.nickname;
+  const isMyProfile = nickname === currentUser.getNickname();
 
   const { signOutMutation } = useAuth();
   const signOut = () =>
@@ -69,7 +67,7 @@ export default function ProfileInfo({
                   fontWeight="bold"
                   size="sm"
                   onClick={() => {
-                    router.push(`/accounts/edit?nickname=${nickname}`);
+                    router.push(`/accounts/edit`);
                   }}
                 >
                   프로필 편집
@@ -94,18 +92,24 @@ export default function ProfileInfo({
         </Box>
       </HStack>
       <HStack justifyContent="space-between" w="450px" p="30px">
-        <VStack spacing="0" w="50px">
-          <Text>게시물</Text>
-          <Text fontWeight="bold">{totalFeedNumber}</Text>
-        </VStack>
-        <VStack spacing="0" w="50px">
-          <Text>팔로잉</Text>
-          <Text fontWeight="bold">{followingNumber}</Text>
-        </VStack>
-        <VStack spacing="0" w="50px">
-          <Text>팔로워</Text>
-          <Text fontWeight="bold">{followerNumber}</Text>
-        </VStack>
+        {[
+          ["게시물", "posts", totalFeedNumber],
+          ["팔로잉", "following", followingNumber],
+          ["팔로워", "follower", followerNumber]
+        ].map(([title, tabLink, count]) => (
+          <VStack
+            key={tabLink}
+            spacing="0"
+            w="50px"
+            onClick={() => {
+              router.push(`/user/${nickname}/${tabLink}`);
+            }}
+            cursor="pointer"
+          >
+            <Text>{title}</Text>
+            <Text fontWeight="bold">{count}</Text>
+          </VStack>
+        ))}
       </HStack>
     </VStack>
   );

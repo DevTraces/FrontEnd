@@ -10,3 +10,8 @@ export type ProfileData = {
   followingNumber: number;
   isFollowing: boolean;
 };
+
+export type ProfilePatchData = Pick<
+  ProfileData,
+  "username" | "nickname" | "description"
+>;
