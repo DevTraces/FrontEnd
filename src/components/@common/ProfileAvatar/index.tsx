@@ -5,9 +5,9 @@ import { ComponentProps, useEffect, useState } from "react";
 type ImageSrc = ComponentProps<typeof Image>["src"];
 
 type ProfileAvatarProps = {
-  src?: ImageSrc;
   size: number | string;
   alt: string;
+  src?: ImageSrc;
   fallbackSrc?: ImageSrc;
 } & ComponentProps<typeof Circle>;
 
@@ -36,7 +36,7 @@ export default function ProfileAvatar({
     >
       <Image
         alt={alt}
-        src={image ?? fallbackSrc}
+        src={image !== "" && image ? image : fallbackSrc}
         sizes={typeof size === "number" ? `${size}px` : size}
         fill
         style={{ objectFit: "cover" }}
