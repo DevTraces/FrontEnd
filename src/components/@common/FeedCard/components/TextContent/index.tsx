@@ -1,25 +1,21 @@
 import feedAtom from "@/atoms/feedAtom";
 import getDateFormat from "@/utils/date";
-import { Button, Flex, HStack, Text, useDisclosure } from "@chakra-ui/react";
+import { Box, Flex, HStack, Text, useDisclosure } from "@chakra-ui/react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRecoilValue } from "recoil";
 import LikeUsersModal from "./LikeUsersModal";
 
-const MAX_PREVIEW_LENGTH = 40;
+const MAX_PREVIEW_LENGTH = 100;
 
 export default function TextContent() {
   const { numberOfLike, authorNickname, hashtags, content, createdAt } =
     useRecoilValue(feedAtom);
-  const [isMoreLoaded, setIsMoreLoaded] = useState(false);
-  const contentPreview = content?.slice(0, MAX_PREVIEW_LENGTH);
-  const contentMore = content?.slice(MAX_PREVIEW_LENGTH);
+  const [isMoreLoaded, setIsMoreLoaded] = useState(
+    content?.length < MAX_PREVIEW_LENGTH ?? false
+  );
 
   const likeUsersDisclosure = useDisclosure();
-
-  useEffect(() => {
-    if (content?.length < MAX_PREVIEW_LENGTH) setIsMoreLoaded(true);
-  }, [setIsMoreLoaded, content]);
 
   return (
     <>
@@ -44,21 +40,19 @@ export default function TextContent() {
               </Link>
             ))}
           </HStack>
-          <Text>
-            {contentPreview}
-            {isMoreLoaded && contentMore}
-          </Text>
 
-          {!isMoreLoaded && contentMore && (
-            <Button
-              as={Button}
-              width="full"
-              color="blue.700"
-              onClick={() => setIsMoreLoaded(!isMoreLoaded)}
+          <Box w="full" wordBreak="keep-all">
+            <Text display="inline">{content.slice(0, MAX_PREVIEW_LENGTH)}</Text>
+            <Text
+              display="inline"
+              color={isMoreLoaded ? "inherit" : "gray"}
+              onClick={() => setIsMoreLoaded(true)}
+              cursor="pointer"
             >
-              더보기
-            </Button>
-          )}
+              {isMoreLoaded ? content.slice(MAX_PREVIEW_LENGTH) : "... 더보기"}
+            </Text>
+          </Box>
+
           <Text fontSize="12px" color="gray">
             {getDateFormat(createdAt)}
           </Text>
