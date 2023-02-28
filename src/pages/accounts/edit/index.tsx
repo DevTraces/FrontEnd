@@ -92,12 +92,11 @@ export default function Setting() {
             profileQuery.data[key as "nickname" | "username" | "description"]
       )
     );
+
     updateProfile(data);
-    if (images.length > 0) {
+    if (imagePreviews.length > 0) {
       updateProfileImage((images[0] as FileImage).src);
-      clearAllImages();
-    }
-    if (isDeleted) {
+    } else if (isDeleted) {
       deleteProfileImage();
     }
   });
