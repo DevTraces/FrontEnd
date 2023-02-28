@@ -1,5 +1,7 @@
 import axios, { AxiosInstance } from "axios";
 
+const API_ENDPOINT = "https://api.artbubble-zerobase.com";
+
 interface CustomInstance extends AxiosInstance {
   get<T>(...params: Parameters<AxiosInstance["get"]>): Promise<T>;
   delete<T>(...params: Parameters<AxiosInstance["delete"]>): Promise<T>;
@@ -8,34 +10,16 @@ interface CustomInstance extends AxiosInstance {
   patch<T>(...params: Parameters<AxiosInstance["patch"]>): Promise<T>;
 }
 
-const getAccessToken = () => {
-  const accessToken =
-    typeof window !== "undefined"
-      ? window.sessionStorage.getItem("accessToken") ?? ""
-      : "";
-  return accessToken;
-};
-
 const axiosInstance = (baseURL: string = ""): CustomInstance => {
   const instance = axios.create({
     baseURL,
     headers: {
-      "Content-Type": "application/json",
-      Authorization: getAccessToken()
+      "Content-Type": "application/json"
     },
     withCredentials: true,
     transformResponse: async res => {
       const json = JSON.parse(res);
 
-      if (Object.hasOwn(json, "errorCode")) {
-        if (json.errorCode === "EXPIRED_ACCESS_TOKEN") {
-          const {
-            data: { accessToken: newAccessToken }
-          } = await axios.post("http://54.180.200.170:8080/api/tokens/reissue");
-          sessionStorage.setItem("accessToken", newAccessToken);
-        }
-        throw json;
-      }
       if (Object.hasOwn(json, "data")) {
         return json.data;
       }
@@ -44,18 +28,32 @@ const axiosInstance = (baseURL: string = ""): CustomInstance => {
       );
     }
   });
-  instance.interceptors.request.use(config => {
-    // eslint-disable-next-line no-param-reassign
-    config.headers.Authorization = getAccessToken();
-    return config;
-  });
-  instance.interceptors.response.use(res => res.data);
+
+  instance.interceptors.response.use(
+    res => res.data,
+    err => {
+      const {
+        config,
+        response: { status }
+      } = err;
+      if (status !== 401 || config.sent) return Promise.reject(err);
+
+      if (status === 401)
+        axios.post(`${API_ENDPOINT}/api/tokens/reissue`, null, {
+          withCredentials: true
+        });
+
+      config.sent = true;
+      return axios(config);
+    }
+  );
 
   return instance;
 };
 
 const api = {
   dev: axiosInstance(),
-  prod: axiosInstance("http://54.180.200.170:8080")
+  prod: axiosInstance(API_ENDPOINT)
 };
+
 export default api;
