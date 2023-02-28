@@ -1,9 +1,8 @@
-import userAtom from "@/atoms/userAtom";
 import useFollow from "@/hooks/useFollow";
 import { FollowItemData } from "@/types/data/follow";
 import { Button, HStack, Text, VStack } from "@chakra-ui/react";
+import currentUser from "@/utils/currentUser";
 import Link from "next/link";
-import { useRecoilValue } from "recoil";
 import ProfileAvatar from "../../../../@common/ProfileAvatar";
 
 type FollowItemProps = {
@@ -13,8 +12,7 @@ type FollowItemProps = {
 export default function FollowItem({
   followItemData: { username, nickname, profileImageUrl, following }
 }: FollowItemProps) {
-  const user = useRecoilValue(userAtom);
-  const isMyProfile = nickname === user.nickname;
+  const isMyProfile = nickname === currentUser.getNickname();
   const { toggleMutation } = useFollow();
   const toggleFollow = (isFollowing: boolean) =>
     toggleMutation(isFollowing).mutate({ nickname });

@@ -5,18 +5,16 @@ import { postSignUp } from "@/api/auth/sign-up";
 import { postOAuth } from "@/api/oauth/kakao/callback";
 import { postOAuthToken } from "@/api/oauth/token";
 import { SignUpUser, signUpUserAtom } from "@/atoms/auth/signUpUser";
-import userAtom from "@/atoms/userAtom";
 import { APIError } from "@/types/error";
+import currentUser from "@/utils/currentUser";
 import { useToast } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { useCallback } from "react";
-import { useResetRecoilState, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 
 export default function useAuth({ onOAuthKakao = () => {} } = {}) {
   const toast = useToast();
 
-  const setUser = useSetRecoilState(userAtom);
-  const resetUser = useResetRecoilState(userAtom);
   const setSignUpUser = useSetRecoilState(signUpUserAtom);
 
   const signUpMutation = useMutation({
@@ -33,9 +31,8 @@ export default function useAuth({ onOAuthKakao = () => {} } = {}) {
   const signInMutation = useMutation({
     mutationFn: ({ email, password }: { email: string; password: string }) =>
       postSignIn(email, password),
-    onSuccess: ({ accessToken, nickname }) => {
-      sessionStorage.setItem("accessToken", accessToken);
-      setUser({ nickname });
+    onSuccess: ({ nickname }) => {
+      currentUser.setNickname(nickname);
     },
     onError: (e: APIError) => {
       toast({
@@ -52,8 +49,7 @@ export default function useAuth({ onOAuthKakao = () => {} } = {}) {
   const signOutMutation = useMutation({
     mutationFn: postSignOut,
     onSuccess: () => {
-      sessionStorage.removeItem("accessToken");
-      resetUser();
+      currentUser.removeNickname();
     },
     onError: () => {
       toast({
@@ -66,9 +62,8 @@ export default function useAuth({ onOAuthKakao = () => {} } = {}) {
 
   const oAuthSignInMutation = useMutation({
     mutationFn: (oAuthToken: string) => postOAuth(oAuthToken),
-    onSuccess: ({ accessToken, nickname }) => {
-      sessionStorage.setItem("accessToken", accessToken);
-      setUser({ nickname });
+    onSuccess: ({ nickname }) => {
+      currentUser.setNickname(nickname);
       onOAuthKakao();
     },
     onError: () => {

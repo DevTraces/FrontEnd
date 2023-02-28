@@ -1,12 +1,11 @@
 import { deleteLike, postLike } from "@/api/like/[feedId]";
-import userAtom from "@/atoms/userAtom";
 import feedsKeys from "@/queryKeys/feedsKeys";
 import { useToast } from "@chakra-ui/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useRecoilValue } from "recoil";
+import currentUser from "@/utils/currentUser";
 
 const useLike = () => {
-  const { nickname } = useRecoilValue(userAtom);
+  const nickname = currentUser.getNickname();
   const toast = useToast();
 
   const queryClient = useQueryClient();
