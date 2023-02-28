@@ -14,7 +14,6 @@ import { useRouter } from "next/router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { generateNavs, Nav } from "../../constants/nav";
 import Drawer from "../Drawer";
-import SearchProvider from "../SearchContext";
 
 export default function SideBar() {
   const nickname = currentUser.getNickname();
@@ -56,7 +55,7 @@ export default function SideBar() {
   };
 
   return (
-    <SearchProvider>
+    <>
       {isOpen && (
         <Drawer
           display={{
@@ -131,6 +130,6 @@ export default function SideBar() {
           ))}
         </Flex>
       </Flex>
-    </SearchProvider>
+    </>
   );
 }

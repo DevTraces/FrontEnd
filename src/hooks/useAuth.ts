@@ -7,13 +7,14 @@ import { postOAuthToken } from "@/api/oauth/token";
 import { SignUpUser, signUpUserAtom } from "@/atoms/auth/signUpUser";
 import { APIError } from "@/types/error";
 import currentUser from "@/utils/currentUser";
-import { useToast } from "@chakra-ui/react";
+import { ToastId, useToast } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
-import { useCallback } from "react";
+import { useCallback, useRef } from "react";
 import { useSetRecoilState } from "recoil";
 
 export default function useAuth({ onOAuthKakao = () => {} } = {}) {
   const toast = useToast();
+  const sendAuthKeyToastRef = useRef<ToastId>("");
 
   const setSignUpUser = useSetRecoilState(signUpUserAtom);
 
@@ -85,12 +86,25 @@ export default function useAuth({ onOAuthKakao = () => {} } = {}) {
 
   const sendEmailAuthKeyMutation = useMutation({
     mutationFn: ({ email }: { email: string }) => postEmailAuthKey(email),
+    onMutate: () => {
+      sendAuthKeyToastRef.current = toast({
+        title: "인증코드 전송중",
+        status: "info",
+        duration: 10000
+      });
+    },
     onSuccess: (data, { email }) => {
       setSignUpUser(prev => ({ ...prev, email }));
+      toast.update(sendAuthKeyToastRef.current, {
+        title: "인증코드가 전송되었습니다",
+        status: "success",
+        duration: 2000
+      });
     },
+
     onError: () => {
-      toast({
-        title: "인증코드 전송중 오류가 발생했습니다",
+      toast.update(sendAuthKeyToastRef.current, {
+        title: "인증코드 전송에 실패했어요",
         status: "error",
         duration: 3000
       });

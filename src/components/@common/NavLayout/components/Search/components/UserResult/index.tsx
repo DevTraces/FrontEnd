@@ -1,14 +1,12 @@
-// import { getFollowSuggestion } from "@/api/follows/suggestion";
+import { getFollowSuggestion } from "@/api/follows/suggestion";
 import { getNicknameResult } from "@/api/search/nickname";
 import { getUsernameResult } from "@/api/search/username";
-import { SearchContext } from "@/components/@common/NavLayout/components/SearchContext";
-// import followsKeys from "@/queryKeys/followsKeys";
+import useSearch from "@/hooks/useSearch";
+import followsKeys from "@/queryKeys/followsKeys";
 import searchKeys from "@/queryKeys/searchKeys";
-// import currentUser from "@/utils/currentUser";
+import currentUser from "@/utils/currentUser";
 import { Text } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
-import { useContext } from "react";
-// import { useRecoilValue } from "recoil";
 import ResultContainer from "../ResultContainer";
 import UserItem from "./UserItem";
 
@@ -17,32 +15,37 @@ type UserListProps = {
 };
 
 export default function UserList({ target }: UserListProps) {
-  const { search } = useContext(SearchContext);
-  // const nickname = currentUser.getNickname();
+  const { searchValue } = useSearch();
+  const nickname = currentUser.getNickname();
   const userQuery = useQuery({
-    queryKey: searchKeys[target](search),
+    queryKey: searchKeys[target](searchValue.value),
     queryFn: ({ queryKey }) => {
-      if (queryKey[0] === "nickname") return getNicknameResult(queryKey[1], 0);
-      return getUsernameResult(queryKey[1], 0);
+      if (queryKey[0] === "nickname")
+        return getNicknameResult(searchValue.value, 0);
+      return getUsernameResult(searchValue.value, 0);
     }
   });
 
-  // const followSuggestionQuery = useQuery({
-  //   queryKey: followsKeys.suggestion(nickname),
-  //   queryFn: getFollowSuggestion
-  // });
+  const followSuggestionQuery = useQuery({
+    queryKey: followsKeys.suggestion(nickname),
+    queryFn: getFollowSuggestion
+  });
 
   return (
     <ResultContainer>
-      {search ? (
-        userQuery.data?.map(d => <UserItem key={d.nickname} userResult={d} />)
-      ) : (
+      {userQuery.data ? (
         <>
-          <Text>아래의 유저를 팔로우 해보세요</Text>
-          {/* {followSuggestionQuery.data?.map(d => (
+          {userQuery.data.map(d => (
             <UserItem key={d.nickname} userResult={d} />
-          ))} */}
+          ))}
+
+          <Text>아래의 유저를 팔로우 해보세요</Text>
+          {followSuggestionQuery.data?.map(d => (
+            <UserItem key={d.nickname} userResult={d} />
+          ))}
         </>
+      ) : (
+        <Text>일치하는 검색 결과가 없어요</Text>
       )}
     </ResultContainer>
   );
