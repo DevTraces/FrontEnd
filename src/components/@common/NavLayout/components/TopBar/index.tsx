@@ -11,7 +11,6 @@ import { faBell } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useRef, useState } from "react";
 import { Nav } from "../../constants/nav";
-import SearchProvider from "../SearchContext";
 import Drawer from "../Drawer";
 import InputContainer from "../Search/components/Input";
 
@@ -48,7 +47,7 @@ export default function TopBar() {
   };
 
   return (
-    <SearchProvider>
+    <>
       {isOpen && (
         <Drawer
           display={{
@@ -91,6 +90,6 @@ export default function TopBar() {
           <Icon as={FontAwesomeIcon} icon={faBell} color="black" />
         </Button>
       </Flex>
-    </SearchProvider>
+    </>
   );
 }
