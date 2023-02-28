@@ -12,13 +12,13 @@ export default function TextContent() {
   const { numberOfLike, authorNickname, hashtags, content, createdAt } =
     useRecoilValue(feedAtom);
   const [isMoreLoaded, setIsMoreLoaded] = useState(false);
-  const contentPreview = content.slice(0, MAX_PREVIEW_LENGTH);
-  const contentMore = content.slice(MAX_PREVIEW_LENGTH);
+  const contentPreview = content?.slice(0, MAX_PREVIEW_LENGTH);
+  const contentMore = content?.slice(MAX_PREVIEW_LENGTH);
 
   const likeUsersDisclosure = useDisclosure();
 
   useEffect(() => {
-    if (content.length < MAX_PREVIEW_LENGTH) setIsMoreLoaded(true);
+    if (content?.length < MAX_PREVIEW_LENGTH) setIsMoreLoaded(true);
   }, [setIsMoreLoaded, content]);
 
   return (
@@ -49,7 +49,7 @@ export default function TextContent() {
             {isMoreLoaded && contentMore}
           </Text>
 
-          {!isMoreLoaded && (
+          {!isMoreLoaded && contentMore && (
             <Button
               as={Button}
               width="full"
