@@ -23,6 +23,25 @@ export default function Tags({ tags, onAddTag, onRemoveTag }: TagsProps) {
   const [value, setValue] = useState("");
   const toast = useToast();
 
+  const addTag = (content: string) => {
+    if (content.length > 100) {
+      toast({
+        title: "태그는 100자 이하만 가능해요",
+        status: "warning",
+        duration: 1000
+      });
+    } else if (tags.length >= 10) {
+      toast({
+        title: "태그는 최대 10개만 가능해요",
+        status: "warning",
+        duration: 1000
+      });
+    } else {
+      onAddTag(content);
+      setValue("");
+    }
+  };
+
   return (
     <Flex bg="white" w="full" px="32px" py="16px" gap="12px" flexWrap="wrap">
       {tags.map(t => (
@@ -41,44 +60,30 @@ export default function Tags({ tags, onAddTag, onRemoveTag }: TagsProps) {
           {t.content}
         </Button>
       ))}
-
-      <InputGroup
-        flex={{ sm: "none", md: "1" }}
-        border="transparent"
-        w={{ sm: "full", md: "inherit" }}
+      <form
+        onSubmit={e => {
+          e.preventDefault();
+          addTag(value);
+        }}
       >
-        <InputLeftAddon bg="white" pr="0" pl={{ sm: "0", md: "inherit" }}>
-          <Icon as={FontAwesomeIcon} icon={faHashtag} color="gray.400" />
-        </InputLeftAddon>
-        <Input
-          placeholder="태그 추가"
-          border="none"
-          focusBorderColor="transparent"
-          outline="none"
-          value={value}
-          onChange={e => setValue(e.target.value)}
-          onKeyDown={e => {
-            if (e.key === "Enter") {
-              if (value.length > 100) {
-                toast({
-                  title: "태그는 100자 이하만 가능해요",
-                  status: "warning",
-                  duration: 1000
-                });
-              } else if (tags.length >= 10) {
-                toast({
-                  title: "태그는 최대 10개만 가능해요",
-                  status: "warning",
-                  duration: 1000
-                });
-              } else {
-                onAddTag(value);
-                setValue("");
-              }
-            }
-          }}
-        />
-      </InputGroup>
+        <InputGroup
+          flex={{ sm: "none", md: "1" }}
+          border="transparent"
+          w={{ sm: "full", md: "inherit" }}
+        >
+          <InputLeftAddon bg="white" pr="0" pl={{ sm: "0", md: "inherit" }}>
+            <Icon as={FontAwesomeIcon} icon={faHashtag} color="gray.400" />
+          </InputLeftAddon>
+          <Input
+            placeholder="태그 추가"
+            border="none"
+            focusBorderColor="transparent"
+            outline="none"
+            value={value}
+            onChange={e => setValue(e.target.value)}
+          />
+        </InputGroup>
+      </form>
     </Flex>
   );
 }

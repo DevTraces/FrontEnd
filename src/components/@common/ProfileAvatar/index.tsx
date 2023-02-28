@@ -1,11 +1,11 @@
 import { Circle } from "@chakra-ui/react";
 import Image from "next/image";
-import { ComponentProps, useState } from "react";
+import { ComponentProps, useEffect, useState } from "react";
 
 type ImageSrc = ComponentProps<typeof Image>["src"];
 
 type ProfileAvatarProps = {
-  src: ImageSrc;
+  src?: ImageSrc;
   size: number | string;
   alt: string;
   fallbackSrc?: ImageSrc;
@@ -21,7 +21,11 @@ export default function ProfileAvatar({
   fallbackSrc = DEFAULT_FALLBACK_SRC,
   ...restProps
 }: ProfileAvatarProps) {
-  const [image, setImage] = useState(src ?? fallbackSrc);
+  const [image, setImage] = useState(src);
+
+  useEffect(() => {
+    setImage(src);
+  }, [src]);
 
   return (
     <Circle
@@ -32,11 +36,13 @@ export default function ProfileAvatar({
     >
       <Image
         alt={alt}
-        src={image}
+        src={image ?? fallbackSrc}
         sizes={typeof size === "number" ? `${size}px` : size}
         fill
         style={{ objectFit: "cover" }}
-        onError={() => setImage(fallbackSrc)}
+        onError={() => {
+          setImage(fallbackSrc);
+        }}
       />
     </Circle>
   );

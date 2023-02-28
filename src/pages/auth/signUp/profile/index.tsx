@@ -2,7 +2,7 @@ import { SignUpUser, signUpUserAtom } from "@/atoms/auth/signUpUser";
 import FormButton from "@/components/@common/FormButton";
 import AuthTextInput from "@/components/@common/FormInput";
 import FormLayout from "@/components/@common/FormLayout";
-import ImageAddAvatar from "@/components/auth/ImageAddAvatar";
+import ProfileAvatarEdit from "@/components/@common/ProfileAvatarEdit";
 import VALIDATION_RULE from "@/constants/auth/VALIDATION_RULE";
 import useAuth from "@/hooks/useAuth";
 import useCheck from "@/hooks/useCheck";
@@ -80,52 +80,55 @@ export default function Profile() {
       <FormLayout>
         <form onSubmit={handleFormSubmit} style={{ width: "100%" }}>
           <VStack mb="12px">
-            <ImageAddAvatar
+            <ProfileAvatarEdit
               onImageInput={file => {
                 clearAllImages();
                 addImage(file);
               }}
+              onImageDelete={() => {
+                clearAllImages();
+              }}
               previewImg={imagePreviews[0]?.url}
             />
-          </VStack>
-          <AuthTextInput
-            isInvalid={!!errors.nickname}
-            type="text"
-            placeholder="닉네임"
-            errorMessage={errors.nickname?.message}
-            leftAddon="@"
-            {...register("nickname", {
-              ...VALIDATION_RULE.nickname,
-              onBlur: e => {
-                if (!errors.nickname) nicknameDuplicateCheck(e.target.value);
-              }
-            })}
-          />
-          <AuthTextInput
-            isInvalid={!!errors.username}
-            type="text"
-            placeholder="이름"
-            errorMessage={errors.username?.message}
-            {...register("username", VALIDATION_RULE.username)}
-          />
+            <AuthTextInput
+              isInvalid={!!errors.nickname}
+              type="text"
+              placeholder="닉네임"
+              errorMessage={errors.nickname?.message}
+              leftAddon="@"
+              {...register("nickname", {
+                ...VALIDATION_RULE.nickname,
+                onBlur: e => {
+                  if (!errors.nickname) nicknameDuplicateCheck(e.target.value);
+                }
+              })}
+            />
+            <AuthTextInput
+              isInvalid={!!errors.username}
+              type="text"
+              placeholder="이름"
+              errorMessage={errors.username?.message}
+              {...register("username", VALIDATION_RULE.username)}
+            />
 
-          <AuthTextInput
-            isInvalid={!!errors.password}
-            type="password"
-            placeholder="비밀번호"
-            errorMessage={errors.password?.message}
-            {...register("password", VALIDATION_RULE.password)}
-          />
-          <FormButton
-            isLoading={
-              isSubmitting ||
-              nicknameDuplicateMutation.isLoading ||
-              signUpMutation.isLoading
-            }
-            isDisabled={!isValid || !isDirty}
-          >
-            가입 완료
-          </FormButton>
+            <AuthTextInput
+              isInvalid={!!errors.password}
+              type="password"
+              placeholder="비밀번호"
+              errorMessage={errors.password?.message}
+              {...register("password", VALIDATION_RULE.password)}
+            />
+            <FormButton
+              isLoading={
+                isSubmitting ||
+                nicknameDuplicateMutation.isLoading ||
+                signUpMutation.isLoading
+              }
+              isDisabled={!isValid || !isDirty}
+            >
+              가입 완료
+            </FormButton>
+          </VStack>
         </form>
       </FormLayout>
     </>

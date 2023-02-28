@@ -7,6 +7,7 @@ import { ReplyData } from "@/types/data/reply";
 import {
   Accordion,
   AccordionButton,
+  AccordionIcon,
   AccordionItem,
   AccordionPanel,
   Flex
@@ -99,36 +100,50 @@ export default function ReplyItem({
       />
       <Accordion allowToggle>
         <AccordionItem border="none" pl="32px">
-          <AccordionButton ref={openMoreBtnRef}>답글 더보기</AccordionButton>
-          <AccordionPanel>
-            <Flex direction="column" gap="12px">
-              {rerepliesQuery.data?.map(r => (
-                <ReplyContent
-                  key={r.rereplyId}
-                  authorProfileImageUrl={r.authorProfileImageUrl}
-                  authorNickname={r.authorNickname}
-                  content={r.content}
-                  onReply={() => {
-                    inputRef.current?.focus();
-                  }}
-                  onDelete={() => deleteRereply(r.rereplyId)}
-                  onEdit={newContent => updateRereply(r.rereplyId, newContent)}
-                />
-              ))}
-            </Flex>
-            <form onSubmit={handleFormSubmit}>
-              <ReplyInput
-                errorMessage={errors.newContent?.message}
-                isInvalid={!!errors.newContent}
-                onSendClick={handleFormSubmit}
-                ref={e => {
-                  newContentRef(e);
-                  inputRef.current = e;
-                }}
-                {...newContentRegisterRest}
-              />
-            </form>
-          </AccordionPanel>
+          {({ isExpanded }) => (
+            <>
+              <AccordionButton
+                ref={openMoreBtnRef}
+                pl="24px"
+                bg="none"
+                _hover={{ backgroundColor: "none" }}
+              >
+                답글 {isExpanded ? "숨기기" : "더보기"}
+                <AccordionIcon />
+              </AccordionButton>
+              <AccordionPanel>
+                <Flex direction="column" gap="12px">
+                  {rerepliesQuery.data?.map(r => (
+                    <ReplyContent
+                      key={r.rereplyId}
+                      authorProfileImageUrl={r.authorProfileImageUrl}
+                      authorNickname={r.authorNickname}
+                      content={r.content}
+                      onReply={() => {
+                        inputRef.current?.focus();
+                      }}
+                      onDelete={() => deleteRereply(r.rereplyId)}
+                      onEdit={newContent =>
+                        updateRereply(r.rereplyId, newContent)
+                      }
+                    />
+                  ))}
+                </Flex>
+                <form onSubmit={handleFormSubmit}>
+                  <ReplyInput
+                    errorMessage={errors.newContent?.message}
+                    isInvalid={!!errors.newContent}
+                    onSendClick={handleFormSubmit}
+                    ref={e => {
+                      newContentRef(e);
+                      inputRef.current = e;
+                    }}
+                    {...newContentRegisterRest}
+                  />
+                </form>
+              </AccordionPanel>
+            </>
+          )}
         </AccordionItem>
       </Accordion>
     </Flex>

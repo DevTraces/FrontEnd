@@ -1,9 +1,14 @@
+// import { getFollowSuggestion } from "@/api/follows/suggestion";
 import { getNicknameResult } from "@/api/search/nickname";
 import { getUsernameResult } from "@/api/search/username";
+// import userAtom from "@/atoms/userAtom";
 import { SearchContext } from "@/components/@common/NavLayout/components/SearchContext";
+// import followsKeys from "@/queryKeys/followsKeys";
 import searchKeys from "@/queryKeys/searchKeys";
+import { Text } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { useContext } from "react";
+// import { useRecoilValue } from "recoil";
 import ResultContainer from "../ResultContainer";
 import UserItem from "./UserItem";
 
@@ -13,7 +18,7 @@ type UserListProps = {
 
 export default function UserList({ target }: UserListProps) {
   const { search } = useContext(SearchContext);
-
+  // const user = useRecoilValue(userAtom);
   const userQuery = useQuery({
     queryKey: searchKeys[target](search),
     queryFn: ({ queryKey }) => {
@@ -22,12 +27,22 @@ export default function UserList({ target }: UserListProps) {
     }
   });
 
+  // const followSuggestionQuery = useQuery({
+  //   queryKey: followsKeys.suggestion(user.nickname),
+  //   queryFn: getFollowSuggestion
+  // });
+
   return (
     <ResultContainer>
       {search ? (
-        userQuery.data?.map(d => <UserItem key={d.userId} userResult={d} />)
+        userQuery.data?.map(d => <UserItem key={d.nickname} userResult={d} />)
       ) : (
-        <>검색어를 입력해주세요.</>
+        <>
+          <Text>아래의 유저를 팔로우 해보세요</Text>
+          {/* {followSuggestionQuery.data?.map(d => (
+            <UserItem key={d.nickname} userResult={d} />
+          ))} */}
+        </>
       )}
     </ResultContainer>
   );

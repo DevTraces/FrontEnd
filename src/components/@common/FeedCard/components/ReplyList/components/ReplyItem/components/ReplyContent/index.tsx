@@ -6,6 +6,7 @@ import { ReplyData } from "@/types/data/reply";
 import {
   Box,
   Button,
+  Flex,
   HStack,
   Text,
   useDisclosure,
@@ -13,6 +14,8 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { MouseEventHandler } from "react";
+import { useRecoilValue } from "recoil";
+import userAtom from "@/atoms/userAtom";
 
 type ReplyContentProps = Pick<
   ReplyData,
@@ -31,6 +34,7 @@ export default function ReplyContent({
   onDelete,
   onEdit
 }: ReplyContentProps) {
+  const user = useRecoilValue(userAtom);
   const router = useRouter();
   const userProfileLink = `/user/${authorNickname}/posts`;
   const {
@@ -74,7 +78,7 @@ export default function ReplyContent({
           alt="프로필 이미지"
           onClick={() => router.push(userProfileLink)}
         />
-        <Box w="full">
+        <Flex w="full" direction="column" alignItems="start">
           <VStack
             alignItems="flex-start"
             bg="gray.100"
@@ -95,16 +99,18 @@ export default function ReplyContent({
             </Text>
             <Text textAlign="left">{content}</Text>
             <Box position="absolute" top="0" right="0">
-              <MorePopover
-                onDeleteClick={onAlertOpen}
-                onEditClick={onEditOpen}
-              />
+              {user.nickname === authorNickname && (
+                <MorePopover
+                  onDeleteClick={onAlertOpen}
+                  onEditClick={onEditOpen}
+                />
+              )}
             </Box>
           </VStack>
           <Button variant="ghost" size="sm" onClick={onReply}>
             답글 달기
           </Button>
-        </Box>
+        </Flex>
       </HStack>
     </>
   );

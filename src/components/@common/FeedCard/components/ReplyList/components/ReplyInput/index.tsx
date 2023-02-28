@@ -1,3 +1,7 @@
+import { getUserProfile } from "@/api/users/profile/[nickname]";
+import userAtom from "@/atoms/userAtom";
+import ProfileAvatar from "@/components/@common/ProfileAvatar";
+import usersKeys from "@/queryKeys/usersKeys";
 import {
   Icon,
   Input,
@@ -5,9 +9,11 @@ import {
   InputLeftElement,
   InputRightElement
 } from "@chakra-ui/react";
-import { faPaperPlane, faSmile } from "@fortawesome/free-solid-svg-icons";
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useQuery } from "@tanstack/react-query";
 import { ComponentProps, forwardRef, MouseEventHandler } from "react";
+import { useRecoilValue } from "recoil";
 
 type ReplyInputProps = {
   feedId: number;
@@ -18,16 +24,27 @@ type ReplyInputProps = {
 
 export default forwardRef<HTMLInputElement, ReplyInputProps>(
   ({ isInvalid, feedId, onSendClick, errorMessage, ...restProps }, ref) => {
+    const user = useRecoilValue(userAtom);
+
+    const profileQuery = useQuery({
+      queryKey: usersKeys.userProfile(user.nickname),
+      queryFn: () => getUserProfile(user.nickname)
+    });
+
     return (
       <>
-        <InputGroup>
+        <InputGroup size="lg">
           <InputLeftElement>
-            <Icon as={FontAwesomeIcon} icon={faSmile} color="gray.300" />
+            <ProfileAvatar
+              src={profileQuery.data?.profileImageUrl}
+              size="28px"
+              alt="프로필 이미지"
+            />
           </InputLeftElement>
           <Input
             variant="filled"
-            focusBorderColor="white"
             bg="white"
+            focusBorderColor="white"
             placeholder="댓글 달기..."
             _hover={{ bg: "none" }}
             ref={ref}

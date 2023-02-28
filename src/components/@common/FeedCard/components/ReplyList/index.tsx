@@ -54,7 +54,7 @@ export default function ReplyList() {
           {...register("content", VALIDATION_RULE.replyContent)}
         />
       </form>
-      <Box px="10px">
+      <Box px="10px" mt="20px">
         {repliesQuery.data?.map(r => (
           <ReplyItem key={r.replyId} replyData={r} />
         ))}
