@@ -1,7 +1,5 @@
 import { getUserProfile } from "@/api/users/profile/[nickname]";
 import NavLayout from "@/components/@common/NavLayout";
-import ProfileInfo from "@/components/user/[nickname]/ProfileInfo";
-// import ProfileTab from "@/components/user/[nickname]/ProfileTab";
 import usersKeys from "@/queryKeys/usersKeys";
 import { ProfileTabName } from "@/types/data/user";
 import { useQuery } from "@tanstack/react-query";
@@ -9,9 +7,18 @@ import { GetServerSideProps } from "next";
 import dynamic from "next/dynamic";
 import Head from "next/head";
 
+const ProfileInfo = dynamic(
+  () => import("@/components/user/[nickname]/ProfileInfo"),
+  {
+    ssr: false
+  }
+);
+
 const ProfileTab = dynamic(
   () => import("@/components/user/[nickname]/ProfileTab"),
-  { ssr: false }
+  {
+    ssr: false
+  }
 );
 
 type ServerSideProps = {
@@ -19,7 +26,9 @@ type ServerSideProps = {
   selectedTab: ProfileTabName;
 };
 
-export default function Profile({ nickname, selectedTab }: ServerSideProps) {
+export default function Profile({ query }: { query: ServerSideProps }) {
+  const { nickname, selectedTab } = query;
+
   const profileQuery = useQuery({
     queryKey: usersKeys.userProfile(nickname),
     queryFn: () => getUserProfile(nickname)
@@ -40,6 +49,10 @@ export default function Profile({ nickname, selectedTab }: ServerSideProps) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ query }) => ({
-  props: query
-});
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  return {
+    props: {
+      query
+    }
+  };
+};

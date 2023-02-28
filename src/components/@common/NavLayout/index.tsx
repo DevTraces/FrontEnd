@@ -1,8 +1,15 @@
 import { Box, Center } from "@chakra-ui/react";
-import BottomBar from "./components/BottomBar";
-import SideBar from "./components/SideBar";
+import dynamic from "next/dynamic";
 import TopBar from "./components/TopBar";
 import NavTypeProvider from "./components/NavTypeContext";
+
+const SideBar = dynamic(() => import("./components/SideBar"), {
+  ssr: false
+});
+
+const BottomBar = dynamic(() => import("./components/BottomBar"), {
+  ssr: false
+});
 
 export default function NavLayout({
   children,
