@@ -1,7 +1,7 @@
 import { getUserProfile } from "@/api/users/profile/[nickname]";
-import userAtom from "@/atoms/userAtom";
 import ProfileAvatar from "@/components/@common/ProfileAvatar";
 import usersKeys from "@/queryKeys/usersKeys";
+import currentUser from "@/utils/currentUser";
 import {
   Icon,
   Input,
@@ -13,7 +13,6 @@ import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useQuery } from "@tanstack/react-query";
 import { ComponentProps, forwardRef, MouseEventHandler } from "react";
-import { useRecoilValue } from "recoil";
 
 type ReplyInputProps = {
   feedId: number;
@@ -24,11 +23,11 @@ type ReplyInputProps = {
 
 export default forwardRef<HTMLInputElement, ReplyInputProps>(
   ({ isInvalid, feedId, onSendClick, errorMessage, ...restProps }, ref) => {
-    const user = useRecoilValue(userAtom);
+    const nickname = currentUser.getNickname();
 
     const profileQuery = useQuery({
-      queryKey: usersKeys.userProfile(user.nickname),
-      queryFn: () => getUserProfile(user.nickname)
+      queryKey: usersKeys.userProfile(nickname),
+      queryFn: () => getUserProfile(nickname)
     });
 
     return (

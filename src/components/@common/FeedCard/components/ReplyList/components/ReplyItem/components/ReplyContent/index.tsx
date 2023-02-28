@@ -1,8 +1,9 @@
-import ProfileAvatar from "@/components/@common/ProfileAvatar";
 import DeleteConfirmDialog from "@/components/@common/FeedCard/components/DeleteConfirmDialog";
 import MorePopover from "@/components/@common/FeedCard/components/MorePopover";
 import ReplyEditModal from "@/components/@common/FeedCard/components/ReplyEditModal";
+import ProfileAvatar from "@/components/@common/ProfileAvatar";
 import { ReplyData } from "@/types/data/reply";
+import currentUser from "@/utils/currentUser";
 import {
   Box,
   Button,
@@ -14,8 +15,6 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { MouseEventHandler } from "react";
-import { useRecoilValue } from "recoil";
-import userAtom from "@/atoms/userAtom";
 
 type ReplyContentProps = Pick<
   ReplyData,
@@ -34,7 +33,7 @@ export default function ReplyContent({
   onDelete,
   onEdit
 }: ReplyContentProps) {
-  const user = useRecoilValue(userAtom);
+  const nickname = currentUser.getNickname();
   const router = useRouter();
   const userProfileLink = `/user/${authorNickname}/posts`;
   const {
@@ -99,7 +98,7 @@ export default function ReplyContent({
             </Text>
             <Text textAlign="left">{content}</Text>
             <Box position="absolute" top="0" right="0">
-              {user.nickname === authorNickname && (
+              {nickname === authorNickname && (
                 <MorePopover
                   onDeleteClick={onAlertOpen}
                   onEditClick={onEditOpen}

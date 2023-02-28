@@ -1,10 +1,10 @@
 // import { getFollowSuggestion } from "@/api/follows/suggestion";
 import { getNicknameResult } from "@/api/search/nickname";
 import { getUsernameResult } from "@/api/search/username";
-// import userAtom from "@/atoms/userAtom";
 import { SearchContext } from "@/components/@common/NavLayout/components/SearchContext";
 // import followsKeys from "@/queryKeys/followsKeys";
 import searchKeys from "@/queryKeys/searchKeys";
+// import currentUser from "@/utils/currentUser";
 import { Text } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { useContext } from "react";
@@ -18,7 +18,7 @@ type UserListProps = {
 
 export default function UserList({ target }: UserListProps) {
   const { search } = useContext(SearchContext);
-  // const user = useRecoilValue(userAtom);
+  // const nickname = currentUser.getNickname();
   const userQuery = useQuery({
     queryKey: searchKeys[target](search),
     queryFn: ({ queryKey }) => {
@@ -28,7 +28,7 @@ export default function UserList({ target }: UserListProps) {
   });
 
   // const followSuggestionQuery = useQuery({
-  //   queryKey: followsKeys.suggestion(user.nickname),
+  //   queryKey: followsKeys.suggestion(nickname),
   //   queryFn: getFollowSuggestion
   // });
 

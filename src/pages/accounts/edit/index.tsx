@@ -184,6 +184,20 @@ export default function Setting() {
                 비밀번호 변경
               </Button>
             </Box>
+            <Box w="full">
+              <Text fontSize="16px" lineHeight="40px" color="black">
+                회원 탈퇴
+              </Text>
+              <Button
+                borderColor="transparent"
+                bg="white"
+                onClick={() => {
+                  router.push("/accounts/edit/withdrawal");
+                }}
+              >
+                회원 탈퇴하기
+              </Button>
+            </Box>
           </VStack>
         </Container>
       </NavLayout>
