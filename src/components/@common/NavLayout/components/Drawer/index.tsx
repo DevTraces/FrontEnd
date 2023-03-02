@@ -1,26 +1,27 @@
-import { Nav } from "@/components/@common/NavLayout/constants/nav";
+import navigationAtom from "@/atoms/navigationAtom";
 import { Box, Text } from "@chakra-ui/react";
 import { ComponentProps, forwardRef } from "react";
+import { useRecoilValue } from "recoil";
+import { NavKey } from "../../hooks/useNavBar";
 import Search from "../Search";
 import Alert from "./components/Alert";
 
-type DrawerProps = {
-  selectedNav: Nav["key"];
-} & ComponentProps<typeof Box>;
+type DrawerProps = ComponentProps<typeof Box>;
 
 export default forwardRef<HTMLDivElement, DrawerProps>(
-  ({ children, selectedNav, ...restProps }, ref) => {
-    const cases: { key: Nav["key"]; Component: JSX.Element; title: string }[] =
-      [
-        {
-          key: "search",
-          Component: <Search />,
-          title: "검색"
-        },
-        { key: "alert", Component: <Alert />, title: "알림" }
-      ];
+  ({ ...restProps }, ref) => {
+    const currentNav = useRecoilValue(navigationAtom);
 
-    const currentCase = cases.find(({ key }) => key === selectedNav);
+    const cases: { key: NavKey; Component: JSX.Element; title: string }[] = [
+      {
+        key: "search",
+        Component: <Search />,
+        title: "검색"
+      },
+      { key: "alert", Component: <Alert />, title: "알림" }
+    ];
+
+    const currentCase = cases.find(({ key }) => key === currentNav);
 
     if (!currentCase) return null;
 
