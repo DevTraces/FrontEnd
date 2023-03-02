@@ -4,6 +4,7 @@ import { postSignOut } from "@/api/auth/sign-out";
 import { postSignUp } from "@/api/auth/sign-up";
 import { postOAuth } from "@/api/oauth/kakao/callback";
 import { postOAuthToken } from "@/api/oauth/token";
+import { patchPassword, resetPassword } from "@/api/users/password";
 import { SignUpUser, signUpUserAtom } from "@/atoms/auth/signUpUser";
 import { APIError } from "@/types/error";
 import currentUser from "@/utils/currentUser";
@@ -111,6 +112,42 @@ export default function useAuth({ onOAuthKakao = () => {} } = {}) {
     }
   });
 
+  const changePasswordMutation = useMutation({
+    mutationFn: patchPassword,
+    onSuccess: () => {
+      toast({
+        title: "비밀번호가 변경되었어요.",
+        status: "success",
+        duration: 3000
+      });
+    },
+    onError: () => {
+      toast({
+        title: "비밀번호 변경에 실패했어요.",
+        status: "error",
+        duration: 3000
+      });
+    }
+  });
+
+  const resetPasswordMutation = useMutation({
+    mutationFn: resetPassword,
+    onSuccess: () => {
+      toast({
+        title: "비밀번호가 재설정되었어요.",
+        status: "success",
+        duration: 3000
+      });
+    },
+    onError: () => {
+      toast({
+        title: "비밀번호 재설정에 실패했어요.",
+        status: "error",
+        duration: 3000
+      });
+    }
+  });
+
   return {
     signUpMutation,
     signInMutation,
@@ -119,6 +156,8 @@ export default function useAuth({ onOAuthKakao = () => {} } = {}) {
       (code: string) => oAuthKakaoSignInMutate(code),
       [oAuthKakaoSignInMutate]
     ),
-    sendEmailAuthKeyMutation
+    sendEmailAuthKeyMutation,
+    changePasswordMutation,
+    resetPasswordMutation
   };
 }
