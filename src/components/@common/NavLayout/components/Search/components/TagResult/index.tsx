@@ -32,7 +32,7 @@ export default function TagAutoComplete() {
                 <Circle size="10" border="1px" borderColor="gray.200">
                   #
                 </Circle>
-                <Text fontWeight="bold">#{word}</Text>
+                <Text fontWeight="bold">{word}</Text>
               </HStack>
             </Link>
           ))

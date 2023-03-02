@@ -1,4 +1,4 @@
-import { getFeeds } from "@/api/feeds/[nickname]";
+import { getFeeds } from "@/api/feeds/list/[nickname]";
 import FeedList from "@/components/feed/FeedList";
 import feedsKeys from "@/queryKeys/feedsKeys";
 import { VStack } from "@chakra-ui/react";

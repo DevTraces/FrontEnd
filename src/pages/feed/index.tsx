@@ -1,4 +1,4 @@
-import { getFeeds } from "@/api/feeds/[nickname]";
+import { getFeeds } from "@/api/feeds/list/[nickname]";
 import NavLayout from "@/components/@common/NavLayout";
 import FeedList from "@/components/feed/FeedList";
 import feedsKeys from "@/queryKeys/feedsKeys";
@@ -16,6 +16,11 @@ export default function Feed() {
     queryKey: feedsKeys.feeds(nickname),
     queryFn: () => getFeeds(nickname, 0)
   });
+
+  // const feedQuery = useQuery({
+  //   queryKey: feedsKeys.main(),
+  //   queryFn: () => getFeedMain(0)
+  // });
 
   useEffect(() => {
     if (nickname === "") router.push("/");
