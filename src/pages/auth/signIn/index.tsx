@@ -51,6 +51,13 @@ export default function SignIn() {
           />
           <AuthTextInput
             isInvalid={!!errors.password}
+            helperText={
+              <Text color="primary" fontWeight="bold">
+                <Link href="/accounts/reset/sendEmail">
+                  비밀번호를 잊으셨나요?
+                </Link>
+              </Text>
+            }
             errorMessage={errors.password?.message}
             placeholder="비밀번호"
             type="password"
@@ -58,6 +65,7 @@ export default function SignIn() {
           />
 
           <FormButton
+            mt="12px"
             isLoading={isSubmitting || signInMutation.isLoading}
             isDisabled={!isValid || !isDirty}
           >
