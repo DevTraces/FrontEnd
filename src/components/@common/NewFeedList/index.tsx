@@ -2,7 +2,7 @@ import feedAtom from "@/atoms/feedAtom";
 import { FeedData } from "@/types/data/feed";
 import { Flex } from "@chakra-ui/react";
 import { RecoilRoot } from "recoil";
-import NewFeedCard from "../NewFeedCard";
+import NewFeedCard from "./NewFeedCard";
 
 type FeedListProps = {
   feedsData: FeedData[];

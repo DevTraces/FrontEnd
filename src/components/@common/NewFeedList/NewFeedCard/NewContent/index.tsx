@@ -16,8 +16,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
-import ReplyList from "../../FeedCard/components/ReplyList";
-import LikeUsersModal from "../../FeedCard/components/TextContent/LikeUsersModal";
+import ReplyList from "../../../FeedCard/components/ReplyList";
+import LikeUsersModal from "../../../FeedCard/components/TextContent/LikeUsersModal";
 
 const MAX_PREVIEW_LENGTH = 100;
 
