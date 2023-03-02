@@ -12,7 +12,8 @@ import {
   ModalHeader,
   ModalOverlay,
   Spinner,
-  Text
+  Text,
+  VStack
 } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
@@ -51,7 +52,7 @@ export default function LikeUsersModal({
         <ModalBody py="20px" px="24px">
           {data ? (
             <Flex direction="column" gap="24px">
-              {data.map(({ userName, nickname, profileImageLink }) => (
+              {data.map(({ username, nickname, profileImageLink }) => (
                 <Flex
                   key={nickname}
                   alignItems="center"
@@ -72,7 +73,14 @@ export default function LikeUsersModal({
                       size="44px"
                       alt="프로필 이미지"
                     />
-                    <Text fontWeight="bold">{userName}</Text>
+                    <VStack spacing="0" alignItems="start">
+                      <Text fontWeight="bold" noOfLines={1}>
+                        {nickname}
+                      </Text>
+                      <Text color="gray" noOfLines={1}>
+                        {username}
+                      </Text>
+                    </VStack>
                   </Flex>
 
                   <Button>팔로우</Button>
