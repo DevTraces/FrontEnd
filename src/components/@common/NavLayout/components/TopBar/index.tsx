@@ -60,7 +60,7 @@ export default function TopBar() {
       )}
       <Flex
         position="fixed"
-        zIndex={50}
+        zIndex="9999"
         direction="row"
         top={0}
         left={0}
