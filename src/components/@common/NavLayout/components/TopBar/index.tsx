@@ -1,61 +1,38 @@
 import Logo from "@/components/@common/Logo";
-import {
-  Box,
-  Button,
-  Flex,
-  Icon,
-  useDisclosure,
-  useOutsideClick
-} from "@chakra-ui/react";
-import { faBell } from "@fortawesome/free-solid-svg-icons";
+import { Box, Button, Flex, Icon } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useRef, useState } from "react";
-import { Nav } from "../../constants/nav";
+import useNavBar from "../../hooks/useNavBar";
 import Drawer from "../Drawer";
 import InputContainer from "../Search/components/Input";
 
 export default function TopBar() {
-  const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
-  const [selectedNav, setSelectedNav] = useState<Nav["key"] | null>(null);
-  const drawerRef = useRef(null);
-
-  useEffect(() => {
-    if (!isOpen) setSelectedNav(null);
-  }, [isOpen]);
-
-  useOutsideClick({
-    ref: drawerRef,
-    handler: e => {
-      const target = e.target as Element;
-      if (target.closest('[data-type="navItem"]')) return;
-      onClose();
-    }
+  const {
+    navs,
+    onNavClick,
+    isCurrentNav,
+    drawerRef,
+    isDrawerOpen,
+    onDrawerToggle,
+    onDrawerOpen
+  } = useNavBar({
+    navKeys: ["search", "alert"]
   });
 
-  const handleInputClick = () => {
-    setSelectedNav("search");
-    onOpen();
-  };
-
-  const handleAlertClick = () => {
-    setSelectedNav("alert");
-    if (selectedNav === "alert") {
-      onToggle();
-    } else {
-      onOpen();
-    }
+  const handleNavClick = (key: string) => {
+    onNavClick(key);
+    onDrawerToggle();
+    onDrawerOpen();
   };
 
   return (
     <>
-      {isOpen && (
+      {isDrawerOpen && (
         <Drawer
           display={{
             sm: "block",
             md: "none"
           }}
           ref={drawerRef}
-          selectedNav={selectedNav}
         />
       )}
       <Flex
@@ -78,16 +55,25 @@ export default function TopBar() {
         <Box mr={20} w="200px" h="100px">
           <Logo type="text" fill />
         </Box>
-        <InputContainer onClick={handleInputClick} mr={10} />
+        <InputContainer
+          onClick={() => {
+            handleNavClick("search");
+          }}
+          mr={10}
+        />
         <Button
           boxSize="40px"
           px="10px"
           data-type="navItem"
           bg="white"
           colorScheme="whiteAlpha"
-          onClick={handleAlertClick}
+          onClick={() => handleNavClick("alert")}
         >
-          <Icon as={FontAwesomeIcon} icon={faBell} color="black" />
+          <Icon
+            as={FontAwesomeIcon}
+            icon={navs[navs.findIndex(nav => nav.key === "alert")].icon}
+            color={isCurrentNav("alert") ? "primary" : "black"}
+          />
         </Button>
       </Flex>
     </>
