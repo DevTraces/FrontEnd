@@ -1,7 +1,8 @@
 import { Box, Center } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
-import NavTypeProvider from "./components/NavTypeContext";
+
 import TopBar from "./components/TopBar";
+import useNavBar from "./hooks/useNavBar";
 
 const SideBar = dynamic(() => import("./components/SideBar"), {
   ssr: false
@@ -15,11 +16,17 @@ export default function NavLayout({
   children,
   ...restProps
 }: React.ComponentProps<typeof Center>) {
+  const { navType } = useNavBar();
+
   return (
-    <NavTypeProvider>
-      <TopBar />
-      <SideBar />
-      <BottomBar />
+    <Center>
+      {navType === "topbar" && (
+        <>
+          <TopBar />
+          <BottomBar />
+        </>
+      )}
+      {navType === "sidebar" && <SideBar />}
       <Box
         w="full"
         pos="absolute"
@@ -37,6 +44,6 @@ export default function NavLayout({
       >
         {children}
       </Box>
-    </NavTypeProvider>
+    </Center>
   );
 }
