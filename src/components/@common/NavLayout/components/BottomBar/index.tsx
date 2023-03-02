@@ -18,9 +18,9 @@ export default function BottomBar() {
   return (
     <Flex
       w="100vw"
-      h={50}
+      h="60px"
       bg="white"
-      zIndex={50}
+      zIndex="9999"
       alignItems="center"
       justify="space-evenly"
       position="fixed"

@@ -11,7 +11,7 @@ export const getFeedsLikeUsers = ({
 }) =>
   api.prod.get<
     {
-      userName: string;
+      username: string;
       nickname: string;
       profileImageLink: string;
     }[]

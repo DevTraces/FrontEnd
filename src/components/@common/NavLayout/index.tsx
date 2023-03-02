@@ -1,5 +1,6 @@
 import { Box, Center } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
+
 import TopBar from "./components/TopBar";
 import useNavBar from "./hooks/useNavBar";
 
@@ -27,18 +28,15 @@ export default function NavLayout({
       )}
       {navType === "sidebar" && <SideBar />}
       <Box
-        ml={{
+        w="full"
+        pos="absolute"
+        pl={{
           sm: 0,
           md: "100px",
           xl: "250px"
         }}
         mb={{
-          sm: "50px",
-          md: 0,
-          xl: 0
-        }}
-        mt={{
-          sm: "30px",
+          sm: "80px",
           md: 0,
           xl: 0
         }}

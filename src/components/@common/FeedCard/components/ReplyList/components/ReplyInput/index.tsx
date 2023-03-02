@@ -41,6 +41,7 @@ export default forwardRef<HTMLInputElement, ReplyInputProps>(
             />
           </InputLeftElement>
           <Input
+            autoComplete="off"
             variant="filled"
             bg="white"
             focusBorderColor="white"
