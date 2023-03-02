@@ -19,7 +19,7 @@ export default function NavLayout({
   const { navType } = useNavBar();
 
   return (
-    <Center>
+    <>
       {navType === "topbar" && (
         <>
           <TopBar />
@@ -44,6 +44,6 @@ export default function NavLayout({
       >
         {children}
       </Box>
-    </Center>
+    </>
   );
 }
