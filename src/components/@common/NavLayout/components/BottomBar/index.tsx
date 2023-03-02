@@ -1,17 +1,19 @@
 import { Flex, Icon } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import currentUser from "@/utils/currentUser";
-import Link from "next/link";
 import { useRouter } from "next/router";
-import { useMemo } from "react";
-import { generateNavs, Nav } from "../../constants/nav";
+import useNavBar from "../../hooks/useNavBar";
 
 export default function BottomBar() {
-  const nickname = currentUser.getNickname();
-  const navs = useMemo(() => generateNavs(nickname), [nickname]);
   const router = useRouter();
-  const selectedKeys: Nav["key"][] = ["feed", "saved", "new", "posts"];
-  const selectedNavs = navs.filter(nav => selectedKeys.includes(nav.key));
+
+  const { navs, isCurrentNav, onNavClick } = useNavBar({
+    navKeys: ["feed", "saved", "new", "user"]
+  });
+
+  const handleNavClick = (key: string, href?: string) => {
+    onNavClick(key);
+    if (href) router.push(href);
+  };
 
   return (
     <Flex
@@ -30,15 +32,15 @@ export default function BottomBar() {
         md: "none"
       }}
     >
-      {selectedNavs.map(({ key, icon, href }) => (
-        <Link key={href} href={href}>
-          <Icon
-            as={FontAwesomeIcon}
-            icon={icon}
-            boxSize={6}
-            color={router.asPath.includes(key) ? "primary" : "black"}
-          />
-        </Link>
+      {navs.map(({ key, icon, href }) => (
+        <Icon
+          key={href}
+          as={FontAwesomeIcon}
+          icon={icon}
+          boxSize={6}
+          color={isCurrentNav(key) ? "primary" : "black"}
+          onClick={() => handleNavClick(key, href)}
+        />
       ))}
     </Flex>
   );
