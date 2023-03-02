@@ -39,7 +39,7 @@ export default function Profile({ query }: { query: ServerSideProps }) {
       <Head>
         <title>Arterest | {nickname}님의 프로필</title>
       </Head>
-      <NavLayout maxW="750px">
+      <NavLayout>
         {profileQuery.data && (
           <ProfileInfo profileData={profileQuery.data} p="20px" pt="100px" />
         )}
