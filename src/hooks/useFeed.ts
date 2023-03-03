@@ -2,9 +2,9 @@ import { postFeeds } from "@/api/feeds";
 import { deleteFeed, postFeed } from "@/api/feeds/[feedId]";
 import feedsKeys from "@/queryKeys/feedsKeys";
 import { EditorPublishData } from "@/types/data/feed";
+import currentUser from "@/utils/currentUser";
 import { useToast } from "@chakra-ui/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import currentUser from "@/utils/currentUser";
 import { useRouter } from "next/router";
 
 export default function useFeed() {
@@ -19,13 +19,6 @@ export default function useFeed() {
       toast({
         title: "게시물이 성공적으로 등록되었어요",
         status: "success",
-        duration: 1000
-      });
-    },
-    onError: () => {
-      toast({
-        title: "게시물 등록에 실패했어요",
-        status: "error",
         duration: 1000
       });
     }
@@ -46,13 +39,6 @@ export default function useFeed() {
         duration: 1000
       });
       queryClient.invalidateQueries({ queryKey: feedsKeys.feed(feedId) });
-    },
-    onError: () => {
-      toast({
-        title: "게시물 수정에 실패했어요",
-        status: "error",
-        duration: 1000
-      });
     }
   });
 
@@ -71,13 +57,6 @@ export default function useFeed() {
         queryClient.invalidateQueries(feedsKeys.feed(feedId));
         queryClient.invalidateQueries(feedsKeys.feeds(nickname));
       }
-    },
-    onError: () => {
-      toast({
-        title: "게시물이 삭제에 실패하였어요",
-        status: "error",
-        duration: 1000
-      });
     }
   });
 

@@ -1,11 +1,8 @@
 import { deleteLike, postLike } from "@/api/like/[feedId]";
 import feedsKeys from "@/queryKeys/feedsKeys";
-import { useToast } from "@chakra-ui/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const useLike = () => {
-  const toast = useToast();
-
   const queryClient = useQueryClient();
 
   const likeMutation = useMutation({
@@ -20,13 +17,6 @@ const useLike = () => {
       });
       queryClient.invalidateQueries({
         queryKey: feedsKeys.feed(feedId)
-      });
-    },
-    onError: () => {
-      toast({
-        title: "좋아요에 실패했어요",
-        status: "error",
-        duration: 1000
       });
     }
   });
@@ -43,13 +33,6 @@ const useLike = () => {
       });
       queryClient.invalidateQueries({
         queryKey: feedsKeys.feed(feedId)
-      });
-    },
-    onError: () => {
-      toast({
-        title: "좋아요 해제에 실패했어요",
-        status: "error",
-        duration: 1000
       });
     }
   });
