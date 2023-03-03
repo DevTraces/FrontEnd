@@ -4,10 +4,11 @@ import useSearch from "@/hooks/useSearch";
 import searchKeys from "@/queryKeys/searchKeys";
 import { Circle, HStack, Text } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
-import Link from "next/link";
+import { useRouter } from "next/router";
 import ResultContainer from "../ResultContainer";
 
 export default function TagAutoComplete() {
+  const router = useRouter();
   const { searchValue } = useSearch();
 
   const tagAutoCompleteQuery = useQuery({
@@ -22,19 +23,23 @@ export default function TagAutoComplete() {
           <Text>검색 결과가 없어요</Text>
         ) : (
           tagAutoCompleteQuery.data.map(word => (
-            <Link key={word} href={`/explore/tags/${word}`}>
-              <HStack
-                w="100%"
-                _hover={{
-                  background: "gray.100"
-                }}
-              >
-                <Circle size="10" border="1px" borderColor="gray.200">
-                  #
-                </Circle>
-                <Text fontWeight="bold">{word}</Text>
-              </HStack>
-            </Link>
+            <HStack
+              rounded="8px"
+              _hover={{
+                background: "gray.100"
+              }}
+              key={word}
+              w="full"
+              py="8px"
+              px="4px"
+              cursor="pointer"
+              onClick={() => router.push(`/explore/tags/${word}`)}
+            >
+              <Circle size="10" border="1px" borderColor="gray.200">
+                #
+              </Circle>
+              <Text fontWeight="bold">{word}</Text>
+            </HStack>
           ))
         )
       ) : (
