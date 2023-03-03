@@ -2,6 +2,7 @@ import { postEmailAuthKey } from "@/api/auth/email/auth-key";
 import { postSignIn } from "@/api/auth/sign-in";
 import { postSignOut } from "@/api/auth/sign-out";
 import { postSignUp } from "@/api/auth/sign-up";
+import { postWithdrawUser } from "@/api/auth/withdrawal";
 import { postOAuth } from "@/api/oauth/kakao/callback";
 import { postOAuthToken } from "@/api/oauth/token";
 import { patchPassword } from "@/api/users/password";
@@ -178,6 +179,27 @@ export default function useAuth({ onOAuthKakao = () => {} } = {}) {
     }
   });
 
+  const withdrawalMutation = useMutation({
+    mutationFn: postWithdrawUser,
+    onSuccess: () => {
+      toast({
+        title: "회원탈퇴가 완료되었어요",
+        status: "success",
+        duration: 3000
+      });
+    },
+    onError: (e: APIError) => {
+      toast({
+        title:
+          e.errorCode === "WRONG_EMAIL_OR_PASSWORD_BAD_REQUEST"
+            ? "비밀번호가 올바르지 않아요"
+            : "회원 탈퇴에 실패했어요",
+        status: "error",
+        duration: 3000
+      });
+    }
+  });
+
   return {
     signUpMutation,
     signInMutation,
@@ -189,6 +211,7 @@ export default function useAuth({ onOAuthKakao = () => {} } = {}) {
     sendEmailAuthKeyMutation,
     sendEmailAutKeyForResetMutation,
     changePasswordMutation,
-    resetPasswordMutation
+    resetPasswordMutation,
+    withdrawalMutation
   };
 }
