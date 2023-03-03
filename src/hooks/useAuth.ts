@@ -4,7 +4,9 @@ import { postSignOut } from "@/api/auth/sign-out";
 import { postSignUp } from "@/api/auth/sign-up";
 import { postOAuth } from "@/api/oauth/kakao/callback";
 import { postOAuthToken } from "@/api/oauth/token";
-import { patchPassword, resetPassword } from "@/api/users/password";
+import { patchPassword } from "@/api/users/password";
+import { postPasswordEmail } from "@/api/users/password/email";
+import { patchPasswordReset } from "@/api/users/password/reset";
 import { SignUpUser, signUpUserAtom } from "@/atoms/auth/signUpUser";
 import { APIError } from "@/types/error";
 import currentUser from "@/utils/currentUser";
@@ -112,6 +114,32 @@ export default function useAuth({ onOAuthKakao = () => {} } = {}) {
     }
   });
 
+  const sendEmailAutKeyForResetMutation = useMutation({
+    mutationFn: postPasswordEmail,
+    onMutate: () => {
+      sendAuthKeyToastRef.current = toast({
+        title: "인증코드 전송중",
+        status: "info",
+        duration: 10000
+      });
+    },
+    onSuccess: () => {
+      toast.update(sendAuthKeyToastRef.current, {
+        title: "인증코드가 전송되었습니다",
+        status: "success",
+        duration: 2000
+      });
+    },
+
+    onError: () => {
+      toast.update(sendAuthKeyToastRef.current, {
+        title: "인증코드 전송에 실패했어요",
+        status: "error",
+        duration: 3000
+      });
+    }
+  });
+
   const changePasswordMutation = useMutation({
     mutationFn: patchPassword,
     onSuccess: () => {
@@ -131,13 +159,15 @@ export default function useAuth({ onOAuthKakao = () => {} } = {}) {
   });
 
   const resetPasswordMutation = useMutation({
-    mutationFn: resetPassword,
-    onSuccess: () => {
-      toast({
-        title: "비밀번호가 재설정되었어요.",
-        status: "success",
-        duration: 3000
-      });
+    mutationFn: patchPasswordReset,
+    onSuccess: ({ isPasswordResetKeyCorrect }) => {
+      if (isPasswordResetKeyCorrect) {
+        toast({
+          title: "비밀번호가 재설정되었어요.",
+          status: "success",
+          duration: 3000
+        });
+      }
     },
     onError: () => {
       toast({
@@ -157,6 +187,7 @@ export default function useAuth({ onOAuthKakao = () => {} } = {}) {
       [oAuthKakaoSignInMutate]
     ),
     sendEmailAuthKeyMutation,
+    sendEmailAutKeyForResetMutation,
     changePasswordMutation,
     resetPasswordMutation
   };
