@@ -4,6 +4,7 @@ import NavLayout from "@/components/@common/NavLayout";
 import usersKeys from "@/queryKeys/usersKeys";
 import { ProfileTabName } from "@/types/data/user";
 import { useQuery } from "@tanstack/react-query";
+import getRedirectionServerSideProps from "@/lib/getServerSideProps/redirection";
 import { GetServerSideProps } from "next";
 import dynamic from "next/dynamic";
 import Head from "next/head";
@@ -65,10 +66,11 @@ export default function Profile({ query }: { query: ServerSideProps }) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+export const getServerSideProps: GetServerSideProps = async ctx => {
   return {
+    ...(await getRedirectionServerSideProps(ctx)),
     props: {
-      query
+      query: ctx.query
     }
   };
 };

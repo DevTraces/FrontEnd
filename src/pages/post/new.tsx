@@ -5,6 +5,7 @@ import { EditorPublishData } from "@/types/data/feed";
 import { Center } from "@chakra-ui/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import getServerSideProps from "@/lib/getServerSideProps/redirection";
 
 export default function NewPost() {
   const router = useRouter();
@@ -27,3 +28,5 @@ export default function NewPost() {
     </NavLayout>
   );
 }
+
+export { getServerSideProps };

@@ -24,6 +24,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import getServerSideProps from "@/lib/getServerSideProps/redirection";
 
 type FormData = Pick<ProfileData, "username" | "nickname" | "description">;
 
@@ -204,3 +205,5 @@ export default function Setting() {
     </>
   );
 }
+
+export { getServerSideProps };

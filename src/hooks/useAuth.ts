@@ -9,7 +9,6 @@ import { patchPassword } from "@/api/users/password";
 import { postPasswordEmail } from "@/api/users/password/email";
 import { patchPasswordReset } from "@/api/users/password/reset";
 import { SignUpUser, signUpUserAtom } from "@/atoms/auth/signUpUser";
-import { APIError } from "@/types/error";
 import currentUser from "@/utils/currentUser";
 import { ToastId, useToast } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
@@ -23,14 +22,7 @@ export default function useAuth({ onOAuthKakao = () => {} } = {}) {
   const setSignUpUser = useSetRecoilState(signUpUserAtom);
 
   const signUpMutation = useMutation({
-    mutationFn: (user: SignUpUser) => postSignUp(user),
-    onError: () => {
-      toast({
-        title: "회원가입에 실패하였습니다",
-        status: "error",
-        duration: 3000
-      });
-    }
+    mutationFn: (user: SignUpUser) => postSignUp(user)
   });
 
   const signInMutation = useMutation({
@@ -38,16 +30,6 @@ export default function useAuth({ onOAuthKakao = () => {} } = {}) {
       postSignIn(email, password),
     onSuccess: ({ nickname }) => {
       currentUser.setNickname(nickname);
-    },
-    onError: (e: APIError) => {
-      toast({
-        title:
-          e.errorCode === "WRONG_EMAIL_OR_PASSWORD"
-            ? "이메일 혹은 비밀번호가 올바르지 않아요"
-            : "로그인에 실패했어요",
-        status: "error",
-        duration: 3000
-      });
     }
   });
 
@@ -55,13 +37,6 @@ export default function useAuth({ onOAuthKakao = () => {} } = {}) {
     mutationFn: postSignOut,
     onSuccess: () => {
       currentUser.removeNickname();
-    },
-    onError: () => {
-      toast({
-        title: "로그아웃에 실패했어요",
-        status: "error",
-        duration: 3000
-      });
     }
   });
 
@@ -70,13 +45,6 @@ export default function useAuth({ onOAuthKakao = () => {} } = {}) {
     onSuccess: ({ nickname }) => {
       currentUser.setNickname(nickname);
       onOAuthKakao();
-    },
-    onError: () => {
-      toast({
-        title: "로그인에 실패했어요",
-        status: "error",
-        duration: 3000
-      });
     }
   });
 
@@ -104,14 +72,6 @@ export default function useAuth({ onOAuthKakao = () => {} } = {}) {
         status: "success",
         duration: 2000
       });
-    },
-
-    onError: () => {
-      toast.update(sendAuthKeyToastRef.current, {
-        title: "인증코드 전송에 실패했어요",
-        status: "error",
-        duration: 3000
-      });
     }
   });
 
@@ -130,14 +90,6 @@ export default function useAuth({ onOAuthKakao = () => {} } = {}) {
         status: "success",
         duration: 2000
       });
-    },
-
-    onError: () => {
-      toast.update(sendAuthKeyToastRef.current, {
-        title: "인증코드 전송에 실패했어요",
-        status: "error",
-        duration: 3000
-      });
     }
   });
 
@@ -147,13 +99,6 @@ export default function useAuth({ onOAuthKakao = () => {} } = {}) {
       toast({
         title: "비밀번호가 변경되었어요.",
         status: "success",
-        duration: 3000
-      });
-    },
-    onError: () => {
-      toast({
-        title: "비밀번호 변경에 실패했어요.",
-        status: "error",
         duration: 3000
       });
     }
@@ -169,13 +114,6 @@ export default function useAuth({ onOAuthKakao = () => {} } = {}) {
           duration: 3000
         });
       }
-    },
-    onError: () => {
-      toast({
-        title: "비밀번호 재설정에 실패했어요.",
-        status: "error",
-        duration: 3000
-      });
     }
   });
 
@@ -185,16 +123,6 @@ export default function useAuth({ onOAuthKakao = () => {} } = {}) {
       toast({
         title: "회원탈퇴가 완료되었어요",
         status: "success",
-        duration: 3000
-      });
-    },
-    onError: (e: APIError) => {
-      toast({
-        title:
-          e.errorCode === "WRONG_EMAIL_OR_PASSWORD_BAD_REQUEST"
-            ? "비밀번호가 올바르지 않아요"
-            : "회원 탈퇴에 실패했어요",
-        status: "error",
         duration: 3000
       });
     }

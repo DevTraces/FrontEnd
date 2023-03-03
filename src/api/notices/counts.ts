@@ -2,4 +2,4 @@ import { NoticesCount } from "@/types/data/notice";
 import api from "..";
 
 export const getNoticesCount = () =>
-  api.dev.get<NoticesCount>("/api/notices/counts");
+  api.prod.get<NoticesCount>("/api/notices/counts");

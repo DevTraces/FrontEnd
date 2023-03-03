@@ -1,3 +1,4 @@
+import currentUser from "@/utils/currentUser";
 import axios, { AxiosInstance } from "axios";
 
 const API_ENDPOINT = "https://api.artbubble-zerobase.com";
@@ -10,6 +11,15 @@ interface CustomInstance extends AxiosInstance {
   patch<T>(...params: Parameters<AxiosInstance["patch"]>): Promise<T>;
 }
 
+export const refresh = async () => {
+  const res = await axios.post(`${API_ENDPOINT}/api/tokens/reissue`, null, {
+    withCredentials: true
+  });
+  currentUser.setNickname(res.data.data.nickname);
+
+  return res;
+};
+
 const axiosInstance = (baseURL: string = ""): CustomInstance => {
   const instance = axios.create({
     baseURL,
@@ -17,28 +27,35 @@ const axiosInstance = (baseURL: string = ""): CustomInstance => {
       "Content-Type": "application/json"
     },
     withCredentials: true,
-    transformResponse: async res => {
+    transformResponse: res => {
       const json = JSON.parse(res);
       return json.data;
     }
   });
 
   instance.interceptors.response.use(
-    res => res.data,
-    err => {
+    res => {
+      return res.data;
+    },
+    async err => {
       const {
         config,
         response: { status }
       } = err;
-      if (status !== 401 || config.sent) return Promise.reject(err);
+      if (status !== 401 || config.sent) throw err;
 
       config.sent = true;
-      if (status === 401)
-        axios.post(`${API_ENDPOINT}/api/tokens/reissue`, null, {
-          withCredentials: true
-        });
 
-      return axios(config);
+      if (status === 401) {
+        try {
+          await refresh();
+          return await axios(config);
+        } catch (e: any) {
+          currentUser.removeNickname();
+          throw e;
+        }
+      }
+      throw err;
     }
   );
 

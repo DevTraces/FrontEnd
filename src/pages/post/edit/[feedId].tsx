@@ -6,6 +6,7 @@ import feedsKeys from "@/queryKeys/feedsKeys";
 import { EditorPublishData } from "@/types/data/feed";
 import { useQuery } from "@tanstack/react-query";
 import { GetServerSideProps } from "next";
+import getRedirectionServerSideProps from "@/lib/getServerSideProps/redirection";
 
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -49,6 +50,11 @@ export default function FeedEdit({ feedId }: ServerSideProps) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ query }) => ({
-  props: query
-});
+export const getServerSideProps: GetServerSideProps = async ctx => {
+  return {
+    ...(await getRedirectionServerSideProps(ctx)),
+    props: {
+      query: ctx.query
+    }
+  };
+};

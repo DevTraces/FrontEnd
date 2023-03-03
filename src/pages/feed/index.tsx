@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import getServerSideProps from "@/lib/getServerSideProps/redirection";
 
 export default function Feed() {
   const nickname = currentUser.getNickname();
@@ -32,3 +33,5 @@ export default function Feed() {
     </>
   );
 }
+
+export { getServerSideProps };

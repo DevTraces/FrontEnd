@@ -10,25 +10,11 @@ export default function useCheck() {
 
   const nicknameDuplicateMutation = useMutation({
     mutationFn: ({ nickname }: { nickname: string }) =>
-      getNicknameDuplicateCheck(nickname),
-    onError: () => {
-      toast({
-        title: "닉네임 중복체크에 실패했습니다",
-        status: "error",
-        duration: 3000
-      });
-    }
+      getNicknameDuplicateCheck(nickname)
   });
 
   const emailDuplicateMutation = useMutation({
-    mutationFn: ({ email }: { email: string }) => getEmailDuplicateCheck(email),
-    onError: () => {
-      toast({
-        title: "이메일 중복체크에 실패했습니다",
-        status: "error",
-        duration: 3000
-      });
-    }
+    mutationFn: ({ email }: { email: string }) => getEmailDuplicateCheck(email)
   });
 
   const emailAuthKeyCheckMutation = useMutation({
@@ -42,13 +28,6 @@ export default function useCheck() {
           duration: 3000
         });
       }
-    },
-    onError: () => {
-      toast({
-        title: "인증코드가 확인 중 문제가 발생했어요.",
-        status: "error",
-        duration: 3000
-      });
     }
   });
   const emailAuthKeyCheckForResetMutation = useMutation({
@@ -61,13 +40,6 @@ export default function useCheck() {
           duration: 3000
         });
       }
-    },
-    onError: () => {
-      toast({
-        title: "인증코드가 확인 중 문제가 발생했어요.",
-        status: "error",
-        duration: 3000
-      });
     }
   });
 
