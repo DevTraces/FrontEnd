@@ -33,6 +33,7 @@ export default function NewCarousel() {
   return (
     <ReactCarousel
       showStatus={false}
+      showThumbs={false}
       renderArrowPrev={(onClickHandler, hasPrev, label) =>
         hasPrev && (
           <IconButton

@@ -1,11 +1,8 @@
 import { deleteBookmark, postBookmark } from "@/api/bookmark/[feedId]";
 import feedsKeys from "@/queryKeys/feedsKeys";
-import { useToast } from "@chakra-ui/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const useBookmark = () => {
-  const toast = useToast();
-
   const queryClient = useQueryClient();
 
   const bookmarkMutation = useMutation({
@@ -20,13 +17,6 @@ const useBookmark = () => {
       });
       queryClient.invalidateQueries({
         queryKey: feedsKeys.feed(feedId)
-      });
-    },
-    onError: () => {
-      toast({
-        title: "북마크 추가에 실패했어요",
-        status: "error",
-        duration: 1000
       });
     }
   });
@@ -43,13 +33,6 @@ const useBookmark = () => {
       });
       queryClient.invalidateQueries({
         queryKey: feedsKeys.feed(feedId)
-      });
-    },
-    onError: () => {
-      toast({
-        title: "북마크 삭제에 실패했어요",
-        status: "error",
-        duration: 1000
       });
     }
   });
