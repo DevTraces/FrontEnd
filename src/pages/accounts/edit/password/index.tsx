@@ -1,14 +1,14 @@
-import { patchPassword } from "@/api/users/password";
 import FormButton from "@/components/@common/FormButton";
-import FormLayout from "@/components/@common/FormLayout";
 import FormInput from "@/components/@common/FormInput";
+import FormLayout from "@/components/@common/FormLayout";
 import Logo from "@/components/@common/Logo";
 import VALIDATION_RULE from "@/constants/auth/VALIDATION_RULE";
-import { Center, useToast } from "@chakra-ui/react";
-import { useMutation } from "@tanstack/react-query";
+import useAuth from "@/hooks/useAuth";
+import { Center } from "@chakra-ui/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
+import getServerSideProps from "@/lib/getServerSideProps/redirection";
 
 type FormData = {
   currentPassword: string;
@@ -18,7 +18,6 @@ type FormData = {
 
 export default function EditPassword() {
   const router = useRouter();
-  const toast = useToast();
 
   const {
     register,
@@ -28,29 +27,26 @@ export default function EditPassword() {
     formState: { errors, isSubmitting, isValid, isDirty }
   } = useForm<FormData>({ mode: "onChange" });
 
-  const passwordMutation = useMutation({
-    mutationFn: ({
-      currentPassword,
-      newPassword
-    }: {
-      currentPassword: string;
-      newPassword: string;
-    }) => patchPassword(currentPassword, newPassword),
-    onSuccess: () => {
-      router.back();
-    },
-    onError: () => {
-      toast({
-        title: "비밀번호 변경에 실패했습니다.",
-        status: "error",
-        duration: 3000
-      });
-    }
-  });
+  const { changePasswordMutation } = useAuth();
+
+  const changePassword = (currentPassword: string, newPassword: string) => {
+    changePasswordMutation.mutate(
+      {
+        beforePassword: currentPassword,
+        afterPassword: newPassword
+      },
+      {
+        onSuccess: () => {
+          router.back();
+        }
+      }
+    );
+  };
 
   const handleFormSubmit = handleSubmit(({ currentPassword, newPassword }) => {
-    passwordMutation.mutate({ currentPassword, newPassword });
+    changePassword(currentPassword, newPassword);
   });
+
   return (
     <>
       <Head>
@@ -107,3 +103,5 @@ export default function EditPassword() {
     </>
   );
 }
+
+export { getServerSideProps };

@@ -17,15 +17,21 @@ import { GetServerSideProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import getRedirectionServerSideProps from "@/lib/getServerSideProps/redirection";
 
 type ServerSideProps = {
   tag: string;
 };
 
 export default function TagResult({ tag }: ServerSideProps) {
+  const router = useRouter();
   const tagQuery = useQuery({
     queryKey: searchKeys.hashtags(tag),
-    queryFn: ({ queryKey }) => getHashtagResult(queryKey[1], 0)
+    queryFn: ({ queryKey }) => getHashtagResult(queryKey[1], 0),
+    onError: () => {
+      router.push("/api-error");
+    }
   });
 
   return (
@@ -86,6 +92,11 @@ export default function TagResult({ tag }: ServerSideProps) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ query }) => ({
-  props: query
-});
+export const getServerSideProps: GetServerSideProps = async ctx => {
+  return {
+    ...(await getRedirectionServerSideProps(ctx)),
+    props: {
+      query: ctx.query
+    }
+  };
+};

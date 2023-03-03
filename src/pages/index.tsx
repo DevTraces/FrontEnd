@@ -1,10 +1,26 @@
 import Logo from "@/components/@common/Logo";
 import AnimatedBubble from "@/components/root/AnimatedBubble";
-import { Box, Button, Center, HStack, Text } from "@chakra-ui/react";
+import useAuth from "@/hooks/useAuth";
+import currentUser from "@/utils/currentUser";
+import { Box, Button, Center, HStack, Text, useToast } from "@chakra-ui/react";
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const router = useRouter();
+  const { signOutMutation } = useAuth();
+  const isValidUser = currentUser.isValidUser();
+  const [isClient, setIsClient] = useState(false);
+  const toast = useToast();
+
+  useEffect(() => {
+    setIsClient(true);
+  }, [setIsClient]);
+
+  if (!isClient) return null;
+
   return (
     <>
       <Head>
@@ -22,14 +38,47 @@ export default function Home() {
             </Box>
 
             <HStack>
-              <Link href="/auth/signIn">
-                <Button bg="primary" color="white">
-                  로그인
-                </Button>
-              </Link>
-              <Link href="/auth/signUp">
-                <Button>가입하기</Button>
-              </Link>
+              {isValidUser ? (
+                <>
+                  <Link href="/feed">
+                    <Button bg="primary" color="white">
+                      내 피드
+                    </Button>
+                  </Link>
+                  <Button
+                    colorScheme="red"
+                    variant="outline"
+                    onClick={() => {
+                      signOutMutation.mutate(undefined, {
+                        onSuccess: () => {
+                          toast({
+                            title: "로그아웃에 성공했어요",
+                            status: "success",
+                            duration: 3000
+                          });
+                        }
+                      });
+                    }}
+                  >
+                    로그아웃
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Link href="/auth/signIn">
+                    <Button bg="primary" color="white">
+                      로그인
+                    </Button>
+                  </Link>
+                  <Button
+                    onClick={() => {
+                      router.push("/auth/signUp");
+                    }}
+                  >
+                    가입하기
+                  </Button>
+                </>
+              )}
             </HStack>
           </HStack>
           <Center m="auto" mt="20%" w="50%">

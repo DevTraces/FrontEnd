@@ -26,7 +26,15 @@ type FormData = {
   newContent: string;
 };
 export default function ReplyItem({
-  replyData: { feedId, replyId, authorNickname, content, authorProfileImageUrl }
+  replyData: {
+    feedId,
+    replyId,
+    authorNickname,
+    content,
+    authorProfileImageUrl,
+    numberOfRereply,
+    createdAt
+  }
 }: ReplyItemProps) {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const openMoreBtnRef = useRef<HTMLButtonElement | null>(null);
@@ -91,6 +99,7 @@ export default function ReplyItem({
         authorNickname={authorNickname}
         authorProfileImageUrl={authorProfileImageUrl}
         content={content}
+        createdAt={createdAt}
         onReply={async () => {
           await openMoreBtnRef.current?.click();
           inputRef.current?.focus();
@@ -103,6 +112,7 @@ export default function ReplyItem({
           {({ isExpanded }) => (
             <>
               <AccordionButton
+                display={numberOfRereply > 0 ? "flex" : "none"}
                 ref={openMoreBtnRef}
                 pl="24px"
                 bg="none"
@@ -119,6 +129,7 @@ export default function ReplyItem({
                       authorProfileImageUrl={r.authorProfileImageUrl}
                       authorNickname={r.authorNickname}
                       content={r.content}
+                      createdAt={r.createdAt}
                       onReply={() => {
                         inputRef.current?.focus();
                       }}

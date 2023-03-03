@@ -1,6 +1,6 @@
-import { Tabs, TabList, Tab, TabPanels, TabPanel } from "@chakra-ui/react";
-import { useContext } from "react";
-import { NavTypeContext } from "../NavTypeContext";
+import useSearch from "@/hooks/useSearch";
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
+import useNavBar from "../../hooks/useNavBar";
 import InputContainer from "./components/Input";
 import TagAutoComplete from "./components/TagResult";
 import UserList from "./components/UserResult";
@@ -13,31 +13,48 @@ type TabData = {
     tabPanel: JSX.Element;
   };
 };
+const tabList: TabName[] = ["username", "nickname", "hashtags"];
+
+const tabData: TabData = {
+  username: {
+    name: "이름",
+    tabPanel: <UserList target="username" />
+  },
+  nickname: {
+    name: "닉네임",
+    tabPanel: <UserList target="nickname" />
+  },
+  hashtags: {
+    name: "태그",
+    tabPanel: <TagAutoComplete />
+  }
+};
 
 export default function Search() {
-  const type = useContext(NavTypeContext);
+  const { navType } = useNavBar();
 
-  const tabList: TabName[] = ["username", "nickname", "hashtags"];
-
-  const tabData: TabData = {
-    username: {
-      name: "이름",
-      tabPanel: <UserList target="username" />
-    },
-    nickname: {
-      name: "닉네임",
-      tabPanel: <UserList target="nickname" />
-    },
-    hashtags: {
-      name: "태그",
-      tabPanel: <TagAutoComplete />
-    }
+  const { searchValue, changeType } = useSearch();
+  const tabIndex = (() => {
+    if (searchValue.type === "nickname") return 1;
+    if (searchValue.type === "tag") return 2;
+    return 0;
+  })();
+  const handleTapChange = (i: number) => {
+    if (i === 0) changeType("username");
+    if (i === 1) changeType("nickname");
+    if (i === 2) changeType("tag");
   };
 
   return (
     <>
-      {type === "sidebar" && <InputContainer mb="20px" />}
-      <Tabs colorScheme="purple" isFitted isLazy>
+      {navType === "sidebar" && <InputContainer mb="20px" />}
+      <Tabs
+        index={tabIndex}
+        colorScheme="purple"
+        onChange={handleTapChange}
+        isFitted
+        isLazy
+      >
         <TabList>
           {tabList.map(tab => (
             <Tab key={tab}>{tabData[tab].name}</Tab>

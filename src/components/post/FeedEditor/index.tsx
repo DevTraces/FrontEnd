@@ -46,6 +46,12 @@ export default function FeedEditor({
         status: "warning",
         duration: 1000
       });
+    } else if (images.length === 0) {
+      toast({
+        title: "이미지가 하나 이상 필요해요.",
+        status: "warning",
+        duration: 3000
+      });
     } else {
       onPublish({
         images,

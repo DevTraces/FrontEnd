@@ -15,7 +15,7 @@ type AuthTextInputProps = {
   placeholder: string;
   isTextarea?: boolean;
   labelText?: string;
-  helperText?: string;
+  helperText?: JSX.Element;
   leftAddon?: JSX.Element;
 } & ComponentProps<typeof Input>;
 

@@ -6,6 +6,7 @@ import { Center } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import Head from "next/head";
 import { GetServerSideProps } from "next/types";
+import getRedirectionServerSideProps from "@/lib/getServerSideProps/redirection";
 
 type ServerSideProps = {
   feedId: string;
@@ -31,6 +32,11 @@ export default function Feed({ feedId }: ServerSideProps) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ query }) => ({
-  props: query
-});
+export const getServerSideProps: GetServerSideProps = async ctx => {
+  return {
+    ...(await getRedirectionServerSideProps(ctx)),
+    props: {
+      query: ctx.query
+    }
+  };
+};

@@ -4,6 +4,7 @@ import ReplyEditModal from "@/components/@common/FeedCard/components/ReplyEditMo
 import ProfileAvatar from "@/components/@common/ProfileAvatar";
 import { ReplyData } from "@/types/data/reply";
 import currentUser from "@/utils/currentUser";
+import getDateFormat from "@/utils/date";
 import {
   Box,
   Button,
@@ -18,7 +19,7 @@ import { MouseEventHandler } from "react";
 
 type ReplyContentProps = Pick<
   ReplyData,
-  "authorNickname" | "content" | "authorProfileImageUrl"
+  "authorNickname" | "content" | "authorProfileImageUrl" | "createdAt"
 > & {
   onReply: MouseEventHandler<HTMLButtonElement>;
   onDelete: () => void;
@@ -29,6 +30,7 @@ export default function ReplyContent({
   authorNickname,
   authorProfileImageUrl,
   content,
+  createdAt,
   onReply,
   onDelete,
   onEdit
@@ -106,9 +108,14 @@ export default function ReplyContent({
               )}
             </Box>
           </VStack>
-          <Button variant="ghost" size="sm" onClick={onReply}>
-            답글 달기
-          </Button>
+          <HStack ml="10px" mt="5px">
+            <Text fontSize="sm" color="gray.500">
+              {getDateFormat(createdAt)}
+            </Text>
+            <Button variant="ghost" size="sm" onClick={onReply}>
+              답글 달기
+            </Button>
+          </HStack>
         </Flex>
       </HStack>
     </>

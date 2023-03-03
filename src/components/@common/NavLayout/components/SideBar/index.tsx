@@ -1,70 +1,48 @@
 import Logo from "@/components/@common/Logo";
-import {
-  Box,
-  Flex,
-  Icon,
-  Show,
-  Text,
-  useDisclosure,
-  useOutsideClick
-} from "@chakra-ui/react";
+import { Box, Flex, Icon, Show, Text } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import currentUser from "@/utils/currentUser";
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { generateNavs, Nav } from "../../constants/nav";
+import useNavBar, { Nav, NavKey } from "../../hooks/useNavBar";
 import Drawer from "../Drawer";
-import SearchProvider from "../SearchContext";
 
 export default function SideBar() {
-  const nickname = currentUser.getNickname();
-  const navs = useMemo(() => generateNavs(nickname), [nickname]);
-
   const router = useRouter();
-  const { isOpen, onToggle, onClose, onOpen } = useDisclosure();
-  const [selectedNav, setSelectedNav] = useState<Nav["key"] | null>(null);
-  const drawerRef = useRef(null);
+  const {
+    navs,
+    onNavClick,
+    isCurrentNav,
+    drawerRef,
+    isDrawerOpen,
+    onDrawerToggle,
+    onDrawerOpen
+  } = useNavBar();
 
-  useEffect(() => {
-    if (!isOpen) setSelectedNav(null);
-  }, [isOpen]);
+  const handleNavClick = (key: NavKey, href: Nav["href"]) => {
+    onNavClick(key);
 
-  useOutsideClick({
-    ref: drawerRef,
-    handler: e => {
-      const target = e.target as Element;
-      if (target.closest('[data-type="navItem"]')) return;
-      onClose();
-    }
-  });
-
-  const handleNavClick = (key: Nav["key"], href: Nav["href"]) => {
-    setSelectedNav(key);
     switch (key) {
       case "search":
       case "alert":
-        if (selectedNav === key) {
-          onToggle();
+        if (isCurrentNav(key)) {
+          onDrawerToggle();
         } else {
-          onOpen();
+          onDrawerOpen();
         }
         break;
       default:
-        router.push(href);
-        onClose();
+        if (href) router.push(href);
     }
   };
 
   return (
-    <SearchProvider>
-      {isOpen && (
+    <>
+      {isDrawerOpen && (
         <Drawer
           display={{
             sm: "none",
             md: "block"
           }}
           ref={drawerRef}
-          selectedNav={selectedNav}
         />
       )}
       <Flex
@@ -91,10 +69,10 @@ export default function SideBar() {
               <Logo type="icon" height={44} />
             </Show>
             <Show above="xl">
-              <Box pl={isOpen ? 0 : "8px"}>
+              <Box pl={isDrawerOpen ? 0 : "8px"}>
                 <Logo
-                  type={isOpen ? "icon" : "text"}
-                  height={isOpen ? 44 : 22}
+                  type={isDrawerOpen ? "icon" : "text"}
+                  height={isDrawerOpen ? 44 : 22}
                 />
               </Box>
             </Show>
@@ -113,11 +91,11 @@ export default function SideBar() {
                 bg: "primary",
                 color: "white"
               }}
-              color={selectedNav === key ? "primary" : "black"}
+              color={isCurrentNav(key) ? "primary" : "black"}
               onClick={() => handleNavClick(key, href)}
             >
               <Icon key={key} as={FontAwesomeIcon} icon={icon} boxSize="20px" />
-              {!isOpen && (
+              {!isDrawerOpen && (
                 <Text
                   display={{
                     sm: "none",
@@ -131,6 +109,6 @@ export default function SideBar() {
           ))}
         </Flex>
       </Flex>
-    </SearchProvider>
+    </>
   );
 }

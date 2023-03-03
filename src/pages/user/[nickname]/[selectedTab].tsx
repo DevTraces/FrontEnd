@@ -1,11 +1,15 @@
 import { getUserProfile } from "@/api/users/profile/[nickname]";
+import navigationAtom from "@/atoms/navigationAtom";
 import NavLayout from "@/components/@common/NavLayout";
 import usersKeys from "@/queryKeys/usersKeys";
 import { ProfileTabName } from "@/types/data/user";
 import { useQuery } from "@tanstack/react-query";
+import getRedirectionServerSideProps from "@/lib/getServerSideProps/redirection";
 import { GetServerSideProps } from "next";
 import dynamic from "next/dynamic";
 import Head from "next/head";
+import { useEffect } from "react";
+import { useSetRecoilState } from "recoil";
 
 const ProfileInfo = dynamic(
   () => import("@/components/user/[nickname]/ProfileInfo"),
@@ -29,6 +33,19 @@ type ServerSideProps = {
 export default function Profile({ query }: { query: ServerSideProps }) {
   const { nickname, selectedTab } = query;
 
+  const setNavigation = useSetRecoilState(navigationAtom);
+
+  useEffect(() => {
+    switch (selectedTab) {
+      case "saved":
+        setNavigation("saved");
+        break;
+      default:
+        setNavigation("user");
+        break;
+    }
+  }, [selectedTab, setNavigation]);
+
   const profileQuery = useQuery({
     queryKey: usersKeys.userProfile(nickname),
     queryFn: () => getUserProfile(nickname)
@@ -39,7 +56,7 @@ export default function Profile({ query }: { query: ServerSideProps }) {
       <Head>
         <title>Arterest | {nickname}님의 프로필</title>
       </Head>
-      <NavLayout maxW="750px">
+      <NavLayout>
         {profileQuery.data && (
           <ProfileInfo profileData={profileQuery.data} p="20px" pt="100px" />
         )}
@@ -49,10 +66,11 @@ export default function Profile({ query }: { query: ServerSideProps }) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+export const getServerSideProps: GetServerSideProps = async ctx => {
   return {
+    ...(await getRedirectionServerSideProps(ctx)),
     props: {
-      query
+      query: ctx.query
     }
   };
 };

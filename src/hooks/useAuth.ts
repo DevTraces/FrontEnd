@@ -2,30 +2,27 @@ import { postEmailAuthKey } from "@/api/auth/email/auth-key";
 import { postSignIn } from "@/api/auth/sign-in";
 import { postSignOut } from "@/api/auth/sign-out";
 import { postSignUp } from "@/api/auth/sign-up";
+import { postWithdrawUser } from "@/api/auth/withdrawal";
 import { postOAuth } from "@/api/oauth/kakao/callback";
 import { postOAuthToken } from "@/api/oauth/token";
+import { patchPassword } from "@/api/users/password";
+import { postPasswordEmail } from "@/api/users/password/email";
+import { patchPasswordReset } from "@/api/users/password/reset";
 import { SignUpUser, signUpUserAtom } from "@/atoms/auth/signUpUser";
-import { APIError } from "@/types/error";
 import currentUser from "@/utils/currentUser";
-import { useToast } from "@chakra-ui/react";
+import { ToastId, useToast } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
-import { useCallback } from "react";
+import { useCallback, useRef } from "react";
 import { useSetRecoilState } from "recoil";
 
 export default function useAuth({ onOAuthKakao = () => {} } = {}) {
   const toast = useToast();
+  const sendAuthKeyToastRef = useRef<ToastId>("");
 
   const setSignUpUser = useSetRecoilState(signUpUserAtom);
 
   const signUpMutation = useMutation({
-    mutationFn: (user: SignUpUser) => postSignUp(user),
-    onError: () => {
-      toast({
-        title: "회원가입에 실패하였습니다",
-        status: "error",
-        duration: 3000
-      });
-    }
+    mutationFn: (user: SignUpUser) => postSignUp(user)
   });
 
   const signInMutation = useMutation({
@@ -33,16 +30,6 @@ export default function useAuth({ onOAuthKakao = () => {} } = {}) {
       postSignIn(email, password),
     onSuccess: ({ nickname }) => {
       currentUser.setNickname(nickname);
-    },
-    onError: (e: APIError) => {
-      toast({
-        title:
-          e.errorCode === "WRONG_EMAIL_OR_PASSWORD"
-            ? "이메일 혹은 비밀번호가 올바르지 않아요"
-            : "로그인에 실패했어요",
-        status: "error",
-        duration: 3000
-      });
     }
   });
 
@@ -50,13 +37,6 @@ export default function useAuth({ onOAuthKakao = () => {} } = {}) {
     mutationFn: postSignOut,
     onSuccess: () => {
       currentUser.removeNickname();
-    },
-    onError: () => {
-      toast({
-        title: "로그아웃에 실패했어요",
-        status: "error",
-        duration: 3000
-      });
     }
   });
 
@@ -65,13 +45,6 @@ export default function useAuth({ onOAuthKakao = () => {} } = {}) {
     onSuccess: ({ nickname }) => {
       currentUser.setNickname(nickname);
       onOAuthKakao();
-    },
-    onError: () => {
-      toast({
-        title: "로그인에 실패했어요",
-        status: "error",
-        duration: 3000
-      });
     }
   });
 
@@ -85,13 +58,71 @@ export default function useAuth({ onOAuthKakao = () => {} } = {}) {
 
   const sendEmailAuthKeyMutation = useMutation({
     mutationFn: ({ email }: { email: string }) => postEmailAuthKey(email),
+    onMutate: () => {
+      sendAuthKeyToastRef.current = toast({
+        title: "인증코드 전송중",
+        status: "info",
+        duration: 10000
+      });
+    },
     onSuccess: (data, { email }) => {
       setSignUpUser(prev => ({ ...prev, email }));
+      toast.update(sendAuthKeyToastRef.current, {
+        title: "인증코드가 전송되었습니다",
+        status: "success",
+        duration: 2000
+      });
+    }
+  });
+
+  const sendEmailAutKeyForResetMutation = useMutation({
+    mutationFn: postPasswordEmail,
+    onMutate: () => {
+      sendAuthKeyToastRef.current = toast({
+        title: "인증코드 전송중",
+        status: "info",
+        duration: 10000
+      });
     },
-    onError: () => {
+    onSuccess: () => {
+      toast.update(sendAuthKeyToastRef.current, {
+        title: "인증코드가 전송되었습니다",
+        status: "success",
+        duration: 2000
+      });
+    }
+  });
+
+  const changePasswordMutation = useMutation({
+    mutationFn: patchPassword,
+    onSuccess: () => {
       toast({
-        title: "인증코드 전송중 오류가 발생했습니다",
-        status: "error",
+        title: "비밀번호가 변경되었어요.",
+        status: "success",
+        duration: 3000
+      });
+    }
+  });
+
+  const resetPasswordMutation = useMutation({
+    mutationFn: patchPasswordReset,
+    onSuccess: ({ isPasswordResetKeyCorrect }) => {
+      if (isPasswordResetKeyCorrect) {
+        toast({
+          title: "비밀번호가 재설정되었어요.",
+          status: "success",
+          duration: 3000
+        });
+      }
+    }
+  });
+
+  const withdrawalMutation = useMutation({
+    mutationFn: postWithdrawUser,
+    onSuccess: () => {
+      toast({
+        title: "회원탈퇴가 완료되었어요",
+        status: "success",
         duration: 3000
       });
     }
@@ -105,6 +136,10 @@ export default function useAuth({ onOAuthKakao = () => {} } = {}) {
       (code: string) => oAuthKakaoSignInMutate(code),
       [oAuthKakaoSignInMutate]
     ),
-    sendEmailAuthKeyMutation
+    sendEmailAuthKeyMutation,
+    sendEmailAutKeyForResetMutation,
+    changePasswordMutation,
+    resetPasswordMutation,
+    withdrawalMutation
   };
 }
