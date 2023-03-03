@@ -6,7 +6,7 @@ import Logo from "@/components/@common/Logo";
 import VALIDATION_RULE from "@/constants/auth/VALIDATION_RULE";
 import useAuth from "@/hooks/useAuth";
 import useCheck from "@/hooks/useCheck";
-import { Center, Divider, Text, useToast } from "@chakra-ui/react";
+import { Center, Divider, Text } from "@chakra-ui/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { FormEventHandler } from "react";
@@ -17,7 +17,6 @@ type FormData = { email: string };
 
 export default function SendEmail() {
   const router = useRouter();
-  const toast = useToast();
   const setResetUser = useSetRecoilState(resetUserAtom);
 
   const {
@@ -26,23 +25,16 @@ export default function SendEmail() {
     formState: { errors, isSubmitting, isValid, isDirty }
   } = useForm<FormData>({ mode: "onChange" });
 
-  const { sendEmailAuthKeyMutation } = useAuth();
+  const { sendEmailAutKeyForResetMutation } = useAuth();
   const { emailDuplicateMutation } = useCheck();
 
   const sendEmailAuthkey = (email: string) => {
-    sendEmailAuthKeyMutation.mutate(
+    sendEmailAutKeyForResetMutation.mutate(
       { email },
       {
         onSuccess: () => {
           setResetUser(prev => ({ ...prev, email }));
           router.push("/accounts/reset/emailAuth");
-        },
-        onError: () => {
-          toast({
-            title: "인증코드 전송에 실패했어요",
-            status: "error",
-            duration: 2000
-          });
         }
       }
     );
@@ -75,7 +67,7 @@ export default function SendEmail() {
           <FormButton
             isLoading={
               isSubmitting ||
-              sendEmailAuthKeyMutation.isLoading ||
+              sendEmailAutKeyForResetMutation.isLoading ||
               emailDuplicateMutation.isLoading
             }
             isDisabled={!isValid || !isDirty}

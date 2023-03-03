@@ -32,8 +32,9 @@ export default function ResetPassword() {
   const resetPassword = (newPassword: string) => {
     resetPasswordMutation.mutate(
       {
-        authKey: resetUser.authKey,
-        afterPassword: newPassword
+        email: resetUser.email,
+        passwordResetKey: resetUser.passwordResetKey,
+        newPassword
       },
       {
         onSuccess: () => {

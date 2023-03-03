@@ -26,7 +26,7 @@ export default function EmailAuth() {
   const [authKey, setAuthKey] = useState("");
   const [isDirty, setIsDirty] = useState(false);
 
-  const { emailAuthKeyCheckMutation } = useCheck();
+  const { emailAuthKeyCheckForResetMutation } = useCheck();
   const { sendEmailAuthKeyMutation } = useAuth();
 
   const isAuthKeyValid = authKey.length === 6 && isDirty;
@@ -50,15 +50,15 @@ export default function EmailAuth() {
   const handleSubmit = () => {
     setIsDirty(false);
     if (isAuthKeyValid)
-      emailAuthKeyCheckMutation.mutate(
+      emailAuthKeyCheckForResetMutation.mutate(
         {
           email: resetUser.email as string,
           authKey
         },
         {
-          onSuccess: ({ correct }) => {
-            if (correct) {
-              setResetUser(prev => ({ ...prev, authKey }));
+          onSuccess: ({ isCorrect, passwordResetKey }) => {
+            if (isCorrect) {
+              setResetUser(prev => ({ ...prev, passwordResetKey }));
               router.push("/accounts/reset/password");
             }
           }
@@ -106,7 +106,7 @@ export default function EmailAuth() {
         </HStack>
 
         <FormButton
-          isLoading={emailAuthKeyCheckMutation.isLoading}
+          isLoading={emailAuthKeyCheckForResetMutation.isLoading}
           isDisabled={!isAuthKeyValid}
           onClick={() => handleSubmit()}
         >
