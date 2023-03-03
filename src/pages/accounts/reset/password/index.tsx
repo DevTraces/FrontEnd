@@ -10,6 +10,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { useRecoilValue } from "recoil";
+import getServerSideProps from "@/lib/getServerSideProps/redirection";
 
 type FormData = {
   newPassword: string;
@@ -96,3 +97,5 @@ export default function ResetPassword() {
     </>
   );
 }
+
+export { getServerSideProps };

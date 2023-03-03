@@ -8,6 +8,7 @@ import { Center } from "@chakra-ui/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
+import getServerSideProps from "@/lib/getServerSideProps/redirection";
 
 type FormData = {
   currentPassword: string;
@@ -102,3 +103,5 @@ export default function EditPassword() {
     </>
   );
 }
+
+export { getServerSideProps };

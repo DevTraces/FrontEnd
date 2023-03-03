@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import { FormEventHandler } from "react";
 import { useForm } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
+import getServerSideProps from "@/lib/getServerSideProps/redirection";
 
 type FormData = { email: string };
 
@@ -79,3 +80,5 @@ export default function SendEmail() {
     </>
   );
 }
+
+export { getServerSideProps };

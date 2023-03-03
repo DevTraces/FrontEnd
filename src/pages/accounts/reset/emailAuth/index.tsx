@@ -17,6 +17,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
+import getServerSideProps from "@/lib/getServerSideProps/redirection";
 
 export default function EmailAuth() {
   const router = useRouter();
@@ -116,3 +117,5 @@ export default function EmailAuth() {
     </>
   );
 }
+
+export { getServerSideProps };
