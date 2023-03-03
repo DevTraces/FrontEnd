@@ -2,8 +2,8 @@ import feedAtom from "@/atoms/feedAtom";
 import getDateFormat from "@/utils/date";
 import {
   Box,
-  Button,
   Divider,
+  Flex,
   HStack,
   Icon,
   IconButton,
@@ -22,7 +22,8 @@ import LikeUsersModal from "../../../FeedCard/components/TextContent/LikeUsersMo
 const MAX_PREVIEW_LENGTH = 100;
 
 export default function NewContent() {
-  const { hashtags, content, createdAt } = useRecoilValue(feedAtom);
+  const { hashtags, content, createdAt, numberOfLike } =
+    useRecoilValue(feedAtom);
 
   const [isMoreLoaded, setIsMoreLoaded] = useState(
     content?.length < MAX_PREVIEW_LENGTH ?? false
@@ -45,7 +46,9 @@ export default function NewContent() {
         />
         <SlideFade in={isOpen}>
           {isOpen && (
-            <Box
+            <Flex
+              direction="column"
+              gap="12px"
               pos="absolute"
               bottom="60px"
               right={{
@@ -63,14 +66,15 @@ export default function NewContent() {
               py="40px"
               rounded="20px"
             >
-              <Button
+              <Text
+                onClick={likeUsersDisclosure.onOpen}
                 fontWeight="bold"
                 textAlign="left"
-                onClick={likeUsersDisclosure.onOpen}
                 cursor="pointer"
               >
-                좋아요를 누른 사람들
-              </Button>
+                좋아요 {numberOfLike}개
+              </Text>
+
               <HStack>
                 {hashtags.map(tag => (
                   <Link href={`/explore/tags/${tag}`} key={tag}>
@@ -98,7 +102,7 @@ export default function NewContent() {
               </Text>
               <Divider my="20px" />
               <ReplyList />
-            </Box>
+            </Flex>
           )}
         </SlideFade>
       </Box>
