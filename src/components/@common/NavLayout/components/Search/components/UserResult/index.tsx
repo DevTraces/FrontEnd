@@ -5,7 +5,7 @@ import useSearch from "@/hooks/useSearch";
 import followsKeys from "@/queryKeys/followsKeys";
 import searchKeys from "@/queryKeys/searchKeys";
 import currentUser from "@/utils/currentUser";
-import { Text } from "@chakra-ui/react";
+import { Divider, Text } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import ResultContainer from "../ResultContainer";
 import UserItem from "./UserItem";
@@ -35,17 +35,29 @@ export default function UserList({ target }: UserListProps) {
     <ResultContainer>
       {userQuery.data ? (
         <>
-          {userQuery.data.map(d => (
-            <UserItem key={d.nickname} userResult={d} />
-          ))}
-
+          {userQuery.data.length === 0 ? (
+            <Text>
+              {searchValue.value === ""
+                ? "검색어를 입력해야해요"
+                : "일치하는 검색 결과가 없어요"}
+            </Text>
+          ) : (
+            userQuery.data.map(d => (
+              <UserItem key={d.nickname} userResult={d} />
+            ))
+          )}
+          <Divider />
           <Text>아래의 유저를 팔로우 해보세요</Text>
           {followSuggestionQuery.data?.map(d => (
             <UserItem key={d.nickname} userResult={d} />
           ))}
         </>
       ) : (
-        <Text>일치하는 검색 결과가 없어요</Text>
+        <Text>
+          {searchValue.value === ""
+            ? "검색어를 입력해야해요"
+            : "일치하는 검색 결과가 없어요"}
+        </Text>
       )}
     </ResultContainer>
   );

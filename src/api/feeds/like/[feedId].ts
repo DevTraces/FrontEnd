@@ -13,7 +13,8 @@ export const getFeedsLikeUsers = ({
     {
       username: string;
       nickname: string;
-      profileImageLink: string;
+      profileImageUrl: string;
+      following: boolean;
     }[]
   >(`/api/feeds/like/${feedId}`, {
     params: { page, pageSize }

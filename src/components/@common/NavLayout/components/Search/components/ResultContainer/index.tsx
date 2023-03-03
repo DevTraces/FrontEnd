@@ -4,7 +4,7 @@ export default function ResultContainer({
   children
 }: React.ComponentProps<typeof VStack>) {
   return (
-    <VStack spacing="12px" alignItems="start">
+    <VStack w="full" spacing="12px" alignItems="start">
       {children}
     </VStack>
   );

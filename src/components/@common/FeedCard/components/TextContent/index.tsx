@@ -41,7 +41,7 @@ export default function TextContent() {
             ))}
           </HStack>
 
-          <Box w="full" wordBreak="keep-all">
+          <Box w="full" wordBreak="keep-all" textAlign="left">
             <Text display="inline">{content.slice(0, MAX_PREVIEW_LENGTH)}</Text>
             <Text
               display="inline"

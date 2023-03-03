@@ -23,8 +23,11 @@ export default function SideBar() {
     switch (key) {
       case "search":
       case "alert":
-        onDrawerToggle();
-        onDrawerOpen();
+        if (isCurrentNav(key)) {
+          onDrawerToggle();
+        } else {
+          onDrawerOpen();
+        }
         break;
       default:
         if (href) router.push(href);
