@@ -1,4 +1,5 @@
 import { deleteFollow, postFollow } from "@/api/follows/[nickname]";
+import feedsKeys from "@/queryKeys/feedsKeys";
 import followsKeys from "@/queryKeys/followsKeys";
 import usersKeys from "@/queryKeys/usersKeys";
 import { useToast } from "@chakra-ui/react";
@@ -13,6 +14,7 @@ export default function useFollow() {
       queryKey: followsKeys.all
     });
     queryClient.invalidateQueries({ queryKey: usersKeys.all });
+    queryClient.invalidateQueries({ queryKey: feedsKeys.all });
   };
 
   const followMutation = useMutation({
