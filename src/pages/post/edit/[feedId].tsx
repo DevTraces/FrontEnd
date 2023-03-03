@@ -12,10 +12,13 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 
 type ServerSideProps = {
-  feedId: string;
+  query: {
+    feedId: string;
+  };
 };
 
-export default function FeedEdit({ feedId }: ServerSideProps) {
+export default function FeedEdit({ query }: ServerSideProps) {
+  const { feedId } = query;
   const router = useRouter();
 
   const feedQuery = useQuery({

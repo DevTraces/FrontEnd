@@ -21,10 +21,11 @@ import { useRouter } from "next/router";
 import getRedirectionServerSideProps from "@/lib/getServerSideProps/redirection";
 
 type ServerSideProps = {
-  tag: string;
+  query: { tag: string };
 };
 
-export default function TagResult({ tag }: ServerSideProps) {
+export default function TagResult({ query }: ServerSideProps) {
+  const { tag } = query;
   const router = useRouter();
   const tagQuery = useQuery({
     queryKey: searchKeys.hashtags(tag),
