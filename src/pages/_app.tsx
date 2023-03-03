@@ -1,10 +1,15 @@
+import useApiError from "@/hooks/useAPIError";
 import {
   ChakraProvider,
   extendTheme,
   Portal,
   Progress
 } from "@chakra-ui/react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  QueryCache,
+  QueryClient,
+  QueryClientProvider
+} from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
@@ -32,16 +37,26 @@ export default function App({ Component, pageProps }: AppProps) {
   const [isRouting, setIsRouting] = useState(false);
   const router = useRouter();
 
+  const { handleError } = useApiError();
+
   const [queryClient] = useState(
     () =>
       new QueryClient({
         defaultOptions: {
           queries: {
-            onError: () => {
-              router.push("/api-error");
+            onError: e => {
+              handleError(e);
+            }
+          },
+          mutations: {
+            onError: e => {
+              handleError(e);
             }
           }
-        }
+        },
+        queryCache: new QueryCache({
+          onError: (e: any) => handleError(e)
+        })
       })
   );
   const initKakao = () => {
