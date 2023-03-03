@@ -9,10 +9,13 @@ import { GetServerSideProps } from "next/types";
 import getRedirectionServerSideProps from "@/lib/getServerSideProps/redirection";
 
 type ServerSideProps = {
-  feedId: string;
+  query: {
+    feedId: string;
+  };
 };
 
-export default function Feed({ feedId }: ServerSideProps) {
+export default function Feed({ query }: ServerSideProps) {
+  const { feedId } = query;
   const feedQuery = useQuery({
     queryKey: feedsKeys.feed(+feedId),
     queryFn: () => getFeed(+feedId)

@@ -26,11 +26,10 @@ const ProfileTab = dynamic(
 );
 
 type ServerSideProps = {
-  nickname: string;
-  selectedTab: ProfileTabName;
+  query: { nickname: string; selectedTab: ProfileTabName };
 };
 
-export default function Profile({ query }: { query: ServerSideProps }) {
+export default function Profile({ query }: ServerSideProps) {
   const { nickname, selectedTab } = query;
 
   const setNavigation = useSetRecoilState(navigationAtom);
