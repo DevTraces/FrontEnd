@@ -4,20 +4,19 @@ type NoticeBase<T extends NoticeTypes> = {
   noticeId: number;
   createdAt: string;
   noticeType: T;
+  senderProfileImageUrl: string;
 };
 
 export type LikeNotice = NoticeBase<"LIKE"> & {
   nickname: string;
   feedId: number;
   feedContent: string;
-  likeProfileImageUrl: string;
   feedFirstImageUrl: string;
 };
 
 export type FollowNotice = NoticeBase<"FOLLOW"> & {
   senderNickname: string;
   isFollowing: boolean;
-  followerProfileImageUrl: string;
 };
 
 export type ReplyNotice = NoticeBase<"REPLY"> & {
@@ -25,7 +24,6 @@ export type ReplyNotice = NoticeBase<"REPLY"> & {
   replyContent: string;
   feedId: number;
   replyId: number;
-  senderProfileImageUrl: string;
   feedFirstImageUrl: string;
 };
 
@@ -37,7 +35,6 @@ export type ReReplyNotice = NoticeBase<"REREPLY"> & {
   feedFirstImageUrl: string;
   reReplyId: number;
   noticeTarget: string;
-  senderProfileImageUrl: string;
 };
 
 export type NoticesCount = { noticeNumber: number };
