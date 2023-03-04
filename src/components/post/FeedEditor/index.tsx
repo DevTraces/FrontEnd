@@ -63,7 +63,12 @@ export default function FeedEditor({
 
   return (
     <Box>
-      <HStack w="full" justifyContent="end" mt="80px">
+      <HStack
+        w="full"
+        justifyContent="end"
+        mt="80px"
+        pr={{ sm: "20px", md: "0" }}
+      >
         <HStack gap="12px">
           <ImageAddButton onImageInput={image => addImage(image)} />
           <Button

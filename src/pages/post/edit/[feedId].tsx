@@ -10,6 +10,7 @@ import getRedirectionServerSideProps from "@/lib/getServerSideProps/redirection"
 
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { Center } from "@chakra-ui/react";
 
 type ServerSideProps = {
   query: {
@@ -43,12 +44,14 @@ export default function FeedEdit({ query }: ServerSideProps) {
       <Head>
         <title>게시물 수정</title>
       </Head>
-      {feedQuery.data && (
-        <FeedEditor
-          onPublish={data => updateFeed(data)}
-          prevFeedData={feedQuery.data}
-        />
-      )}
+      <Center mt={{ sm: "40px", md: "0" }}>
+        {feedQuery.data && (
+          <FeedEditor
+            onPublish={data => updateFeed(data)}
+            prevFeedData={feedQuery.data}
+          />
+        )}
+      </Center>
     </NavLayout>
   );
 }
