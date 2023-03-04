@@ -12,6 +12,22 @@ type ImageAddButtonProps = {
   onImageInput: (image: File) => void;
 };
 
+const ACCEPTABLE_IMAGE_FORMATS = [
+  "gif",
+  "png",
+  "jpg",
+  "jpeg",
+  "bmp",
+  "webp",
+  "GIF",
+  "PNG",
+  "JPG",
+  "JPEG",
+  "BMP",
+  "WebP",
+  "WEBP"
+];
+
 export default function ImageAddButton({ onImageInput }: ImageAddButtonProps) {
   const imageRef = useRef<HTMLInputElement | null>(null);
   const { register, getValues } = useForm<FormData>();
@@ -47,7 +63,7 @@ export default function ImageAddButton({ onImageInput }: ImageAddButtonProps) {
       <Input
         type="file"
         display="none"
-        accept="image/*"
+        accept={ACCEPTABLE_IMAGE_FORMATS.map(ext => `image/${ext}`).join(", ")}
         {...profileImagesRegisterRest}
         ref={e => {
           formImageRef(e);
