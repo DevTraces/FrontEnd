@@ -59,13 +59,26 @@ export default function InputContainer({ ...restProps }: InputContainerProps) {
     search("");
   };
 
+  const getPlaceholder = () => {
+    switch (searchValue.type) {
+      case "username":
+        return "유저의 이름을 입력해주세요";
+      case "nickname":
+        return "닉네임을 입력해주세요";
+      case "tag":
+        return "태그를 입력해주세요";
+      default:
+        return "검색하기";
+    }
+  };
+
   return (
     <InputGroup data-type="navItem" {...restProps}>
       <InputLeftElement pointerEvents="none">{leftMark}</InputLeftElement>
       <Input
         type="text"
         bg="gray.200"
-        placeholder="검색"
+        placeholder={getPlaceholder()}
         value={value}
         focusBorderColor="primary"
         onChange={handleInputChange}
