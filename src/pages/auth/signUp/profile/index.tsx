@@ -1,4 +1,4 @@
-import { SignUpUser, signUpUserAtom } from "@/atoms/auth/signUpUser";
+import { signUpUserAtom } from "@/atoms/auth/signUpUser";
 import FormButton from "@/components/@common/FormButton";
 import AuthTextInput from "@/components/@common/FormInput";
 import FormLayout from "@/components/@common/FormLayout";
@@ -8,7 +8,7 @@ import useAuth from "@/hooks/useAuth";
 import useCheck from "@/hooks/useCheck";
 import useImagePreviews from "@/hooks/useImagePreviews";
 import { FileImage } from "@/types/data/feed";
-import { Button, useToast, VStack, Text, Center, Icon } from "@chakra-ui/react";
+import { Button, Center, Icon, Text, useToast, VStack } from "@chakra-ui/react";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Head from "next/head";
@@ -16,7 +16,7 @@ import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { useRecoilValue } from "recoil";
 
-type FormData = Pick<SignUpUser, "nickname" | "username" | "password">;
+type FormData = { username: string; nickname: string; password: string };
 
 export default function Profile() {
   const router = useRouter();
@@ -39,8 +39,14 @@ export default function Profile() {
 
   const { nicknameDuplicateMutation } = useCheck();
 
-  const signUp = (user: SignUpUser) =>
-    signUpMutation.mutate(user, {
+  const signUp = (data: {
+    email: string;
+    username: string;
+    nickname: string;
+    password: string;
+    profileImage?: File;
+  }) => {
+    signUpMutation.mutate(data, {
       onSuccess: () => {
         router.push("/auth/signIn");
         toast({
@@ -50,6 +56,7 @@ export default function Profile() {
         });
       }
     });
+  };
 
   const nicknameDuplicateCheck = (nickname: string) => {
     nicknameDuplicateMutation.mutate(
@@ -66,11 +73,18 @@ export default function Profile() {
   };
 
   const handleFormSubmit = handleSubmit(formData => {
-    signUp({
-      ...signUpUser,
-      ...formData,
-      profileImage: (images[0] as FileImage).src
-    });
+    if (images.length > 0) {
+      signUp({
+        ...formData,
+        email: signUpUser.email as string,
+        profileImage: (images[0] as FileImage).src
+      });
+    } else {
+      signUp({
+        ...formData,
+        email: signUpUser.email as string
+      });
+    }
   });
 
   return (
