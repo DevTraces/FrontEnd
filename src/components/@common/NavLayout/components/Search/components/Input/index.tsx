@@ -19,9 +19,9 @@ import {
 type InputContainerProps = React.ComponentProps<typeof InputGroup>;
 
 export default function InputContainer({ ...restProps }: InputContainerProps) {
-  const [value, setValue] = useState("");
   const [leftMark, setLeftMark] = useState(" ");
   const { searchValue, changeType, search } = useSearch();
+  const [value, setValue] = useState(searchValue.value);
 
   useEffect(() => {
     if (leftMark !== "@" && searchValue.type === "nickname") setLeftMark("@");
