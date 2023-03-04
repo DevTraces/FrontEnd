@@ -8,7 +8,6 @@ import { postOAuthToken } from "@/api/oauth/token";
 import { patchPassword } from "@/api/users/password";
 import { postPasswordEmail } from "@/api/users/password/email";
 import { patchPasswordReset } from "@/api/users/password/reset";
-import { SignUpUser } from "@/atoms/auth/signUpUser";
 import currentUser from "@/utils/currentUser";
 import { ToastId, useToast } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
@@ -19,7 +18,7 @@ export default function useAuth({ onOAuthKakao = () => {} } = {}) {
   const sendAuthKeyToastRef = useRef<ToastId>("");
 
   const signUpMutation = useMutation({
-    mutationFn: (user: SignUpUser) => postSignUp(user)
+    mutationFn: postSignUp
   });
 
   const signInMutation = useMutation({
