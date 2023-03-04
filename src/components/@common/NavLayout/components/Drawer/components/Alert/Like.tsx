@@ -7,7 +7,7 @@ import SquaredImage from "../SquaredImage";
 
 export default function Like({
   nickname,
-  likeProfileImageUrl,
+  senderProfileImageUrl,
   feedId,
   createdAt,
   feedFirstImageUrl
@@ -16,7 +16,7 @@ export default function Like({
     <Link href={`/post/${feedId}`} style={{ width: "100%" }}>
       <HStack w="full" h="50px" cursor="pointer">
         <ProfileAvatar
-          src={likeProfileImageUrl}
+          src={senderProfileImageUrl}
           size="40px"
           alt="프로필 이미지"
         />

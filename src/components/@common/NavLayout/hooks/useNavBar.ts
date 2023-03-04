@@ -12,7 +12,7 @@ import {
   IconDefinition
 } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useRecoilState } from "recoil";
 
 const NAV_KEYS = ["feed", "search", "alert", "saved", "new", "user"];
@@ -90,6 +90,7 @@ const useNavBar = ({
   const drawerRef = useRef(null);
 
   const navType = useBreakpointValue<NavType>({
+    base: "topbar",
     sm: "topbar",
     md: "sidebar"
   });
@@ -103,6 +104,13 @@ const useNavBar = ({
   );
 
   const [currentNav, setCurrentNav] = useRecoilState(navigationAtom);
+
+  useEffect(() => {
+    setCurrentNav(c => {
+      if (c === "alert" || c === "search") return c;
+      return getKeyFromPath(router.asPath);
+    });
+  }, [router.asPath, setCurrentNav]);
 
   useOutsideClick({
     ref: drawerRef,
@@ -126,8 +134,23 @@ const useNavBar = ({
   };
 
   const isCurrentNav = (key: NavKey) => {
-    if (key !== "search" && key !== "alert") return key === currentNav;
-    return key === currentNav || router.asPath!.includes(key);
+    switch (key) {
+      case "search":
+      case "alert":
+      case "feed":
+      case "new":
+        return key === currentNav;
+      case "saved":
+        return key === currentNav && router.asPath.includes(key);
+      case "user":
+        return (
+          key === currentNav &&
+          router.asPath.includes(key) &&
+          router.asPath.includes(nickname)
+        );
+      default:
+        return false;
+    }
   };
 
   return {

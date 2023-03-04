@@ -39,7 +39,7 @@ export default function Search() {
     if (searchValue.type === "tag") return 2;
     return 0;
   })();
-  const handleTapChange = (i: number) => {
+  const handleTabChange = (i: number) => {
     if (i === 0) changeType("username");
     if (i === 1) changeType("nickname");
     if (i === 2) changeType("tag");
@@ -51,7 +51,7 @@ export default function Search() {
       <Tabs
         index={tabIndex}
         colorScheme="purple"
-        onChange={handleTapChange}
+        onChange={handleTabChange}
         isFitted
         isLazy
       >
