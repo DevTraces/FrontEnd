@@ -4,29 +4,31 @@ import FormInput from "@/components/@common/FormInput";
 import FormLayout from "@/components/@common/FormLayout";
 import Logo from "@/components/@common/Logo";
 import useAuth from "@/hooks/useAuth";
-import { Center, useDisclosure } from "@chakra-ui/react";
+import getServerSideProps from "@/lib/getServerSideProps/redirection";
+import currentUser from "@/utils/currentUser";
+import { Box, Center, Text, useDisclosure } from "@chakra-ui/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useForm } from "react-hook-form";
-import getServerSideProps from "@/lib/getServerSideProps/redirection";
-
-type FormData = {
-  password: string;
-};
+import { ChangeEvent, useEffect, useState } from "react";
 
 export default function Withdrawal() {
   const router = useRouter();
+  const [isValid, setIsValid] = useState(false);
+  const nickname = currentUser.getNickname();
+  const confirmText = `${nickname}을 삭제하겠습니다.`;
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    if (!isClient) {
+      setIsClient(true);
+    }
+  }, [isClient]);
 
   const {
     isOpen: isAlertOpen,
     onOpen: onAlertOpen,
     onClose: onAlertClose
   } = useDisclosure();
-
-  const {
-    register,
-    formState: { errors, isSubmitting, isValid }
-  } = useForm<FormData>({ mode: "onChange" });
 
   const { withdrawalMutation } = useAuth();
   const withdrawal = () => {
@@ -36,6 +38,7 @@ export default function Withdrawal() {
       }
     });
   };
+  if (!isClient) return null;
 
   return (
     <>
@@ -55,24 +58,32 @@ export default function Withdrawal() {
         <Center color="black">
           <Logo type="full" height={50} />
         </Center>
+
+        <Text textAlign="center">
+          삭제를 원하시면 아래와 같이 입력 후 탈퇴를 진행해주세요.
+        </Text>
+        <Box bg="gray.100" w="full" textAlign="center" py="20px" rounded="12px">
+          <Text>{confirmText}</Text>
+        </Box>
         <form
-          style={{ width: "100%" }}
           onSubmit={e => {
             e.preventDefault();
             onAlertOpen();
           }}
+          style={{ width: "100%" }}
         >
           <FormInput
-            type="password"
-            labelText="비밀번호"
-            isInvalid={!!errors.password}
-            placeholder="비밀번호"
-            errorMessage={errors.password?.message}
-            {...register("password", {
-              required: "비밀번호를 입력해주세요"
-            })}
+            placeholder={confirmText}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              setIsValid(confirmText === e.target.value);
+            }}
           />
-          <FormButton isDisabled={!isValid} isLoading={isSubmitting}>
+
+          <FormButton
+            isDisabled={!isValid}
+            isLoading={withdrawalMutation.isLoading}
+            type="submit"
+          >
             회원 탈퇴하기
           </FormButton>
         </form>
