@@ -3,6 +3,8 @@ import FormButton from "@/components/@common/FormButton";
 import FormLayout from "@/components/@common/FormLayout";
 import useAuth from "@/hooks/useAuth";
 import useCheck from "@/hooks/useCheck";
+import useClient from "@/hooks/useClient";
+import getServerSideProps from "@/lib/getServerSideProps/redirection";
 import {
   Center,
   HStack,
@@ -15,15 +17,13 @@ import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRecoilState } from "recoil";
-import getServerSideProps from "@/lib/getServerSideProps/redirection";
 
 export default function EmailAuth() {
   const router = useRouter();
   const [resetUser, setResetUser] = useRecoilState(resetUserAtom);
-
-  const [isClient, setIsClient] = useState(false);
+  const isClient = useClient();
   const [authKey, setAuthKey] = useState("");
   const [isDirty, setIsDirty] = useState(false);
 
@@ -31,10 +31,6 @@ export default function EmailAuth() {
   const { sendEmailAuthKeyMutation } = useAuth();
 
   const isAuthKeyValid = authKey.length === 6 && isDirty;
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
 
   if (!isClient) return null;
 

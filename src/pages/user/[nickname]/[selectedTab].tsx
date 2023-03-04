@@ -10,6 +10,9 @@ import dynamic from "next/dynamic";
 import Head from "next/head";
 import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
+import currentUser from "@/utils/currentUser";
+import { useRouter } from "next/router";
+import useClient from "@/hooks/useClient";
 
 const ProfileInfo = dynamic(
   () => import("@/components/user/[nickname]/ProfileInfo"),
@@ -31,6 +34,12 @@ type ServerSideProps = {
 
 export default function Profile({ query }: ServerSideProps) {
   const { nickname, selectedTab } = query;
+  const router = useRouter();
+  const isMyProfile = nickname === currentUser.getNickname();
+  const isClient = useClient();
+
+  if (isClient && !isMyProfile && selectedTab === "saved")
+    router.push(`/user/${nickname}/posts`);
 
   const setNavigation = useSetRecoilState(navigationAtom);
 

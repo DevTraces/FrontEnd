@@ -1,23 +1,19 @@
 import Logo from "@/components/@common/Logo";
 import AnimatedBubble from "@/components/root/AnimatedBubble";
 import useAuth from "@/hooks/useAuth";
+import useClient from "@/hooks/useClient";
 import currentUser from "@/utils/currentUser";
 import { Box, Button, Center, HStack, Text, useToast } from "@chakra-ui/react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 
 export default function Home() {
   const router = useRouter();
   const { signOutMutation } = useAuth();
   const isValidUser = currentUser.isValidUser();
-  const [isClient, setIsClient] = useState(false);
+  const isClient = useClient();
   const toast = useToast();
-
-  useEffect(() => {
-    setIsClient(true);
-  }, [setIsClient]);
 
   if (!isClient) return null;
 

@@ -43,7 +43,7 @@ export default function TagAutoComplete() {
           ))
         )
       ) : (
-        <Text>검색어를 입력해주세요.</Text>
+        <Text color="gray">검색어를 입력해주세요</Text>
       )}
     </ResultContainer>
   );

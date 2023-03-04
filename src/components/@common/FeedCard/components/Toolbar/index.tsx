@@ -13,6 +13,7 @@ import {
   faLink
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useRouter } from "next/router";
 import { ComponentProps, Dispatch, SetStateAction } from "react";
 import { useRecoilValue } from "recoil";
 
@@ -27,6 +28,7 @@ export default function Toolbar({
   const { liked, feedId, bookMarked, authorNickname } =
     useRecoilValue(feedAtom);
   const toast = useToast();
+  const router = useRouter();
 
   const { bookmarkMutation, unbookmarkMutation } = useBookmark();
   const { likeMutation, unlikeMutation } = useLike();
@@ -42,7 +44,7 @@ export default function Toolbar({
   const handleLikeClick = liked ? unlike : like;
 
   const handleShareClick = () => {
-    navigator.clipboard.writeText(`http://localhost:3000/post/${feedId}`);
+    navigator.clipboard.writeText(`${router.asPath}/post/${feedId}`);
     toast({
       title: "링크가 복사되었어요.",
       status: "success",

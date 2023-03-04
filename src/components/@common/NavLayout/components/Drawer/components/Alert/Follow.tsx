@@ -9,7 +9,7 @@ import getDateFormat from "../../../../../../../utils/date";
 
 export default function Follow({
   senderNickname,
-  followerProfileImageUrl,
+  senderProfileImageUrl,
   isFollowing,
   createdAt
 }: FollowNotice) {
@@ -35,7 +35,7 @@ export default function Follow({
       cursor="pointer"
     >
       <ProfileAvatar
-        src={followerProfileImageUrl}
+        src={senderProfileImageUrl}
         size="40px"
         alt="프로필 이미지"
       />

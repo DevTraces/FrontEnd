@@ -42,14 +42,16 @@ export default function TextContent() {
           </HStack>
 
           <Box w="full" wordBreak="keep-all" textAlign="left">
-            <Text display="inline">{content.slice(0, MAX_PREVIEW_LENGTH)}</Text>
+            <Text display="inline">
+              {content?.slice(0, MAX_PREVIEW_LENGTH)}
+            </Text>
             <Text
               display="inline"
               color={isMoreLoaded ? "inherit" : "gray"}
               onClick={() => setIsMoreLoaded(true)}
               cursor="pointer"
             >
-              {isMoreLoaded ? content.slice(MAX_PREVIEW_LENGTH) : "... 더보기"}
+              {isMoreLoaded ? content?.slice(MAX_PREVIEW_LENGTH) : "... 더보기"}
             </Text>
           </Box>
 
