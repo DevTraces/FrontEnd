@@ -1,7 +1,7 @@
 import { getFollowerList } from "@/api/follows/follower/[nickname]";
 import { getFollowingList } from "@/api/follows/following/[nickname]";
 import followsKeys from "@/queryKeys/followsKeys";
-import { VStack } from "@chakra-ui/react";
+import { Text, VStack } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import FollowItem from "./FollowItem";
 
@@ -22,6 +22,13 @@ export default function FollowList({ nickname, type }: FollowListProps) {
         ? getFollowerList(nickname, 0, 10)
         : getFollowingList(nickname, 0, 10)
   });
+  if (followListQuery.data?.length === 0) {
+    return (
+      <Text>
+        {type === "follower" ? "팔로워가" : "팔로우 하고 있는 사람이"} 없어요
+      </Text>
+    );
+  }
 
   return (
     <VStack>

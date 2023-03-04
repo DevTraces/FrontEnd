@@ -1,6 +1,6 @@
 import { getBookmarkList } from "@/api/bookmark";
 import bookmarkKeys from "@/queryKeys/bookmarkKeys";
-import { AspectRatio, Grid, GridItem } from "@chakra-ui/react";
+import { AspectRatio, Grid, GridItem, Text } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,7 +10,9 @@ export default function Saved() {
     queryKey: bookmarkKeys.bookmarkList,
     queryFn: () => getBookmarkList(0)
   });
-
+  if (bookmarkQuery.data?.length === 0) {
+    return <Text>저장된 게시물이 없어요</Text>;
+  }
   return (
     <Grid w="full" templateColumns="repeat(3, 1fr)" gap="10px">
       {bookmarkQuery.data?.map(({ feedId, imageUrl }) => (
