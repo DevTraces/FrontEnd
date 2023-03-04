@@ -25,6 +25,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import getServerSideProps from "@/lib/getServerSideProps/redirection";
+import useCheck from "@/hooks/useCheck";
 
 type FormData = Pick<ProfileData, "username" | "nickname" | "description">;
 
@@ -38,8 +39,10 @@ export default function Setting() {
     register,
     handleSubmit,
     reset,
+    setError,
+    getValues,
     formState: { errors, isSubmitting, isValid, isDirty }
-  } = useForm<FormData>();
+  } = useForm<FormData>({ mode: "onChange" });
 
   const profileQuery = useQuery({
     queryKey: usersKeys.userProfile(nickname),
@@ -48,6 +51,7 @@ export default function Setting() {
 
   const { images, clearAllImages, imagePreviews, addImage } =
     useImagePreviews();
+  const { nicknameDuplicateMutation } = useCheck();
 
   const {
     updateProfileMutation,
@@ -66,6 +70,7 @@ export default function Setting() {
             duration: 3000
           });
           reset();
+          router.back();
         }
       }
     );
@@ -77,6 +82,19 @@ export default function Setting() {
 
   const deleteProfileImage = () => {
     deleteProfileImageMutation.mutate({ nickname });
+  };
+
+  const checkNicknameDuplicated = (newNickname: string) => {
+    nicknameDuplicateMutation.mutate(
+      { nickname: newNickname },
+      {
+        onSuccess: ({ duplicatedNickname }) => {
+          if (duplicatedNickname) {
+            setError("nickname", { message: "이미 사용중인 닉네임이에요" });
+          }
+        }
+      }
+    );
   };
 
   const handleFormSubmit = handleSubmit(formData => {
@@ -141,7 +159,7 @@ export default function Setting() {
                 }
               />
             </VStack>
-            <form onSubmit={handleFormSubmit}>
+            <form onSubmit={handleFormSubmit} style={{ width: "100%" }}>
               {profileQuery.data && (
                 <VStack spacing="40px">
                   <FormTextInput
@@ -159,13 +177,20 @@ export default function Setting() {
                     errorMessage={errors.nickname?.message}
                     defaultValue={profileQuery.data.nickname}
                     {...register("nickname", VALIDATION_RULE.nickname)}
+                    onBlur={() => {
+                      const newNickname = getValues("nickname");
+                      if (newNickname !== nickname)
+                        checkNicknameDuplicated(newNickname);
+                    }}
                   />
                   <FormTextarea
                     isInvalid={!!errors.description}
                     labelText="자기소개"
-                    helperText="고유하게 사용할 이름이에요."
+                    helperText="나를 소개해주세요."
                     errorMessage={errors.description?.message}
                     defaultValue={profileQuery.data.description}
+                    resize="none"
+                    height="200px"
                     {...register("description", VALIDATION_RULE.description)}
                   />
                 </VStack>

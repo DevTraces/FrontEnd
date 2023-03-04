@@ -1,3 +1,4 @@
+import { signUpUserAtom } from "@/atoms/auth/signUpUser";
 import FormButton from "@/components/@common/FormButton";
 import AuthTextInput from "@/components/@common/FormInput";
 import FormLayout from "@/components/@common/FormLayout";
@@ -11,11 +12,14 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { FormEventHandler } from "react";
 import { useForm } from "react-hook-form";
+import { useSetRecoilState } from "recoil";
 
 type FormData = { email: string };
 
 export default function SignUp() {
   const router = useRouter();
+  const setSignUpUser = useSetRecoilState(signUpUserAtom);
+
   const {
     handleSubmit,
     register,
@@ -31,6 +35,7 @@ export default function SignUp() {
       { email },
       {
         onSuccess: () => {
+          setSignUpUser(prev => ({ ...prev, email }));
           router.push("/auth/signUp/emailAuth");
         }
       }

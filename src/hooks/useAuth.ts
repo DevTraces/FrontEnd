@@ -8,21 +8,17 @@ import { postOAuthToken } from "@/api/oauth/token";
 import { patchPassword } from "@/api/users/password";
 import { postPasswordEmail } from "@/api/users/password/email";
 import { patchPasswordReset } from "@/api/users/password/reset";
-import { SignUpUser, signUpUserAtom } from "@/atoms/auth/signUpUser";
 import currentUser from "@/utils/currentUser";
 import { ToastId, useToast } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { useCallback, useRef } from "react";
-import { useSetRecoilState } from "recoil";
 
 export default function useAuth({ onOAuthKakao = () => {} } = {}) {
   const toast = useToast();
   const sendAuthKeyToastRef = useRef<ToastId>("");
 
-  const setSignUpUser = useSetRecoilState(signUpUserAtom);
-
   const signUpMutation = useMutation({
-    mutationFn: (user: SignUpUser) => postSignUp(user)
+    mutationFn: postSignUp
   });
 
   const signInMutation = useMutation({
@@ -65,8 +61,7 @@ export default function useAuth({ onOAuthKakao = () => {} } = {}) {
         duration: 10000
       });
     },
-    onSuccess: (data, { email }) => {
-      setSignUpUser(prev => ({ ...prev, email }));
+    onSuccess: () => {
       toast.update(sendAuthKeyToastRef.current, {
         title: "인증코드가 전송되었습니다",
         status: "success",

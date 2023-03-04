@@ -1,5 +1,5 @@
-import { Button, Icon, Input } from "@chakra-ui/react";
-import { faImage } from "@fortawesome/free-solid-svg-icons";
+import { Button, Center, Icon, Input } from "@chakra-ui/react";
+import { faImage, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRef } from "react";
 import { useForm } from "react-hook-form";
@@ -8,7 +8,7 @@ type FormData = {
   image: FileList;
 };
 
-type ImageAddButtonProps = {
+type ImageAddBoxProps = {
   onImageInput: (image: File) => void;
 };
 
@@ -28,7 +28,7 @@ const ACCEPTABLE_IMAGE_FORMATS = [
   "WEBP"
 ];
 
-export default function ImageAddButton({ onImageInput }: ImageAddButtonProps) {
+export default function ImageAddBox({ onImageInput }: ImageAddBoxProps) {
   const imageRef = useRef<HTMLInputElement | null>(null);
   const { register, getValues } = useForm<FormData>();
   const { ref: formImageRef, ...profileImagesRegisterRest } = register(
@@ -42,24 +42,32 @@ export default function ImageAddButton({ onImageInput }: ImageAddButtonProps) {
 
   return (
     <form>
-      <Button
-        bg="white"
-        colorScheme="whiteAlpha"
-        color="black"
+      <Center
         onClick={() => {
           imageRef.current?.click();
         }}
-        leftIcon={
-          <Icon
-            as={FontAwesomeIcon}
-            icon={faImage}
-            color="currentcolor"
-            pr={2}
-          />
-        }
+        w="120px"
+        h="120px"
+        fontSize="md"
+        textAlign="center"
+        p="10px"
+        borderRadius="md"
+        flexDirection="column"
+        aria-label="이미지 추가"
+        as={Button}
+        pos="relative"
+        colorScheme="blackAlpha"
       >
-        이미지 추가
-      </Button>
+        <Icon as={FontAwesomeIcon} icon={faImage} boxSize="30px" />
+        <Icon
+          as={FontAwesomeIcon}
+          icon={faPlus}
+          pos="absolute"
+          top="30px"
+          right="30px"
+        />
+      </Center>
+
       <Input
         type="file"
         display="none"

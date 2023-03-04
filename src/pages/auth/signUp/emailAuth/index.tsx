@@ -5,6 +5,8 @@ import useAuth from "@/hooks/useAuth";
 import useCheck from "@/hooks/useCheck";
 import useClient from "@/hooks/useClient";
 import {
+  Box,
+  Button,
   Center,
   HStack,
   Icon,
@@ -74,38 +76,55 @@ export default function EmailAuth() {
             boxSize="60px"
           />
         </Center>
-        <Text textAlign="center" wordBreak="keep-all">
-          {user.email} 주소로 전송된 인증코드를 입력하세요.
-          <Text
-            as="span"
-            display="inline"
-            color="primary"
-            ml="10px"
-            fontWeight="bold"
-            cursor="pointer"
-            onClick={handleResendClick}
-          >
-            코드 재전송
-          </Text>
-        </Text>
-        <HStack>
-          <PinInput otp onChange={handleAutKeyInputChange}>
-            <PinInputField />
-            <PinInputField />
-            <PinInputField />
-            <PinInputField />
-            <PinInputField />
-            <PinInputField />
-          </PinInput>
-        </HStack>
+        {!user.email ? (
+          <>
+            <Text display="inline">이메일 인증을 다시 진행해주세요</Text>
+            <Button
+              onClick={() => {
+                router.push("/auth/signUp");
+              }}
+            >
+              이메일 인증 하기
+            </Button>
+          </>
+        ) : (
+          <>
+            <Box textAlign="center" wordBreak="keep-all">
+              <Text display="inline">
+                {user.email} 주소로 전송된 인증코드를 입력하세요.
+              </Text>
+              <Text
+                as="span"
+                display="inline"
+                color="primary"
+                ml="10px"
+                fontWeight="bold"
+                cursor="pointer"
+                onClick={handleResendClick}
+              >
+                코드 재전송
+              </Text>
+            </Box>
+            <HStack>
+              <PinInput otp onChange={handleAutKeyInputChange}>
+                <PinInputField />
+                <PinInputField />
+                <PinInputField />
+                <PinInputField />
+                <PinInputField />
+                <PinInputField />
+              </PinInput>
+            </HStack>
 
-        <FormButton
-          isLoading={emailAuthKeyCheckMutation.isLoading}
-          isDisabled={!isAuthKeyValid}
-          onClick={() => handleSubmit()}
-        >
-          다음
-        </FormButton>
+            <FormButton
+              isLoading={emailAuthKeyCheckMutation.isLoading}
+              isDisabled={!isAuthKeyValid}
+              onClick={() => handleSubmit()}
+            >
+              다음
+            </FormButton>
+          </>
+        )}
       </FormLayout>
     </>
   );

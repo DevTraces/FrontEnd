@@ -1,13 +1,23 @@
-import { SignUpUser } from "@/atoms/auth/signUpUser";
 import api from "@/api";
 
-export const postSignUp = (signUpUser: SignUpUser) =>
-  api.prod.post<{
+export const postSignUp = (data: {
+  email: string;
+  username: string;
+  nickname: string;
+  password: string;
+  profileImage?: File;
+}) => {
+  const formData = new FormData();
+
+  Object.entries(data).forEach(([key, value]) => formData.append(key, value));
+
+  return api.prod.post<{
     email: string;
     username: string;
     nickname: string;
     profileImageUrl: string;
     description: string;
-  }>("/api/auth/sign-up", signUpUser, {
+  }>("/api/auth/sign-up", data, {
     headers: { "Content-Type": "multipart/form-data" }
   });
+};

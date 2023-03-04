@@ -47,14 +47,9 @@ export default function Tags({ tags, onAddTag, onRemoveTag }: TagsProps) {
       {tags.map(t => (
         <Button
           key={t.id}
+          onClick={() => onRemoveTag(t.id)}
           rightIcon={
-            <Icon
-              as={FontAwesomeIcon}
-              icon={faX}
-              color="gray.400"
-              size="xs"
-              onClick={() => onRemoveTag(t.id)}
-            />
+            <Icon as={FontAwesomeIcon} icon={faX} color="gray.400" size="xs" />
           }
         >
           {t.content}
@@ -75,7 +70,7 @@ export default function Tags({ tags, onAddTag, onRemoveTag }: TagsProps) {
             <Icon as={FontAwesomeIcon} icon={faHashtag} color="gray.400" />
           </InputLeftAddon>
           <Input
-            placeholder="태그 추가"
+            placeholder="태그를 입력 후 엔터"
             border="none"
             focusBorderColor="transparent"
             outline="none"

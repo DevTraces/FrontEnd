@@ -10,6 +10,7 @@ import dynamic from "next/dynamic";
 import Head from "next/head";
 import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
+import { Center } from "@chakra-ui/react";
 import currentUser from "@/utils/currentUser";
 import { useRouter } from "next/router";
 import useClient from "@/hooks/useClient";
@@ -65,10 +66,13 @@ export default function Profile({ query }: ServerSideProps) {
         <title>Arterest | {nickname}님의 프로필</title>
       </Head>
       <NavLayout>
-        {profileQuery.data && (
-          <ProfileInfo profileData={profileQuery.data} p="20px" pt="100px" />
-        )}
-        <ProfileTab nickname={nickname} selectedTab={selectedTab} />
+        <Center flexDirection="column">
+          {profileQuery.data && (
+            <ProfileInfo profileData={profileQuery.data} p="20px" pt="100px" />
+          )}
+
+          <ProfileTab nickname={nickname} selectedTab={selectedTab} />
+        </Center>
       </NavLayout>
     </>
   );
