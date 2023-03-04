@@ -41,7 +41,7 @@ export default function TagResult({ query }: ServerSideProps) {
         <title>ArtBubble | {tag} 검색 결과</title>
       </Head>
       <NavLayout>
-        <Container centerContent mt={{ sm: "15px" }}>
+        <Container centerContent mt="50px">
           <VStack w="full" pt="30px" pb="40px">
             {tagQuery.data && (
               <>

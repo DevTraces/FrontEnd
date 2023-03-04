@@ -90,6 +90,7 @@ const useNavBar = ({
   const drawerRef = useRef(null);
 
   const navType = useBreakpointValue<NavType>({
+    base: "topbar",
     sm: "topbar",
     md: "sidebar"
   });
