@@ -8,7 +8,9 @@ import useAuth from "@/hooks/useAuth";
 import useCheck from "@/hooks/useCheck";
 import useImagePreviews from "@/hooks/useImagePreviews";
 import { FileImage } from "@/types/data/feed";
-import { useToast, VStack } from "@chakra-ui/react";
+import { Button, useToast, VStack, Text, Center, Icon } from "@chakra-ui/react";
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
@@ -78,58 +80,80 @@ export default function Profile() {
       </Head>
 
       <FormLayout>
-        <form onSubmit={handleFormSubmit} style={{ width: "100%" }}>
-          <VStack mb="12px">
-            <ProfileAvatarEdit
-              onImageInput={file => {
-                clearAllImages();
-                addImage(file);
+        {!signUpUser.email ? (
+          <>
+            <Center>
+              <Icon
+                as={FontAwesomeIcon}
+                icon={faPaperPlane}
+                color="primary"
+                boxSize="60px"
+              />
+            </Center>
+            <Text display="inline">이메일 인증을 다시 진행해주세요</Text>
+            <Button
+              onClick={() => {
+                router.push("/auth/signUp");
               }}
-              onImageDelete={() => {
-                clearAllImages();
-              }}
-              previewImg={imagePreviews[0]?.url}
-            />
-            <AuthTextInput
-              isInvalid={!!errors.nickname}
-              type="text"
-              placeholder="닉네임"
-              errorMessage={errors.nickname?.message}
-              leftAddon="@"
-              {...register("nickname", {
-                ...VALIDATION_RULE.nickname,
-                onBlur: e => {
-                  if (!errors.nickname) nicknameDuplicateCheck(e.target.value);
-                }
-              })}
-            />
-            <AuthTextInput
-              isInvalid={!!errors.username}
-              type="text"
-              placeholder="이름"
-              errorMessage={errors.username?.message}
-              {...register("username", VALIDATION_RULE.username)}
-            />
-
-            <AuthTextInput
-              isInvalid={!!errors.password}
-              type="password"
-              placeholder="비밀번호"
-              errorMessage={errors.password?.message}
-              {...register("password", VALIDATION_RULE.password)}
-            />
-            <FormButton
-              isLoading={
-                isSubmitting ||
-                nicknameDuplicateMutation.isLoading ||
-                signUpMutation.isLoading
-              }
-              isDisabled={!isValid || !isDirty}
             >
-              가입 완료
-            </FormButton>
-          </VStack>
-        </form>
+              이메일 인증 하기
+            </Button>
+          </>
+        ) : (
+          <form onSubmit={handleFormSubmit} style={{ width: "100%" }}>
+            <VStack mb="12px">
+              <ProfileAvatarEdit
+                onImageInput={file => {
+                  clearAllImages();
+                  addImage(file);
+                }}
+                onImageDelete={() => {
+                  clearAllImages();
+                }}
+                previewImg={imagePreviews[0]?.url}
+              />
+              <AuthTextInput
+                isInvalid={!!errors.nickname}
+                type="text"
+                placeholder="닉네임"
+                errorMessage={errors.nickname?.message}
+                leftAddon="@"
+                {...register("nickname", {
+                  ...VALIDATION_RULE.nickname,
+                  onBlur: e => {
+                    if (!errors.nickname)
+                      nicknameDuplicateCheck(e.target.value);
+                  }
+                })}
+              />
+              <AuthTextInput
+                isInvalid={!!errors.username}
+                type="text"
+                placeholder="이름"
+                errorMessage={errors.username?.message}
+                {...register("username", VALIDATION_RULE.username)}
+              />
+
+              <AuthTextInput
+                isInvalid={!!errors.password}
+                type="password"
+                placeholder="비밀번호"
+                errorMessage={errors.password?.message}
+                {...register("password", VALIDATION_RULE.password)}
+              />
+              <FormButton
+                isLoading={
+                  isSubmitting ||
+                  nicknameDuplicateMutation.isLoading ||
+                  signUpMutation.isLoading
+                }
+                isDisabled={!isValid || !isDirty}
+              >
+                가입 완료
+              </FormButton>
+            </VStack>
+          </form>
+        )}
       </FormLayout>
     </>
   );
