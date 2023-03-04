@@ -4,12 +4,14 @@ import { EditorImage, FeedData } from "@/types/data/feed";
 import {
   Box,
   Button,
+  Flex,
   HStack,
   Textarea,
   useToast,
   VStack
 } from "@chakra-ui/react";
 import { useState } from "react";
+import ImageAddBox from "./ImageAddBox";
 import ImageAddButton from "./ImageAddButton";
 import ImagePreview from "./ImagePreview";
 import Tags from "./Tags";
@@ -69,25 +71,27 @@ export default function FeedEditor({
         mt="80px"
         pr={{ sm: "20px", md: "0" }}
       >
-        <HStack gap="12px">
-          <ImageAddButton onImageInput={image => addImage(image)} />
-          <Button
-            bg="primary"
-            color="white"
-            colorScheme="purple"
-            onClick={() => handlePublishClick()}
-          >
-            게시하기
-          </Button>
-        </HStack>
+        <ImageAddButton onImageInput={image => addImage(image)} />
+        <Button
+          bg="primary"
+          color="white"
+          colorScheme="purple"
+          onClick={() => handlePublishClick()}
+          isDisabled={imagePreviews.length === 0}
+        >
+          {imagePreviews.length === 0
+            ? "게시하려면 이미지가 필요해요"
+            : "게시하기"}
+        </Button>
       </HStack>
+
       <VStack
         w={{ md: "480px", sm: "100vw", lg: "800px" }}
         spacing="0"
         pt="32px"
       >
         <Textarea
-          placeholder="어떤 것을 공유할까요?"
+          placeholder="아래 작품들에 대해 이야기 해주세요"
           resize="none"
           h="20vh"
           bg="white"
@@ -104,7 +108,13 @@ export default function FeedEditor({
           onRemoveTag={tagId => removeTag(tagId)}
         />
       </VStack>
-      <HStack spacing={5} w="full" mt="20px">
+      <Flex
+        gap="20px"
+        w={{ md: "480px", sm: "100vw", lg: "800px" }}
+        mt="20px"
+        flexWrap="wrap"
+        pl={{ sm: "32px", md: "0" }}
+      >
         {imagePreviews.map(i => (
           <ImagePreview
             key={i.imageId}
@@ -112,7 +122,8 @@ export default function FeedEditor({
             onRemoveClick={() => removeImage(i.imageId)}
           />
         ))}
-      </HStack>
+        <ImageAddBox onImageInput={image => addImage(image)} />
+      </Flex>
     </Box>
   );
 }

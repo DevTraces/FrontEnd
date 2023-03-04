@@ -7,13 +7,17 @@ const useApiError = () => {
   const toast = useToast();
 
   const handleError = useCallback(
-    (error: any) => {
-      const { status } = error.response;
-      const { errorCode } = error.response.data;
+    ({ response }: any) => {
+      if (response?.status >= 500 || !response?.data?.errorCode) {
+        toast({
+          title: "서버에서 알 수 없는 에러가 발생했어요.",
+          status: "error",
+          duration: 3000
+        });
+        return;
+      }
 
-      if (!errorCode || status >= 500) router.push("/api-error");
-
-      switch (errorCode) {
+      switch (response?.data?.errorCode) {
         case "ACCESS_DENIED":
         case "INVALID_TOKEN":
         case "EXPIRED_ACCESS_TOKEN":
@@ -103,7 +107,11 @@ const useApiError = () => {
           break;
 
         default:
-          router.push("/api-error");
+          toast({
+            title: "서버에서 알 수 없는 에러가 발생했어요.",
+            status: "error",
+            duration: 3000
+          });
       }
     },
     [router, toast]

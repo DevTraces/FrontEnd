@@ -1,4 +1,4 @@
-import { Icon, Square } from "@chakra-ui/react";
+import { Icon, IconButton, Square } from "@chakra-ui/react";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
@@ -17,25 +17,29 @@ export default function ImagePreview({
   return (
     <Square
       position="relative"
-      bg="white"
+      bg="gray.900"
       size="120px"
       p={2}
       borderRadius="md"
       {...restProps}
     >
-      <Icon
+      <IconButton
         onClick={onRemoveClick}
-        as={FontAwesomeIcon}
-        icon={faX}
-        color="gray.300"
+        icon={<Icon as={FontAwesomeIcon} icon={faX} />}
         position="absolute"
         top="8px"
         right="8px"
-        size="sm"
+        size="xs"
         zIndex="docked"
         cursor="pointer"
+        aria-label="이미지 삭제"
       />
-      <Image src={imageUrl} fill alt="이미지 미리보기" />
+      <Image
+        src={imageUrl}
+        fill
+        alt="이미지 미리보기"
+        style={{ objectFit: "contain" }}
+      />
     </Square>
   );
 }

@@ -10,7 +10,7 @@ type FeedListProps = {
 export default function FeedList({ feedsData }: FeedListProps) {
   return (
     <Flex direction="column" pt={20} gap={10} m="auto" mb={20}>
-      {feedsData.map(feed => (
+      {feedsData?.map(feed => (
         <RecoilRoot
           key={feed.feedId}
           initializeState={snapshot => {

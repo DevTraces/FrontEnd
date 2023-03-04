@@ -36,9 +36,9 @@ export default function UserList({ target }: UserListProps) {
       {userQuery.data ? (
         <>
           {userQuery.data.length === 0 ? (
-            <Text>
+            <Text color="gray">
               {searchValue.value === ""
-                ? "검색어를 입력해야해요"
+                ? "검색어를 입력해주세요"
                 : "일치하는 검색 결과가 없어요"}
             </Text>
           ) : (
