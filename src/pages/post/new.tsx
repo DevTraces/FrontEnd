@@ -13,7 +13,7 @@ export default function NewPost() {
   const createFeed = (data: EditorPublishData) =>
     createMutation.mutate(data, {
       onSuccess: () => {
-        router.push("/feed");
+        router.back();
       }
     });
 
