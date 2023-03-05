@@ -26,25 +26,29 @@ export default function Carousel({ boxSize }: CarouselProps) {
 
   return (
     <Box bg="white" position="relative" overflow="hidden">
-      <Flex
-        w={`${boxSize * imageUrls.length}px`}
-        h={`${boxSize}px`}
-        bg="gray.900"
-      >
+      <Flex w={`${boxSize * imageUrls.length}px`} h={`${boxSize}px`}>
         {imageUrls.map((img, i) => (
-          <Box key={img} position="relative" boxSize={`${boxSize}px`}>
-            <Image
-              src={img}
-              alt="포스트 이미지"
-              fill
-              sizes="100%"
-              priority={i === current}
-              style={{
-                transform: `translateX(-${current * boxSize}px)`,
-                transition: "0.5s ease-in-out",
-                objectFit: "contain"
-              }}
-            />
+          <Box boxSize={`${boxSize}px`} bgImage={img}>
+            <Box
+              key={img}
+              position="relative"
+              boxSize={`${boxSize}px`}
+              backdropFilter="auto"
+              backdropBlur="25px"
+            >
+              <Image
+                src={img}
+                alt="포스트 이미지"
+                fill
+                sizes="100%"
+                priority={i === current}
+                style={{
+                  transform: `translateX(-${current * boxSize}px)`,
+                  transition: "0.5s ease-in-out",
+                  objectFit: "contain"
+                }}
+              />
+            </Box>
           </Box>
         ))}
       </Flex>
