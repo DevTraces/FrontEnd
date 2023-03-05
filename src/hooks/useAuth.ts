@@ -16,6 +16,7 @@ import { useCallback, useRef } from "react";
 export default function useAuth({ onOAuthKakao = () => {} } = {}) {
   const toast = useToast();
   const sendAuthKeyToastRef = useRef<ToastId>("");
+  const { removeNickname } = currentUser;
 
   const signUpMutation = useMutation({
     mutationFn: postSignUp
@@ -115,6 +116,7 @@ export default function useAuth({ onOAuthKakao = () => {} } = {}) {
   const withdrawalMutation = useMutation({
     mutationFn: postWithdrawUser,
     onSuccess: () => {
+      removeNickname();
       toast({
         title: "회원탈퇴가 완료되었어요",
         status: "success",
