@@ -29,17 +29,17 @@ export default forwardRef<HTMLDivElement, DrawerProps>(
       <Box
         zIndex="popover"
         position="fixed"
-        left={{ sm: "0", md: "100px" }}
-        top={{ sm: "80px", md: 0 }}
+        left={{ base: "0", md: "100px" }}
+        top={{ base: "80px", md: 0 }}
         p="40px"
-        w={{ sm: "full", md: "400px" }}
+        w={{ base: "full", md: "400px" }}
         bg="white"
-        h={{ sm: "auto", md: "100vh" }}
+        h={{ base: "auto", md: "100vh" }}
         ref={ref}
         {...restProps}
       >
         <Text
-          display={{ sm: "none", md: "block" }}
+          display={{ base: "none", md: "block" }}
           fontSize="2xl"
           fontWeight="bold"
           mb="24px"

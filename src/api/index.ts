@@ -15,7 +15,12 @@ export const refresh = async () => {
   const res = await axios.post(`${API_ENDPOINT}/api/tokens/reissue`, null, {
     withCredentials: true
   });
-  currentUser.setNickname(res.data.data.nickname);
+
+  if (res.data.data.nickname) {
+    currentUser.setNickname(res.data.data.nickname, {
+      maxAge: 60 * 60 * 24 * 29
+    });
+  }
 
   return res;
 };

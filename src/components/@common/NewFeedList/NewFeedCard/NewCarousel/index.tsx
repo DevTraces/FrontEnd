@@ -90,7 +90,7 @@ export default function NewCarousel() {
         <Box
           key={url}
           w="full"
-          h={{ sm: "calc(100vh - 140px)", md: "100vh" }}
+          h={{ base: "calc(100vh - 140px)", md: "100vh" }}
           bgImage={url}
           bgSize="200%"
           bgPos="center"
@@ -100,7 +100,7 @@ export default function NewCarousel() {
           <Box
             w="full"
             h="full"
-            pt={{ sm: "30%", md: "25%", lg: "20%" }}
+            pt={{ base: "30%", md: "25%", lg: "20%" }}
             backdropFilter="auto"
             backdropBlur="25px"
           >

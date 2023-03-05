@@ -31,12 +31,12 @@ export default function NavLayout({
         w="full"
         pos="absolute"
         pl={{
-          sm: 0,
+          base: 0,
           md: "100px",
           xl: "250px"
         }}
         mb={{
-          sm: "80px",
+          base: "80px",
           md: 0,
           xl: 0
         }}

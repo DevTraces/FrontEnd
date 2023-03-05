@@ -11,18 +11,18 @@ export default function UserItem({
   userResult: { nickname, username, profileImageUrl }
 }: UserItemProps) {
   return (
-    <HStack
-      w="100%"
-      rounded="8px"
-      p="8px"
-      _hover={{
-        background: "gray.100"
-      }}
-      overflow="hidden"
-    >
-      <ProfileAvatar size="40px" alt="프로필 이미지" src={profileImageUrl} />
+    <Link href={`/user/${nickname}/posts`} style={{ width: "100%" }}>
+      <HStack
+        w="full"
+        rounded="8px"
+        p="8px"
+        _hover={{
+          background: "gray.100"
+        }}
+        overflow="hidden"
+      >
+        <ProfileAvatar size="40px" alt="프로필 이미지" src={profileImageUrl} />
 
-      <Link href={`/user/${nickname}/posts`}>
         <VStack spacing="0" alignItems="start">
           <Text fontWeight="bold" noOfLines={1}>
             {nickname}
@@ -31,7 +31,7 @@ export default function UserItem({
             {username}
           </Text>
         </VStack>
-      </Link>
-    </HStack>
+      </HStack>
+    </Link>
   );
 }

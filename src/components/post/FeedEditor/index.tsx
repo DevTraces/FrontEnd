@@ -69,7 +69,7 @@ export default function FeedEditor({
         w="full"
         justifyContent="end"
         mt="80px"
-        pr={{ sm: "20px", md: "0" }}
+        pr={{ base: "20px", md: "0" }}
       >
         <ImageAddButton onImageInput={image => addImage(image)} />
         <Button
@@ -86,7 +86,7 @@ export default function FeedEditor({
       </HStack>
 
       <VStack
-        w={{ md: "480px", sm: "100vw", lg: "800px" }}
+        w={{ md: "480px", base: "100vw", lg: "800px" }}
         spacing="0"
         pt="32px"
       >
@@ -110,10 +110,10 @@ export default function FeedEditor({
       </VStack>
       <Flex
         gap="20px"
-        w={{ md: "480px", sm: "100vw", lg: "800px" }}
+        w={{ md: "480px", base: "100vw", lg: "800px" }}
         mt="20px"
         flexWrap="wrap"
-        pl={{ sm: "32px", md: "0" }}
+        pl={{ base: "32px", md: "0" }}
       >
         {imagePreviews.map(i => (
           <ImagePreview

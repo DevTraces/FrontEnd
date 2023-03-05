@@ -18,14 +18,14 @@ export default function useSearch() {
 
     setSearchValue(prev => ({
       ...prev,
-      isTyping: keyword !== ""
+      isTyping: keyword.trim() !== ""
     }));
 
     timeoutIdRef.current = setTimeout(() => {
       setSearchValue(prev => ({
         ...prev,
         isTyping: false,
-        value: keyword
+        value: keyword.trim()
       }));
     }, SEARCH_DEBOUNCE_TIME);
   };

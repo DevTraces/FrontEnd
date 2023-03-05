@@ -26,7 +26,9 @@ export default function useAuth({ onOAuthKakao = () => {} } = {}) {
     mutationFn: ({ email, password }: { email: string; password: string }) =>
       postSignIn(email, password),
     onSuccess: ({ nickname }) => {
-      currentUser.setNickname(nickname);
+      currentUser.setNickname(nickname, {
+        maxAge: 60 * 60 * 24 * 29
+      });
     }
   });
 
@@ -40,7 +42,9 @@ export default function useAuth({ onOAuthKakao = () => {} } = {}) {
   const oAuthSignInMutation = useMutation({
     mutationFn: (oAuthToken: string) => postOAuth(oAuthToken),
     onSuccess: ({ nickname }) => {
-      currentUser.setNickname(nickname);
+      currentUser.setNickname(nickname, {
+        maxAge: 60 * 60 * 24 * 29
+      });
       onOAuthKakao();
     }
   });
