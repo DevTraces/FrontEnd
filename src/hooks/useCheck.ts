@@ -20,8 +20,8 @@ export default function useCheck() {
   const emailAuthKeyCheckMutation = useMutation({
     mutationFn: ({ email, authKey }: { email: string; authKey: string }) =>
       postEmailAuthKeyCheck(email, authKey),
-    onSuccess: ({ correct }) => {
-      if (!correct) {
+    onSuccess: ({ isCorrect }) => {
+      if (!isCorrect) {
         toast({
           title: "인증코드가 올바르지 않아요.",
           status: "warning",

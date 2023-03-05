@@ -7,6 +7,7 @@ export interface SignUpUser {
   nickname: string | null;
   profileImage: File | null;
   description: string | null;
+  signUpKey: string | null;
 }
 
 const sessionStorageEffect =
@@ -35,7 +36,8 @@ export const signUpUserAtom = atom<SignUpUser>({
     username: null,
     nickname: null,
     profileImage: null,
-    description: null
+    description: null,
+    signUpKey: null
   },
   effects: [sessionStorageEffect("signUpUser")]
 });

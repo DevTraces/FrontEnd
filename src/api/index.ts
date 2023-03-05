@@ -38,15 +38,12 @@ const axiosInstance = (baseURL: string = ""): CustomInstance => {
       return res.data;
     },
     async err => {
-      const {
-        config,
-        response: { status }
-      } = err;
-      if (status !== 401 || config.sent) throw err;
+      const { config, response } = err;
+      if (response?.status !== 401 || config.sent) throw err;
 
       config.sent = true;
 
-      if (status === 401) {
+      if (response?.status === 401) {
         try {
           await refresh();
           return await axios(config);
