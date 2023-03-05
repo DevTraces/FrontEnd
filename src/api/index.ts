@@ -29,7 +29,7 @@ const axiosInstance = (baseURL: string = ""): CustomInstance => {
     withCredentials: true,
     transformResponse: res => {
       const json = JSON.parse(res);
-      return json.data;
+      return json.data ? json.data : json;
     }
   });
 
