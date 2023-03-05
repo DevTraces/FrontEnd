@@ -29,7 +29,7 @@ export default function TopBar() {
       {isDrawerOpen && (
         <Drawer
           display={{
-            sm: "block",
+            base: "block",
             md: "none"
           }}
           ref={drawerRef}
@@ -48,7 +48,7 @@ export default function TopBar() {
         py={8}
         px={4}
         display={{
-          sm: "flex",
+          base: "flex",
           md: "none"
         }}
       >

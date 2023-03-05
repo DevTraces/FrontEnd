@@ -121,7 +121,7 @@ export default function Setting() {
         <title>ArtBubble | Setting</title>
       </Head>
       <NavLayout>
-        <Container pt={{ sm: "40px", md: "none" }}>
+        <Container pt={{ base: "40px", md: "none" }}>
           <VStack padding={10} w="full">
             <Flex justifyContent="end" w="full">
               <Button

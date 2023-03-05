@@ -39,7 +39,7 @@ export default function SideBar() {
       {isDrawerOpen && (
         <Drawer
           display={{
-            sm: "none",
+            base: "none",
             md: "block"
           }}
           ref={drawerRef}
@@ -52,7 +52,7 @@ export default function SideBar() {
         top={0}
         left={0}
         display={{
-          sm: "none",
+          base: "none",
           md: "block"
         }}
         w={{
@@ -98,7 +98,7 @@ export default function SideBar() {
               {!isDrawerOpen && (
                 <Text
                   display={{
-                    sm: "none",
+                    base: "none",
                     xl: "block"
                   }}
                 >

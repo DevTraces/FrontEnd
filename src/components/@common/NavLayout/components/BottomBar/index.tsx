@@ -28,7 +28,7 @@ export default function BottomBar() {
       left={0}
       py={8}
       display={{
-        sm: "flex",
+        base: "flex",
         md: "none"
       }}
     >

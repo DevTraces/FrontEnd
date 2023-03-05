@@ -91,7 +91,6 @@ const useNavBar = ({
 
   const navType = useBreakpointValue<NavType>({
     base: "topbar",
-    sm: "topbar",
     md: "sidebar"
   });
 

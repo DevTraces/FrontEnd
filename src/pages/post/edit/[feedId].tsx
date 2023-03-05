@@ -44,7 +44,7 @@ export default function FeedEdit({ query }: ServerSideProps) {
       <Head>
         <title>게시물 수정</title>
       </Head>
-      <Center mt={{ sm: "40px", md: "0" }}>
+      <Center mt={{ base: "40px", md: "0" }}>
         {feedQuery.data && (
           <FeedEditor
             onPublish={data => updateFeed(data)}

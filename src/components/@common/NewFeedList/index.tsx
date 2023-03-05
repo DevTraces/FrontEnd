@@ -13,10 +13,10 @@ export default function NewFeedList({ feedsData }: FeedListProps) {
     <Flex
       direction="column"
       w="full"
-      mt={{ sm: "80px", md: "0" }}
-      h={{ sm: "calc(100vh - 140px)", md: "100vh" }}
+      mt={{ base: "80px", md: "0" }}
+      h={{ base: "calc(100vh - 140px)", md: "100vh" }}
     >
-      {feedsData.map(feed => (
+      {feedsData?.map(feed => (
         <RecoilRoot
           key={feed.feedId}
           initializeState={snapshot => {
