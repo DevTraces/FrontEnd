@@ -4,8 +4,10 @@ import FormTextarea from "@/components/@common/FormTextarea";
 import NavLayout from "@/components/@common/NavLayout";
 import ProfileAvatarEdit from "@/components/@common/ProfileAvatarEdit";
 import VALIDATION_RULE from "@/constants/auth/VALIDATION_RULE";
+import useCheck from "@/hooks/useCheck";
 import useImagePreviews from "@/hooks/useImagePreviews";
 import useProfile from "@/hooks/useProfile";
+import getServerSideProps from "@/lib/getServerSideProps/redirection";
 import usersKeys from "@/queryKeys/usersKeys";
 import { FileImage } from "@/types/data/feed";
 import { ProfileData, ProfilePatchData } from "@/types/data/user";
@@ -24,8 +26,6 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import getServerSideProps from "@/lib/getServerSideProps/redirection";
-import useCheck from "@/hooks/useCheck";
 
 type FormData = Pick<ProfileData, "username" | "nickname" | "description">;
 
@@ -38,7 +38,6 @@ export default function Setting() {
   const {
     register,
     handleSubmit,
-    reset,
     setError,
     getValues,
     formState: { errors, isSubmitting, isValid, isDirty }
@@ -59,29 +58,48 @@ export default function Setting() {
     deleteProfileImageMutation
   } = useProfile();
 
-  const updateProfile = (data: Partial<ProfilePatchData>) => {
-    updateProfileMutation.mutate(
-      { nickname, data },
+  const updateProfileImage = (profileImage: File, newNickname: string) => {
+    updateProfileImageMutation.mutate(
+      { nickname: newNickname, profileImage },
       {
         onSuccess: () => {
-          toast({
-            title: "프로필 정보가 수정되었어요",
-            status: "success",
-            duration: 3000
-          });
-          reset();
-          router.back();
+          router.push(`/user/${newNickname}/posts`);
         }
       }
     );
   };
 
-  const updateProfileImage = (profileImage: File) => {
-    updateProfileImageMutation.mutate({ nickname, profileImage });
+  const deleteProfileImage = (newNickname: string) => {
+    deleteProfileImageMutation.mutate(
+      { nickname: newNickname },
+      {
+        onSuccess: () => {
+          router.push(`/user/${newNickname}/posts`);
+        }
+      }
+    );
   };
 
-  const deleteProfileImage = () => {
-    deleteProfileImageMutation.mutate({ nickname });
+  const updateProfile = (data: Partial<ProfilePatchData>) => {
+    updateProfileMutation.mutate(
+      { nickname, data },
+      {
+        onSuccess: ({ nickname: newNickname }) => {
+          toast({
+            title: "프로필 정보가 수정되었어요",
+            status: "success",
+            duration: 3000
+          });
+          if (imagePreviews.length > 0) {
+            updateProfileImage((images[0] as FileImage).src, newNickname);
+          } else if (isDeleted) {
+            deleteProfileImage(newNickname);
+          } else {
+            router.push(`/user/${newNickname}/posts`);
+          }
+        }
+      }
+    );
   };
 
   const checkNicknameDuplicated = (newNickname: string) => {
@@ -108,11 +126,6 @@ export default function Setting() {
     );
 
     updateProfile(data);
-    if (imagePreviews.length > 0) {
-      updateProfileImage((images[0] as FileImage).src);
-    } else if (isDeleted) {
-      deleteProfileImage();
-    }
   });
 
   return (

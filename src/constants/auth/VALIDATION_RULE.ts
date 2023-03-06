@@ -25,8 +25,8 @@ const VALIDATION_RULE: { [key in PossibleKeys]: RegisterOptions } = {
   nickname: {
     required: "닉네임이 필요해요",
     pattern: {
-      value: /^[a-zA-Z][a-zA-Z0-9.]{1,30}$/,
-      message: "30자 이하의 영어, 숫자, 점(.)만 가능해요"
+      value: /^[a-zA-Z0-9._]{1,30}$/,
+      message: "30자 이하의 영어 숫자 . _ 만 가능해요"
     }
   },
   username: {
