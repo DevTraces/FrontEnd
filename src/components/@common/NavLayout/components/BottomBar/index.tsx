@@ -38,6 +38,7 @@ export default function BottomBar() {
           as={FontAwesomeIcon}
           icon={icon}
           boxSize={6}
+          cursor="pointer"
           color={isCurrentNav(key) ? "primary" : "black"}
           onClick={() => handleNavClick(key, href)}
         />
