@@ -34,7 +34,7 @@ export default function TextContent() {
         <Flex direction="column" alignItems="flex-start" w="full" gap="8px">
           <Text fontWeight="bold">{authorNickname}</Text>
           <HStack>
-            {hashtags.map(tag => (
+            {hashtags?.map(tag => (
               <Link href={`/explore/tags/${tag}`} key={tag}>
                 <Text color="blue.700">#{tag}</Text>
               </Link>
