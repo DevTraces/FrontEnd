@@ -35,10 +35,7 @@ export default function ProfileInfo({
       alignItems="flex-start"
       w={{
         base: 300,
-        sm: 400,
-        md: 500,
-        lg: 600,
-        xl: 700
+        sm: 400
       }}
     >
       <HStack gap="20px" w="full">
@@ -87,17 +84,7 @@ export default function ProfileInfo({
           <Text fontSize="md">{description}</Text>
         </Box>
       </HStack>
-      <HStack
-        justifyContent="space-between"
-        w={{
-          base: 300,
-          sm: 400,
-          md: 500,
-          lg: 600,
-          xl: 700
-        }}
-        p="10px"
-      >
+      <HStack justifyContent="space-between" w="full" p="10px">
         {[
           ["게시물", "posts", totalFeedNumber],
           ["팔로잉", "following", followingNumber],
