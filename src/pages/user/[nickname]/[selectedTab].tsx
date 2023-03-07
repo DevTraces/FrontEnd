@@ -50,7 +50,7 @@ export default function Profile({ query }: ServerSideProps) {
         <title>{nickname}님의 프로필</title>
       </Head>
       <NavLayout>
-        <Center flexDirection="column">
+        <Center flexDirection="column" mt={{ base: 0, md: "120px" }} gap="32px">
           {profileQuery.data && <ProfileInfo profileData={profileQuery.data} />}
 
           <ProfileTab nickname={nickname} selectedTab={selectedTab} />
