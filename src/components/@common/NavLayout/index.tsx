@@ -27,13 +27,18 @@ export default function NavLayout({
       <Box
         w="full"
         pos="absolute"
+        pt={{
+          base: "100px",
+          md: 0,
+          xl: 0
+        }}
         pl={{
           base: 0,
           md: "100px",
           xl: "250px"
         }}
-        mb={{
-          base: "80px",
+        pb={{
+          base: "100px",
           md: 0,
           xl: 0
         }}
