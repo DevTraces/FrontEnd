@@ -43,7 +43,7 @@ export default function Withdrawal() {
   return (
     <>
       <Head>
-        <title>ArtBubble | Withdrawal</title>
+        <title>회원탈퇴</title>
       </Head>
       <DeleteConfirmDialog
         title="계정"

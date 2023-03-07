@@ -47,7 +47,7 @@ export default function SendEmail() {
   return (
     <>
       <Head>
-        <title>ArtBubble | 비밀번호 재설정</title>
+        <title>비밀번호 재설정</title>
       </Head>
       <FormLayout>
         <Center>

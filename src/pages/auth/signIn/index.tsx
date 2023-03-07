@@ -34,7 +34,7 @@ export default function SignIn() {
   return (
     <>
       <Head>
-        <title>ArtBubble | Sign In</title>
+        <title>로그인</title>
       </Head>
       <FormLayout>
         <Center color="black">

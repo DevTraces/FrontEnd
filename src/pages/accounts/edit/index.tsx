@@ -140,7 +140,7 @@ export default function Setting() {
   return (
     <>
       <Head>
-        <title>ArtBubble | Setting</title>
+        <title>설정</title>
       </Head>
       <NavLayout>
         <Container pt={{ base: "40px", md: "none" }}>

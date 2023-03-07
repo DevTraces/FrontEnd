@@ -38,7 +38,7 @@ export default function TagResult({ query }: ServerSideProps) {
   return (
     <>
       <Head>
-        <title>ArtBubble | {tag} 검색 결과</title>
+        <title>{tag} 검색 결과</title>
       </Head>
       <NavLayout>
         <Container centerContent mt="50px">

@@ -47,7 +47,7 @@ export default function Profile({ query }: ServerSideProps) {
   return (
     <>
       <Head>
-        <title>Arterest | {nickname}님의 프로필</title>
+        <title>{nickname}님의 프로필</title>
       </Head>
       <NavLayout>
         <Center flexDirection="column">
