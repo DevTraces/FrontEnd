@@ -10,7 +10,7 @@ export type FeedData = {
   liked: boolean;
   bookMarked: boolean;
   modifiedAt: Date;
-  numberOfReply?: number;
+  numberOfReply: number;
 };
 
 export type PostCardData = Omit<FeedData, "numberOfReply" | "modifiedAt">;
