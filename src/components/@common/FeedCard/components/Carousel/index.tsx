@@ -28,7 +28,7 @@ export default function Carousel({ boxSize }: CarouselProps) {
     <Box bg="white" position="relative" overflow="hidden">
       <Flex w={`${boxSize * imageUrls.length}px`} h={`${boxSize}px`}>
         {imageUrls.map((img, i) => (
-          <Box boxSize={`${boxSize}px`} bgImage={img}>
+          <Box key={img} boxSize={`${boxSize}px`} bgImage={img}>
             <Box
               key={img}
               position="relative"
