@@ -15,7 +15,12 @@ export const refresh = async () => {
   const res = await axios.post(`${API_ENDPOINT}/api/tokens/reissue`, null, {
     withCredentials: true
   });
-  currentUser.setNickname(res.data.data.nickname);
+
+  if (res.data.data.nickname) {
+    currentUser.setNickname(res.data.data.nickname, {
+      maxAge: 60 * 60 * 24 * 29
+    });
+  }
 
   return res;
 };
@@ -29,7 +34,7 @@ const axiosInstance = (baseURL: string = ""): CustomInstance => {
     withCredentials: true,
     transformResponse: res => {
       const json = JSON.parse(res);
-      return json.data;
+      return json.data ? json.data : json;
     }
   });
 
@@ -38,15 +43,12 @@ const axiosInstance = (baseURL: string = ""): CustomInstance => {
       return res.data;
     },
     async err => {
-      const {
-        config,
-        response: { status }
-      } = err;
-      if (status !== 401 || config.sent) throw err;
+      const { config, response } = err;
+      if (response?.status !== 401 || config.sent) throw err;
 
       config.sent = true;
 
-      if (status === 401) {
+      if (response?.status === 401) {
         try {
           await refresh();
           return await axios(config);

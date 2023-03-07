@@ -45,6 +45,7 @@ export default function Profile() {
     nickname: string;
     password: string;
     profileImage?: File;
+    signUpKey: string;
   }) => {
     signUpMutation.mutate(data, {
       onSuccess: () => {
@@ -77,12 +78,14 @@ export default function Profile() {
       signUp({
         ...formData,
         email: signUpUser.email as string,
-        profileImage: (images[0] as FileImage).src
+        profileImage: (images[0] as FileImage).src,
+        signUpKey: signUpUser.signUpKey as string
       });
     } else {
       signUp({
         ...formData,
-        email: signUpUser.email as string
+        email: signUpUser.email as string,
+        signUpKey: signUpUser.signUpKey as string
       });
     }
   });
@@ -94,7 +97,7 @@ export default function Profile() {
       </Head>
 
       <FormLayout>
-        {!signUpUser.email ? (
+        {!signUpUser.email || !signUpUser.signUpKey ? (
           <>
             <Center>
               <Icon

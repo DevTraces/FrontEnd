@@ -19,7 +19,14 @@ export default function FollowItem({
     toggleMutation(isFollowing).mutate({ nickname });
 
   return (
-    <Flex maxW="400px" gap="20px">
+    <Flex
+      gap="20px"
+      alignItems="center"
+      _hover={{
+        backgroundColor: "gray.200",
+        borderRadius: "10px"
+      }}
+    >
       <Flex
         onClick={() => {
           router.push(`/user/${nickname}/posts`);
@@ -41,12 +48,12 @@ export default function FollowItem({
       <Button
         fontSize="sm"
         display={isMyProfile ? "none" : "block"}
-        variant={following ? "outline" : "solid"}
-        colorScheme={following ? "red" : "blue"}
+        colorScheme={following ? "green" : "blue"}
         fontWeight="bold"
         onClick={() => toggleFollow(following)}
+        p="10px"
       >
-        {following ? "언팔로우" : "팔로우"}
+        {following ? "팔로잉" : "팔로우"}
       </Button>
     </Flex>
   );

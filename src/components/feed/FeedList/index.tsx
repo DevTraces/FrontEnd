@@ -6,10 +6,17 @@ import { RecoilRoot } from "recoil";
 
 type FeedListProps = {
   feedsData: FeedData[];
-};
-export default function FeedList({ feedsData }: FeedListProps) {
+} & React.ComponentProps<typeof Flex>;
+
+export default function FeedList({ feedsData, ...restProps }: FeedListProps) {
   return (
-    <Flex direction="column" pt={20} gap={10} m="auto" mb={20}>
+    <Flex
+      direction="column"
+      gap="20px"
+      alignItems="center"
+      {...restProps}
+      w="full"
+    >
       {feedsData?.map(feed => (
         <RecoilRoot
           key={feed.feedId}

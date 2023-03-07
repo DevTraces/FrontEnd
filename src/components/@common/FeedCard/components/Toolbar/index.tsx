@@ -53,13 +53,7 @@ export default function Toolbar({
   };
 
   return (
-    <Flex
-      gap={4}
-      justifyContent="space-between"
-      w="full"
-      py="12px"
-      {...restProps}
-    >
+    <Flex justifyContent="space-between" w="full" py="12px" {...restProps}>
       <Button
         variant="ghost"
         colorScheme="none"
@@ -67,10 +61,16 @@ export default function Toolbar({
           <Icon
             as={FontAwesomeIcon}
             icon={liked ? faHeartFilled : faHeartBlank}
-            color={liked ? "red" : "black"}
-            boxSize={6}
+            color={liked ? "red.400" : "gray"}
+            boxSize={{
+              base: "16px",
+              sm: "20px",
+              md: "24px"
+            }}
           />
         }
+        color="gray.800"
+        fontSize={{ base: "sm", md: "md" }}
         onClick={handleLikeClick}
       >
         좋아요
@@ -78,7 +78,20 @@ export default function Toolbar({
       <Button
         variant="ghost"
         colorScheme="none"
-        leftIcon={<Icon as={FontAwesomeIcon} icon={faComment} boxSize={6} />}
+        leftIcon={
+          <Icon
+            as={FontAwesomeIcon}
+            icon={faComment}
+            boxSize={{
+              base: "16px",
+              sm: "20px",
+              md: "24px"
+            }}
+            color="gray"
+          />
+        }
+        color="gray.800"
+        fontSize={{ base: "sm", md: "md" }}
         onClick={() => setIsReplyOpen(o => !o)}
       >
         댓글
@@ -86,8 +99,21 @@ export default function Toolbar({
       <Button
         variant="ghost"
         colorScheme="none"
-        leftIcon={<Icon as={FontAwesomeIcon} icon={faLink} boxSize={6} />}
+        leftIcon={
+          <Icon
+            as={FontAwesomeIcon}
+            icon={faLink}
+            boxSize={{
+              base: "16px",
+              sm: "20px",
+              md: "24px"
+            }}
+            color="gray"
+          />
+        }
         onClick={handleShareClick}
+        color="gray.800"
+        fontSize={{ base: "sm", md: "md" }}
       >
         공유
       </Button>
@@ -98,10 +124,16 @@ export default function Toolbar({
           <Icon
             as={FontAwesomeIcon}
             icon={bookMarked ? faBookmarkFilled : faBookmarkBlank}
-            color={bookMarked ? "primary" : "black"}
-            boxSize={6}
+            color={bookMarked ? "primary" : "gray"}
+            boxSize={{
+              base: "16px",
+              sm: "20px",
+              md: "24px"
+            }}
           />
         }
+        color="gray.800"
+        fontSize={{ base: "sm", md: "md" }}
         onClick={handleBookmarkClick}
       >
         북마크

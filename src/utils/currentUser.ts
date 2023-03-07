@@ -4,31 +4,23 @@ import {
   getCookie,
   setCookie
 } from "cookies-next";
-import { IncomingMessage, ServerResponse } from "http";
+import { OptionsType } from "cookies-next/lib/types";
 
 const isStringCookie = (cookie: CookieValueTypes): cookie is string =>
   typeof cookie === "string";
 
-type CookieOptions = {
-  res?: ServerResponse<IncomingMessage>;
-  req?: IncomingMessage & {
-    cookies: Partial<{
-      [key: string]: string;
-    }>;
-  };
-};
-
-const getNickname = ({ res, req }: CookieOptions = {}) => {
+const getNickname = ({ res, req }: OptionsType = {}) => {
   const nickname = getCookie("nickname", { res, req });
 
   return isStringCookie(nickname) ? nickname : "nouser";
 };
 
-const setNickname = (nickname: string) => setCookie("nickname", nickname);
+const setNickname = (nickname: string, options: OptionsType = {}) =>
+  setCookie("nickname", nickname, options);
 
 const removeNickname = () => deleteCookie("nickname");
 
-const isValidUser = ({ res, req }: CookieOptions = {}) =>
+const isValidUser = ({ res, req }: OptionsType = {}) =>
   getNickname({ res, req }) !== "nouser" && getNickname({ res, req }) !== "";
 
 const currentUser = {

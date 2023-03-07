@@ -1,19 +1,24 @@
 import feedAtom from "@/atoms/feedAtom";
-import { Box, Flex, HStack } from "@chakra-ui/react";
+import { Box, Flex, HStack, useBreakpointValue } from "@chakra-ui/react";
 import {} from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
 import ArrowIconButton from "./ArrowIconButton";
 
-type CarouselProps = {
-  boxSize: number;
-};
-
-export default function Carousel({ boxSize }: CarouselProps) {
+export default function Carousel() {
   const { imageUrls } = useRecoilValue(feedAtom);
 
   const [current, setCurrent] = useState(0);
+  const boxSize =
+    useBreakpointValue({
+      base: 300,
+      sm: 400,
+      md: 500,
+      lg: 600,
+      xl: 700
+    }) ?? 300;
+
   if (!imageUrls) return null;
   const MIN_IMG_COUNT = 0;
   const MAX_IMG_LENGTH = imageUrls.length - 1;
@@ -26,25 +31,29 @@ export default function Carousel({ boxSize }: CarouselProps) {
 
   return (
     <Box bg="white" position="relative" overflow="hidden">
-      <Flex
-        w={`${boxSize * imageUrls.length}px`}
-        h={`${boxSize}px`}
-        bg="gray.900"
-      >
+      <Flex w={`${boxSize * imageUrls.length}px`} h={`${boxSize}px`}>
         {imageUrls.map((img, i) => (
-          <Box key={img} position="relative" boxSize={`${boxSize}px`}>
-            <Image
-              src={img}
-              alt="포스트 이미지"
-              fill
-              sizes="100%"
-              priority={i === current}
-              style={{
-                transform: `translateX(-${current * boxSize}px)`,
-                transition: "0.5s ease-in-out",
-                objectFit: "contain"
-              }}
-            />
+          <Box key={img} boxSize={`${boxSize}px`} bgImage={img}>
+            <Box
+              key={img}
+              position="relative"
+              boxSize={`${boxSize}px`}
+              backdropFilter="auto"
+              backdropBlur="25px"
+            >
+              <Image
+                src={img}
+                alt="포스트 이미지"
+                fill
+                sizes="100%"
+                priority={i === current}
+                style={{
+                  transform: `translateX(-${current * boxSize}px)`,
+                  transition: "0.5s ease-in-out",
+                  objectFit: "contain"
+                }}
+              />
+            </Box>
           </Box>
         ))}
       </Flex>

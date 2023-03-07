@@ -31,7 +31,7 @@ export default function FollowList({ nickname, type }: FollowListProps) {
   }
 
   return (
-    <VStack>
+    <VStack alignItems="flex-start" w="350px">
       {followListQuery.data?.map(d => (
         <FollowItem key={d.nickname} followItemData={d} />
       ))}

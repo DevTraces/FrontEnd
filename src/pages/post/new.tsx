@@ -13,7 +13,7 @@ export default function NewPost() {
   const createFeed = (data: EditorPublishData) =>
     createMutation.mutate(data, {
       onSuccess: () => {
-        router.push("/feed");
+        router.back();
       }
     });
 
@@ -22,7 +22,7 @@ export default function NewPost() {
       <Head>
         <title>새 게시물 작성</title>
       </Head>
-      <Center mt={{ sm: "40px", md: "0" }}>
+      <Center mt={{ base: "40px", md: "0" }}>
         <FeedEditor onPublish={createFeed} />
       </Center>
     </NavLayout>

@@ -19,7 +19,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 
 export default function EmailAuth() {
   const router = useRouter();
@@ -27,7 +27,7 @@ export default function EmailAuth() {
   const [authKey, setAuthKey] = useState("");
   const [isDirty, setIsDirty] = useState(false);
   const isClient = useClient();
-  const user = useRecoilValue(signUpUserAtom);
+  const [signUpUser, setSignUpUser] = useRecoilState(signUpUserAtom);
 
   const { emailAuthKeyCheckMutation } = useCheck();
   const { sendEmailAuthKeyMutation } = useAuth();
@@ -37,8 +37,8 @@ export default function EmailAuth() {
   if (!isClient) return null;
 
   const handleResendClick = () => {
-    if (!user.email) return;
-    sendEmailAuthKeyMutation.mutate({ email: user.email });
+    if (!signUpUser.email) return;
+    sendEmailAuthKeyMutation.mutate({ email: signUpUser.email });
   };
 
   const handleAutKeyInputChange = (value: string) => {
@@ -51,12 +51,15 @@ export default function EmailAuth() {
     if (isAuthKeyValid)
       emailAuthKeyCheckMutation.mutate(
         {
-          email: user.email as string,
+          email: signUpUser.email as string,
           authKey
         },
         {
-          onSuccess: ({ correct }) => {
-            if (correct) router.push("/auth/signUp/profile");
+          onSuccess: ({ isCorrect, signUpKey }) => {
+            if (isCorrect) {
+              setSignUpUser(prev => ({ ...prev, signUpKey }));
+              router.push("/auth/signUp/profile");
+            }
           }
         }
       );
@@ -76,7 +79,7 @@ export default function EmailAuth() {
             boxSize="60px"
           />
         </Center>
-        {!user.email ? (
+        {!signUpUser.email ? (
           <>
             <Text display="inline">이메일 인증을 다시 진행해주세요</Text>
             <Button
@@ -91,7 +94,7 @@ export default function EmailAuth() {
           <>
             <Box textAlign="center" wordBreak="keep-all">
               <Text display="inline">
-                {user.email} 주소로 전송된 인증코드를 입력하세요.
+                {signUpUser.email} 주소로 전송된 인증코드를 입력하세요.
               </Text>
               <Text
                 as="span"

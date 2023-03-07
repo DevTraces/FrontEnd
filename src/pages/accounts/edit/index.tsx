@@ -4,8 +4,11 @@ import FormTextarea from "@/components/@common/FormTextarea";
 import NavLayout from "@/components/@common/NavLayout";
 import ProfileAvatarEdit from "@/components/@common/ProfileAvatarEdit";
 import VALIDATION_RULE from "@/constants/auth/VALIDATION_RULE";
+import useAuth from "@/hooks/useAuth";
+import useCheck from "@/hooks/useCheck";
 import useImagePreviews from "@/hooks/useImagePreviews";
 import useProfile from "@/hooks/useProfile";
+import getServerSideProps from "@/lib/getServerSideProps/redirection";
 import usersKeys from "@/queryKeys/usersKeys";
 import { FileImage } from "@/types/data/feed";
 import { ProfileData, ProfilePatchData } from "@/types/data/user";
@@ -24,8 +27,6 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import getServerSideProps from "@/lib/getServerSideProps/redirection";
-import useCheck from "@/hooks/useCheck";
 
 type FormData = Pick<ProfileData, "username" | "nickname" | "description">;
 
@@ -38,7 +39,6 @@ export default function Setting() {
   const {
     register,
     handleSubmit,
-    reset,
     setError,
     getValues,
     formState: { errors, isSubmitting, isValid, isDirty }
@@ -52,6 +52,7 @@ export default function Setting() {
   const { images, clearAllImages, imagePreviews, addImage } =
     useImagePreviews();
   const { nicknameDuplicateMutation } = useCheck();
+  const { signOutMutation } = useAuth();
 
   const {
     updateProfileMutation,
@@ -59,29 +60,48 @@ export default function Setting() {
     deleteProfileImageMutation
   } = useProfile();
 
-  const updateProfile = (data: Partial<ProfilePatchData>) => {
-    updateProfileMutation.mutate(
-      { nickname, data },
+  const updateProfileImage = (profileImage: File, newNickname: string) => {
+    updateProfileImageMutation.mutate(
+      { nickname: newNickname, profileImage },
       {
         onSuccess: () => {
-          toast({
-            title: "프로필 정보가 수정되었어요",
-            status: "success",
-            duration: 3000
-          });
-          reset();
-          router.back();
+          router.push(`/user/${newNickname}/posts`);
         }
       }
     );
   };
 
-  const updateProfileImage = (profileImage: File) => {
-    updateProfileImageMutation.mutate({ nickname, profileImage });
+  const deleteProfileImage = (newNickname: string) => {
+    deleteProfileImageMutation.mutate(
+      { nickname: newNickname },
+      {
+        onSuccess: () => {
+          router.push(`/user/${newNickname}/posts`);
+        }
+      }
+    );
   };
 
-  const deleteProfileImage = () => {
-    deleteProfileImageMutation.mutate({ nickname });
+  const updateProfile = (data: Partial<ProfilePatchData>) => {
+    updateProfileMutation.mutate(
+      { nickname, data },
+      {
+        onSuccess: ({ nickname: newNickname }) => {
+          toast({
+            title: "프로필 정보가 수정되었어요",
+            status: "success",
+            duration: 3000
+          });
+          if (imagePreviews.length > 0) {
+            updateProfileImage((images[0] as FileImage).src, newNickname);
+          } else if (isDeleted) {
+            deleteProfileImage(newNickname);
+          } else {
+            router.push(`/user/${newNickname}/posts`);
+          }
+        }
+      }
+    );
   };
 
   const checkNicknameDuplicated = (newNickname: string) => {
@@ -108,12 +128,14 @@ export default function Setting() {
     );
 
     updateProfile(data);
-    if (imagePreviews.length > 0) {
-      updateProfileImage((images[0] as FileImage).src);
-    } else if (isDeleted) {
-      deleteProfileImage();
-    }
   });
+
+  const signOut = () =>
+    signOutMutation.mutate(undefined, {
+      onSuccess: () => {
+        router.push("/");
+      }
+    });
 
   return (
     <>
@@ -121,7 +143,7 @@ export default function Setting() {
         <title>ArtBubble | Setting</title>
       </Head>
       <NavLayout>
-        <Container pt={{ sm: "40px", md: "none" }}>
+        <Container pt={{ base: "40px", md: "none" }}>
           <VStack padding={10} w="full">
             <Flex justifyContent="end" w="full">
               <Button
@@ -196,10 +218,10 @@ export default function Setting() {
                 </VStack>
               )}
             </form>
+            <Text w="full" fontSize="16px" lineHeight="40px" color="black">
+              계정 관리
+            </Text>
             <Box w="full">
-              <Text fontSize="16px" lineHeight="40px" color="black">
-                비밀번호
-              </Text>
               <Button
                 borderColor="transparent"
                 bg="white"
@@ -211,12 +233,20 @@ export default function Setting() {
               </Button>
             </Box>
             <Box w="full">
-              <Text fontSize="16px" lineHeight="40px" color="black">
-                회원 탈퇴
-              </Text>
               <Button
                 borderColor="transparent"
                 bg="white"
+                color="red.500"
+                onClick={signOut}
+              >
+                로그아웃
+              </Button>
+            </Box>
+            <Box w="full">
+              <Button
+                borderColor="transparent"
+                bg="white"
+                color="red.500"
                 onClick={() => {
                   router.push("/accounts/edit/withdrawal");
                 }}

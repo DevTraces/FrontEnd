@@ -1,54 +1,69 @@
-import navigationAtom from "@/atoms/navigationAtom";
-import { Box, Text } from "@chakra-ui/react";
-import { ComponentProps, forwardRef } from "react";
+import navigationAtom, {
+  DrawerNavType,
+  isDrawerNavType
+} from "@/atoms/navigationAtom";
+import { Box, Text, useOutsideClick } from "@chakra-ui/react";
+import { ComponentProps, useRef } from "react";
 import { useRecoilValue } from "recoil";
-import { NavKey } from "../../hooks/useNavBar";
+import useDrawer from "../../hooks/useDrawer";
 import Search from "../Search";
 import Alert from "./components/Alert";
 
 type DrawerProps = ComponentProps<typeof Box>;
 
-export default forwardRef<HTMLDivElement, DrawerProps>(
-  ({ ...restProps }, ref) => {
-    const currentNav = useRecoilValue(navigationAtom);
+export default function Drawer({ ...restProps }: DrawerProps) {
+  const ref = useRef(null);
+  const nav = useRecoilValue(navigationAtom);
 
-    const cases: { key: NavKey; Component: JSX.Element; title: string }[] = [
-      {
-        key: "search",
-        Component: <Search />,
-        title: "검색"
-      },
-      { key: "alert", Component: <Alert />, title: "알림" }
-    ];
+  const { isOpen, onClose } = useDrawer();
 
-    const currentCase = cases.find(({ key }) => key === currentNav);
+  useOutsideClick({
+    ref,
+    handler: e => {
+      const target = e.target as Element;
+      if (target.closest('[data-type="navItem"]')) return;
 
-    if (!currentCase) return null;
+      if (isOpen) {
+        onClose();
+      }
+    }
+  });
 
-    return (
-      <Box
-        zIndex="popover"
-        position="fixed"
-        left={{ sm: "0", md: "100px" }}
-        top={{ sm: "80px", md: 0 }}
-        p="40px"
-        w={{ sm: "full", md: "400px" }}
-        bg="white"
-        h={{ sm: "auto", md: "100vh" }}
-        ref={ref}
-        {...restProps}
+  const content: {
+    [k in DrawerNavType]: { title: string; Component: JSX.Element };
+  } = {
+    search: { Component: <Search />, title: "검색" },
+    alert: {
+      Component: <Alert />,
+      title: "알림"
+    }
+  };
+  if (!isDrawerNavType(nav)) return null;
+
+  return (
+    <Box
+      zIndex="popover"
+      position="fixed"
+      left={{ base: "0", md: "100px" }}
+      top={{ base: "80px", md: 0 }}
+      p="40px"
+      w={{ base: "full", md: "400px" }}
+      bg="white"
+      h={{ base: "auto", md: "100vh" }}
+      ref={ref}
+      data-type="navItem"
+      {...restProps}
+    >
+      <Text
+        display={{ base: "none", md: "block" }}
+        fontSize="2xl"
+        fontWeight="bold"
+        mb="24px"
       >
-        <Text
-          display={{ sm: "none", md: "block" }}
-          fontSize="2xl"
-          fontWeight="bold"
-          mb="24px"
-        >
-          {currentCase.title}
-        </Text>
+        {content[nav as DrawerNavType].title}
+      </Text>
 
-        {currentCase.Component}
-      </Box>
-    );
-  }
-);
+      {content[nav as DrawerNavType].Component}
+    </Box>
+  );
+}

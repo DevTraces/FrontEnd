@@ -4,6 +4,7 @@ import {
 } from "@/api/users/profile/images/[nickname]";
 import { patchUserProfile } from "@/api/users/profile/[nickname]";
 import usersKeys from "@/queryKeys/usersKeys";
+import currentUser from "@/utils/currentUser";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export default function useProfile() {
@@ -14,6 +15,7 @@ export default function useProfile() {
       queryClient.invalidateQueries({
         queryKey: usersKeys.userProfile(nickname)
       });
+      currentUser.setNickname(nickname);
     }
   });
 

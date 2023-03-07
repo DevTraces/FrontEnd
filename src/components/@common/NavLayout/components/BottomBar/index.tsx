@@ -1,19 +1,15 @@
+import navigationAtom, { RouterNavType } from "@/atoms/navigationAtom";
 import { Flex, Icon } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRouter } from "next/router";
-import useNavBar from "../../hooks/useNavBar";
+import { useRecoilValue } from "recoil";
+import NAV_ICON from "../../constants/NAV_ICON";
+import useBottomBar from "../../hooks/useBottomBar";
 
 export default function BottomBar() {
-  const router = useRouter();
+  const nav = useRecoilValue(navigationAtom);
+  const { select } = useBottomBar();
 
-  const { navs, isCurrentNav, onNavClick } = useNavBar({
-    navKeys: ["feed", "saved", "new", "user"]
-  });
-
-  const handleNavClick = (key: string, href?: string) => {
-    onNavClick(key);
-    if (href) router.push(href);
-  };
+  const navItems: RouterNavType[] = ["feed", "saved", "newPost", "profile"];
 
   return (
     <Flex
@@ -27,19 +23,16 @@ export default function BottomBar() {
       bottom={0}
       left={0}
       py={8}
-      display={{
-        sm: "flex",
-        md: "none"
-      }}
     >
-      {navs.map(({ key, icon, href }) => (
+      {navItems.map(n => (
         <Icon
-          key={href}
+          key={n}
           as={FontAwesomeIcon}
-          icon={icon}
+          icon={NAV_ICON[n]}
           boxSize={6}
-          color={isCurrentNav(key) ? "primary" : "black"}
-          onClick={() => handleNavClick(key, href)}
+          cursor="pointer"
+          color={nav === n ? "primary" : "black"}
+          onClick={() => select(n)}
         />
       ))}
     </Flex>

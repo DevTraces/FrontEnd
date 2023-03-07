@@ -1,3 +1,4 @@
+import { refresh } from "@/api";
 import Logo from "@/components/@common/Logo";
 import AnimatedBubble from "@/components/root/AnimatedBubble";
 import useAuth from "@/hooks/useAuth";
@@ -7,6 +8,7 @@ import { Box, Button, Center, HStack, Text, useToast } from "@chakra-ui/react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 export default function Home() {
   const router = useRouter();
@@ -14,6 +16,12 @@ export default function Home() {
   const isValidUser = currentUser.isValidUser();
   const isClient = useClient();
   const toast = useToast();
+
+  useEffect(() => {
+    refresh().catch(() => {
+      currentUser.removeNickname();
+    });
+  }, []);
 
   if (!isClient) return null;
 
@@ -79,7 +87,7 @@ export default function Home() {
           </HStack>
           <Center m="auto" mt="20%" w="50%">
             <Text
-              fontSize={{ sm: "4xl", md: "5xl", xl: "6xl" }}
+              fontSize={{ base: "4xl", md: "5xl", xl: "6xl" }}
               textAlign="center"
               wordBreak="keep-all"
             >
@@ -94,7 +102,7 @@ export default function Home() {
       </Box>
       <Box
         position="absolute"
-        top={{ sm: "40%", md: "10%" }}
+        top={{ base: "40%", md: "10%" }}
         left="50%"
         zIndex="base"
       >
@@ -102,7 +110,7 @@ export default function Home() {
       </Box>
       <Box
         position="absolute"
-        bottom={{ sm: "30%", md: "20%" }}
+        bottom={{ base: "30%", md: "20%" }}
         right="30%"
         zIndex="base"
       >

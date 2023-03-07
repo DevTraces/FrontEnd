@@ -37,7 +37,11 @@ export default function NewContent() {
       {likeUsersDisclosure.isOpen && (
         <LikeUsersModal disclosure={likeUsersDisclosure} />
       )}
-      <Box position="absolute" bottom={{ sm: "60px", md: "40px" }} right="40px">
+      <Box
+        position="absolute"
+        bottom={{ base: "60px", md: "40px" }}
+        right="40px"
+      >
         <IconButton
           aria-label="피드 내용 보기"
           colorScheme="blackAlpha"
@@ -52,12 +56,12 @@ export default function NewContent() {
               pos="absolute"
               bottom="60px"
               right={{
-                sm: "-40px",
+                base: "-40px",
                 md: "0"
               }}
               bg="white"
               w={{
-                sm: "100vw",
+                base: "100vw",
                 md: "460px"
               }}
               maxH="50vh"

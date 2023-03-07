@@ -1,60 +1,45 @@
+import navigationAtom, { NavType } from "@/atoms/navigationAtom";
 import Logo from "@/components/@common/Logo";
 import { Box, Flex, Icon, Show, Text } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRouter } from "next/router";
-import useNavBar, { Nav, NavKey } from "../../hooks/useNavBar";
+import { useRecoilValue } from "recoil";
+import NAV_ICON from "../../constants/NAV_ICON";
+import useDrawer from "../../hooks/useDrawer";
+import useSideBar from "../../hooks/useSideBar";
 import Drawer from "../Drawer";
 
+const navItems: NavType[] = [
+  "feed",
+  "search",
+  "alert",
+  "saved",
+  "newPost",
+  "profile"
+];
+
+const navTitle: { [k in NavType]: string } = {
+  feed: "홈",
+  search: "검색",
+  alert: "알림",
+  saved: "저장한 목록",
+  newPost: "새 포스트",
+  profile: "프로필"
+};
+
 export default function SideBar() {
-  const router = useRouter();
-  const {
-    navs,
-    onNavClick,
-    isCurrentNav,
-    drawerRef,
-    isDrawerOpen,
-    onDrawerToggle,
-    onDrawerOpen
-  } = useNavBar();
+  const nav = useRecoilValue(navigationAtom);
 
-  const handleNavClick = (key: NavKey, href: Nav["href"]) => {
-    onNavClick(key);
-
-    switch (key) {
-      case "search":
-      case "alert":
-        if (isCurrentNav(key)) {
-          onDrawerToggle();
-        } else {
-          onDrawerOpen();
-        }
-        break;
-      default:
-        if (href) router.push(href);
-    }
-  };
-
+  const { isOpen } = useDrawer();
+  const { select } = useSideBar();
   return (
     <>
-      {isDrawerOpen && (
-        <Drawer
-          display={{
-            sm: "none",
-            md: "block"
-          }}
-          ref={drawerRef}
-        />
-      )}
+      {isOpen && <Drawer />}
       <Flex
         direction="column"
         bg="white"
         position="fixed"
         top={0}
         left={0}
-        display={{
-          sm: "none",
-          md: "block"
-        }}
         w={{
           md: 100,
           xl: 250
@@ -69,18 +54,18 @@ export default function SideBar() {
               <Logo type="icon" height={44} />
             </Show>
             <Show above="xl">
-              <Box pl={isDrawerOpen ? 0 : "8px"}>
+              <Box pl={isOpen ? 0 : "8px"}>
                 <Logo
-                  type={isDrawerOpen ? "icon" : "text"}
-                  height={isDrawerOpen ? 44 : 22}
+                  type={isOpen ? "icon" : "text"}
+                  height={isOpen ? 44 : 22}
                 />
               </Box>
             </Show>
           </Flex>
 
-          {navs.map(({ key, title, icon, href }) => (
+          {navItems.map(n => (
             <Flex
-              key={key}
+              key={n}
               pl={10}
               h={50}
               gap={10}
@@ -91,18 +76,23 @@ export default function SideBar() {
                 bg: "primary",
                 color: "white"
               }}
-              color={isCurrentNav(key) ? "primary" : "black"}
-              onClick={() => handleNavClick(key, href)}
+              color={nav === n ? "primary" : "black"}
+              onClick={() => select(n)}
             >
-              <Icon key={key} as={FontAwesomeIcon} icon={icon} boxSize="20px" />
-              {!isDrawerOpen && (
+              <Icon
+                key={n}
+                as={FontAwesomeIcon}
+                icon={NAV_ICON[n]}
+                boxSize="20px"
+              />
+              {!isOpen && (
                 <Text
                   display={{
-                    sm: "none",
+                    base: "none",
                     xl: "block"
                   }}
                 >
-                  {title}
+                  {navTitle[n]}
                 </Text>
               )}
             </Flex>

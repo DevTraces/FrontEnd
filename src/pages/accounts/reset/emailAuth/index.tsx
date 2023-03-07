@@ -4,8 +4,8 @@ import FormLayout from "@/components/@common/FormLayout";
 import useAuth from "@/hooks/useAuth";
 import useCheck from "@/hooks/useCheck";
 import useClient from "@/hooks/useClient";
-import getServerSideProps from "@/lib/getServerSideProps/redirection";
 import {
+  Button,
   Center,
   HStack,
   Icon,
@@ -69,49 +69,70 @@ export default function EmailAuth() {
         <title>ArtBubble | 비밀번호 재설정</title>
       </Head>
       <FormLayout>
-        <Center>
-          <Icon
-            as={FontAwesomeIcon}
-            icon={faPaperPlane}
-            color="primary"
-            boxSize="60px"
-          />
-        </Center>
-        <Text textAlign="center" wordBreak="keep-all">
-          {resetUser.email} 주소로 전송된 인증코드를 입력하세요.
-          <Text
-            as="span"
-            display="inline"
-            color="primary"
-            ml="10px"
-            fontWeight="bold"
-            cursor="pointer"
-            onClick={handleResendClick}
-          >
-            코드 재전송
-          </Text>
-        </Text>
-        <HStack>
-          <PinInput otp onChange={handleAutKeyInputChange}>
-            <PinInputField />
-            <PinInputField />
-            <PinInputField />
-            <PinInputField />
-            <PinInputField />
-            <PinInputField />
-          </PinInput>
-        </HStack>
+        {!resetUser.email ? (
+          <>
+            <Center>
+              <Icon
+                as={FontAwesomeIcon}
+                icon={faPaperPlane}
+                color="primary"
+                boxSize="60px"
+              />
+            </Center>
+            <Text display="inline">이메일 인증을 다시 진행해주세요</Text>
+            <Button
+              onClick={() => {
+                router.push("/accounts/reset/sendEmail");
+              }}
+            >
+              이메일 인증 하기
+            </Button>
+          </>
+        ) : (
+          <>
+            <Center>
+              <Icon
+                as={FontAwesomeIcon}
+                icon={faPaperPlane}
+                color="primary"
+                boxSize="60px"
+              />
+            </Center>
+            <Text textAlign="center" wordBreak="keep-all">
+              {resetUser.email} 주소로 전송된 인증코드를 입력하세요.
+              <Text
+                as="span"
+                display="inline"
+                color="primary"
+                ml="10px"
+                fontWeight="bold"
+                cursor="pointer"
+                onClick={handleResendClick}
+              >
+                코드 재전송
+              </Text>
+            </Text>
+            <HStack>
+              <PinInput otp onChange={handleAutKeyInputChange}>
+                <PinInputField />
+                <PinInputField />
+                <PinInputField />
+                <PinInputField />
+                <PinInputField />
+                <PinInputField />
+              </PinInput>
+            </HStack>
 
-        <FormButton
-          isLoading={emailAuthKeyCheckForResetMutation.isLoading}
-          isDisabled={!isAuthKeyValid}
-          onClick={() => handleSubmit()}
-        >
-          다음
-        </FormButton>
+            <FormButton
+              isLoading={emailAuthKeyCheckForResetMutation.isLoading}
+              isDisabled={!isAuthKeyValid}
+              onClick={() => handleSubmit()}
+            >
+              다음
+            </FormButton>
+          </>
+        )}
       </FormLayout>
     </>
   );
 }
-
-export { getServerSideProps };
