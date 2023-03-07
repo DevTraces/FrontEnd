@@ -1,8 +1,7 @@
-import useAuth from "@/hooks/useAuth";
 import useFollow from "@/hooks/useFollow";
 import { ProfileData } from "@/types/data/user";
-import { Box, Button, HStack, Text, VStack } from "@chakra-ui/react";
 import currentUser from "@/utils/currentUser";
+import { Box, Button, Flex, HStack, Text, VStack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import ProfileAvatar from "../../../@common/ProfileAvatar";
 
@@ -26,41 +25,48 @@ export default function ProfileInfo({
   const router = useRouter();
   const isMyProfile = nickname === currentUser.getNickname();
 
-  const { signOutMutation } = useAuth();
-  const signOut = () =>
-    signOutMutation.mutate(undefined, {
-      onSuccess: () => {
-        router.push("/");
-      }
-    });
-
   const { toggleMutation } = useFollow();
   const toggleFollow = () => toggleMutation(isFollowing).mutate({ nickname });
 
   return (
-    <VStack gap="20px" {...restProps}>
-      <HStack gap="20px">
+    <VStack
+      gap="20px"
+      {...restProps}
+      alignItems="flex-start"
+      w={{
+        base: 300,
+        sm: 400,
+        md: 500,
+        lg: 600,
+        xl: 700
+      }}
+    >
+      <HStack gap="20px" w="full">
         <ProfileAvatar src={profileImageUrl} size="80px" alt="프로필 이미지" />
 
-        <Box>
-          <HStack h="50px">
+        <Box w="full">
+          <HStack h="50px" justifyContent="space-between">
             <Text fontWeight="bold" fontSize="xl">
               {username}
             </Text>
             {!isMyProfile && (
               <Button
-                variant="outline"
-                colorScheme="purple"
+                colorScheme={isFollowing ? "green" : "blue"}
                 fontWeight="bold"
-                size="sm"
                 onClick={toggleFollow}
+                size="sm"
               >
-                {isFollowing ? "팔로우 취소" : "팔로우"}
+                {isFollowing ? "팔로잉" : "팔로우"}
               </Button>
             )}
 
             {isMyProfile && (
-              <>
+              <Flex
+                gap={{
+                  base: "6px",
+                  sm: "10px"
+                }}
+              >
                 <Button
                   bg="gray.200"
                   colorScheme="gray"
@@ -72,26 +78,26 @@ export default function ProfileInfo({
                 >
                   프로필 편집
                 </Button>
-                <Button
-                  bg="red.400"
-                  colorScheme="red"
-                  fontWeight="bold"
-                  color="white"
-                  size="sm"
-                  onClick={signOut}
-                >
-                  로그아웃
-                </Button>
-              </>
+              </Flex>
             )}
           </HStack>
-          <Text fontSize="md" color="gray.500" mb="10px">
+          <Text fontSize="md" color="gray.500">
             @{nickname}
           </Text>
           <Text fontSize="md">{description}</Text>
         </Box>
       </HStack>
-      <HStack justifyContent="space-between" w="450px" p="30px">
+      <HStack
+        justifyContent="space-between"
+        w={{
+          base: 300,
+          sm: 400,
+          md: 500,
+          lg: 600,
+          xl: 700
+        }}
+        p="10px"
+      >
         {[
           ["게시물", "posts", totalFeedNumber],
           ["팔로잉", "following", followingNumber],

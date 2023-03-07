@@ -51,9 +51,7 @@ export default function Profile({ query }: ServerSideProps) {
       </Head>
       <NavLayout>
         <Center flexDirection="column">
-          {profileQuery.data && (
-            <ProfileInfo profileData={profileQuery.data} p="20px" pt="100px" />
-          )}
+          {profileQuery.data && <ProfileInfo profileData={profileQuery.data} />}
 
           <ProfileTab nickname={nickname} selectedTab={selectedTab} />
         </Center>

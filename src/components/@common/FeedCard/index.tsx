@@ -53,8 +53,13 @@ export default function FeedCard({ feedData, ...restProps }: FeedCardProps) {
         direction="column"
         bg="white"
         rounded="12px"
-        w="450px"
-        zIndex="base"
+        w={{
+          base: 300,
+          sm: 400,
+          md: 500,
+          lg: 600,
+          xl: 700
+        }}
         {...restProps}
       >
         <Flex alignItems="center" gap={4} px="12px" py="20px">
@@ -85,8 +90,8 @@ export default function FeedCard({ feedData, ...restProps }: FeedCardProps) {
             />
           )}
         </Flex>
-        <Carousel boxSize={450} />
-        <TextContent />
+        <Carousel />
+        <TextContent setIsReplyOpen={setIsReplyOpen} />
         <Toolbar setIsReplyOpen={setIsReplyOpen} />
         {isReplyOpen && <ReplyList />}
       </Flex>

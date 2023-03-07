@@ -4,6 +4,7 @@ import FormTextarea from "@/components/@common/FormTextarea";
 import NavLayout from "@/components/@common/NavLayout";
 import ProfileAvatarEdit from "@/components/@common/ProfileAvatarEdit";
 import VALIDATION_RULE from "@/constants/auth/VALIDATION_RULE";
+import useAuth from "@/hooks/useAuth";
 import useCheck from "@/hooks/useCheck";
 import useImagePreviews from "@/hooks/useImagePreviews";
 import useProfile from "@/hooks/useProfile";
@@ -51,6 +52,7 @@ export default function Setting() {
   const { images, clearAllImages, imagePreviews, addImage } =
     useImagePreviews();
   const { nicknameDuplicateMutation } = useCheck();
+  const { signOutMutation } = useAuth();
 
   const {
     updateProfileMutation,
@@ -127,6 +129,13 @@ export default function Setting() {
 
     updateProfile(data);
   });
+
+  const signOut = () =>
+    signOutMutation.mutate(undefined, {
+      onSuccess: () => {
+        router.push("/");
+      }
+    });
 
   return (
     <>
@@ -209,10 +218,10 @@ export default function Setting() {
                 </VStack>
               )}
             </form>
+            <Text w="full" fontSize="16px" lineHeight="40px" color="black">
+              계정 관리
+            </Text>
             <Box w="full">
-              <Text fontSize="16px" lineHeight="40px" color="black">
-                비밀번호
-              </Text>
               <Button
                 borderColor="transparent"
                 bg="white"
@@ -224,12 +233,20 @@ export default function Setting() {
               </Button>
             </Box>
             <Box w="full">
-              <Text fontSize="16px" lineHeight="40px" color="black">
-                회원 탈퇴
-              </Text>
               <Button
                 borderColor="transparent"
                 bg="white"
+                color="red.500"
+                onClick={signOut}
+              >
+                로그아웃
+              </Button>
+            </Box>
+            <Box w="full">
+              <Button
+                borderColor="transparent"
+                bg="white"
+                color="red.500"
                 onClick={() => {
                   router.push("/accounts/edit/withdrawal");
                 }}

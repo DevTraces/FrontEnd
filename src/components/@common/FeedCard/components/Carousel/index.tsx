@@ -1,19 +1,24 @@
 import feedAtom from "@/atoms/feedAtom";
-import { Box, Flex, HStack } from "@chakra-ui/react";
+import { Box, Flex, HStack, useBreakpointValue } from "@chakra-ui/react";
 import {} from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
 import ArrowIconButton from "./ArrowIconButton";
 
-type CarouselProps = {
-  boxSize: number;
-};
-
-export default function Carousel({ boxSize }: CarouselProps) {
+export default function Carousel() {
   const { imageUrls } = useRecoilValue(feedAtom);
 
   const [current, setCurrent] = useState(0);
+  const boxSize =
+    useBreakpointValue({
+      base: 300,
+      sm: 400,
+      md: 500,
+      lg: 600,
+      xl: 700
+    }) ?? 300;
+
   if (!imageUrls) return null;
   const MIN_IMG_COUNT = 0;
   const MAX_IMG_LENGTH = imageUrls.length - 1;
