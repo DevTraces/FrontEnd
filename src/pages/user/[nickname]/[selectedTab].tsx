@@ -1,19 +1,16 @@
 import { getUserProfile } from "@/api/users/profile/[nickname]";
-import navigationAtom from "@/atoms/navigationAtom";
 import NavLayout from "@/components/@common/NavLayout";
+import useClient from "@/hooks/useClient";
+import getRedirectionServerSideProps from "@/lib/getServerSideProps/redirection";
 import usersKeys from "@/queryKeys/usersKeys";
 import { ProfileTabName } from "@/types/data/user";
+import currentUser from "@/utils/currentUser";
+import { Center } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
-import getRedirectionServerSideProps from "@/lib/getServerSideProps/redirection";
 import { GetServerSideProps } from "next";
 import dynamic from "next/dynamic";
 import Head from "next/head";
-import { useEffect } from "react";
-import { useSetRecoilState } from "recoil";
-import { Center } from "@chakra-ui/react";
-import currentUser from "@/utils/currentUser";
 import { useRouter } from "next/router";
-import useClient from "@/hooks/useClient";
 
 const ProfileInfo = dynamic(
   () => import("@/components/user/[nickname]/ProfileInfo"),
@@ -41,19 +38,6 @@ export default function Profile({ query }: ServerSideProps) {
 
   if (isClient && !isMyProfile && selectedTab === "saved")
     router.push(`/user/${nickname}/posts`);
-
-  const setNavigation = useSetRecoilState(navigationAtom);
-
-  useEffect(() => {
-    switch (selectedTab) {
-      case "saved":
-        setNavigation("saved");
-        break;
-      default:
-        setNavigation("user");
-        break;
-    }
-  }, [selectedTab, setNavigation]);
 
   const profileQuery = useQuery({
     queryKey: usersKeys.userProfile(nickname),

@@ -1,6 +1,12 @@
 import useSearch from "@/hooks/useSearch";
-import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
-import useNavBar from "../../hooks/useNavBar";
+import {
+  Show,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs
+} from "@chakra-ui/react";
 import InputContainer from "./components/Input";
 import TagAutoComplete from "./components/TagResult";
 import UserList from "./components/UserResult";
@@ -31,8 +37,6 @@ const tabData: TabData = {
 };
 
 export default function Search() {
-  const { navType } = useNavBar();
-
   const { searchValue, changeType } = useSearch();
   const tabIndex = (() => {
     if (searchValue.type === "nickname") return 1;
@@ -47,7 +51,9 @@ export default function Search() {
 
   return (
     <>
-      {navType === "sidebar" && <InputContainer mb="20px" />}
+      <Show above="md">
+        <InputContainer mb="20px" />
+      </Show>
       <Tabs
         index={tabIndex}
         colorScheme="purple"
