@@ -1,4 +1,7 @@
-import navigationAtom, { DrawerNavType } from "@/atoms/navigationAtom";
+import navigationAtom, {
+  DrawerNavType,
+  isDrawerNavType
+} from "@/atoms/navigationAtom";
 import { Box, Text, useOutsideClick } from "@chakra-ui/react";
 import { ComponentProps, useRef } from "react";
 import { useRecoilValue } from "recoil";
@@ -35,7 +38,7 @@ export default function Drawer({ ...restProps }: DrawerProps) {
       title: "알림"
     }
   };
-  if (nav !== "search" && nav !== "alert") return null;
+  if (!isDrawerNavType(nav)) return null;
 
   return (
     <Box

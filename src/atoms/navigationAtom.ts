@@ -4,7 +4,15 @@ import { atom, AtomEffect } from "recoil";
 
 export type RouterNavType = "feed" | "saved" | "newPost" | "profile";
 export type DrawerNavType = "search" | "alert";
+
 export type NavType = RouterNavType | DrawerNavType;
+
+export const isDrawerNavType = (navType: NavType): navType is DrawerNavType =>
+  navType === "search" || navType === "alert";
+
+export const isRouterNavType = (navType: NavType): navType is RouterNavType =>
+  !isDrawerNavType(navType);
+
 export const getRouterNavValue = (): { [k in RouterNavType]: string } => ({
   feed: "/feed",
   saved: `/user/${currentUser.getNickname()}/saved`,

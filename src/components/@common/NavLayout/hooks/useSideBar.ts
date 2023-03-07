@@ -1,6 +1,8 @@
 import navigationAtom, {
   DrawerNavType,
   getRouterNavValue,
+  isDrawerNavType,
+  isRouterNavType,
   RouterNavType
 } from "@/atoms/navigationAtom";
 import { useRouter } from "next/router";
@@ -15,27 +17,22 @@ export default function useSideBar() {
 
   const select = (selectedNav: RouterNavType | DrawerNavType) => {
     const url = getRouterNavValue();
+    if (isDrawerNavType(selectedNav)) {
+      setNav(selectedNav);
 
-    switch (selectedNav) {
-      case "search":
-      case "alert":
-        setNav(selectedNav);
-
-        if (nav === selectedNav) {
-          onToggle();
-        } else {
-          onOpen();
-        }
-        break;
-      default:
-        setNav(selectedNav);
-        onClose();
-        router.push(url[selectedNav]);
+      if (nav === selectedNav) {
+        onToggle();
+      } else {
+        onOpen();
+      }
+    } else {
+      setNav(selectedNav);
+      router.push(url[selectedNav]);
     }
   };
 
   useEffect(() => {
-    if (nav !== "search" && nav !== "alert") onClose();
+    if (isRouterNavType(nav)) onClose();
   }, [onClose, nav]);
 
   return { select };
