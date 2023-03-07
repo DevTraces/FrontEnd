@@ -33,24 +33,13 @@ export default function SideBar() {
   const { select } = useSideBar();
   return (
     <>
-      {isOpen && (
-        <Drawer
-          display={{
-            base: "none",
-            md: "block"
-          }}
-        />
-      )}
+      {isOpen && <Drawer />}
       <Flex
         direction="column"
         bg="white"
         position="fixed"
         top={0}
         left={0}
-        display={{
-          base: "none",
-          md: "block"
-        }}
         w={{
           md: 100,
           xl: 250

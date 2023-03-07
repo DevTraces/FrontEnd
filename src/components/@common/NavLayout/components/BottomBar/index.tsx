@@ -23,10 +23,6 @@ export default function BottomBar() {
       bottom={0}
       left={0}
       py={8}
-      display={{
-        base: "flex",
-        md: "none"
-      }}
     >
       {navItems.map(n => (
         <Icon

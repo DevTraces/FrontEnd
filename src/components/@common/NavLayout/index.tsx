@@ -1,4 +1,4 @@
-import { Box, Center } from "@chakra-ui/react";
+import { Box, Center, Show } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
 import TopBar from "./components/TopBar";
 
@@ -16,9 +16,14 @@ export default function NavLayout({
 }: React.ComponentProps<typeof Center>) {
   return (
     <>
-      <TopBar />
-      <BottomBar />
-      <SideBar />
+      <Show below="md">
+        <TopBar />
+        <BottomBar />
+      </Show>
+      <Show above="md">
+        <SideBar />
+      </Show>
+
       <Box
         w="full"
         pos="absolute"

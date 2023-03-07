@@ -16,14 +16,7 @@ export default function TopBar() {
 
   return (
     <>
-      {isOpen && (
-        <Drawer
-          display={{
-            base: "block",
-            md: "none"
-          }}
-        />
-      )}
+      {isOpen && <Drawer />}
       <Flex
         position="fixed"
         zIndex="9999"
@@ -36,10 +29,6 @@ export default function TopBar() {
         align="center"
         py={8}
         px={4}
-        display={{
-          base: "flex",
-          md: "none"
-        }}
       >
         <Box mr={20} w="200px" h="100px">
           <Logo type="text" fill />
