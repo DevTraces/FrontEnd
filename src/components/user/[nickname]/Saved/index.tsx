@@ -16,7 +16,15 @@ export default function Saved() {
   return (
     <Grid w="full" templateColumns="repeat(3, 1fr)" gap="10px">
       {bookmarkQuery.data?.map(({ feedId, imageUrl }) => (
-        <GridItem key={feedId} position="relative">
+        <GridItem
+          key={feedId}
+          position="relative"
+          _hover={{
+            cursor: "pointer",
+            opacity: 0.8,
+            transition: "opacity 0.2s ease-in-out"
+          }}
+        >
           <Link href={`/post/${feedId}`}>
             <AspectRatio ratio={1 / 1}>
               <Image

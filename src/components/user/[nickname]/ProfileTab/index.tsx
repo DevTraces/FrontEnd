@@ -6,7 +6,7 @@ import FollowList from "../FollowList";
 import Posts from "../Posts";
 import Saved from "../Saved";
 
-const selectedList: ProfileTabName[] = [
+export const selectedList: ProfileTabName[] = [
   "posts",
   "following",
   "follower",
@@ -57,6 +57,7 @@ export default function ProfileTab({ nickname, selectedTab }: ProfileTabProps) {
       align="center"
       colorScheme="red"
       index={selectedList.findIndex(item => item === selectedTab)}
+      w="full"
       isLazy
     >
       <TabList>
@@ -69,7 +70,7 @@ export default function ProfileTab({ nickname, selectedTab }: ProfileTabProps) {
           </Tab>
         ))}
       </TabList>
-      <TabPanels>
+      <TabPanels overflow="hidden">
         {tabList.map(tab => (
           <TabPanel key={tab}>{tabData[tab].tabPanel}</TabPanel>
         ))}

@@ -99,7 +99,7 @@ export default function LikeUsersModal({
                         variant={following ? "outline" : "solid"}
                         onClick={() => toggleFollow(following, nickname)}
                       >
-                        {following ? "언팔로우" : "팔로우"}
+                        {following ? "팔로잉" : "팔로우"}
                       </Button>
                     )}
                   </Flex>
