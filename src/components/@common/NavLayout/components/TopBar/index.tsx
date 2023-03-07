@@ -1,38 +1,27 @@
+import navigationAtom from "@/atoms/navigationAtom";
 import Logo from "@/components/@common/Logo";
 import { Box, Button, Flex, Icon } from "@chakra-ui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import useNavBar from "../../hooks/useNavBar";
+import { useRecoilValue } from "recoil";
+import NAV_ICON from "../../constants/NAV_ICON";
+import useDrawer from "../../hooks/useDrawer";
+import useTopBar from "../../hooks/useTopBar";
 import Drawer from "../Drawer";
 import InputContainer from "../Search/components/Input";
 
 export default function TopBar() {
-  const {
-    navs,
-    onNavClick,
-    isCurrentNav,
-    drawerRef,
-    isDrawerOpen,
-    onDrawerToggle,
-    onDrawerOpen
-  } = useNavBar({
-    navKeys: ["search", "alert"]
-  });
-
-  const handleNavClick = (key: string) => {
-    onNavClick(key);
-    onDrawerToggle();
-    onDrawerOpen();
-  };
+  const nav = useRecoilValue(navigationAtom);
+  const { isOpen } = useDrawer();
+  const { select } = useTopBar();
 
   return (
     <>
-      {isDrawerOpen && (
+      {isOpen && (
         <Drawer
           display={{
             base: "block",
             md: "none"
           }}
-          ref={drawerRef}
         />
       )}
       <Flex
@@ -55,24 +44,19 @@ export default function TopBar() {
         <Box mr={20} w="200px" h="100px">
           <Logo type="text" fill />
         </Box>
-        <InputContainer
-          onClick={() => {
-            handleNavClick("search");
-          }}
-          mr={10}
-        />
+        <InputContainer onClick={() => select("search")} mr={10} />
         <Button
           boxSize="40px"
           px="10px"
           data-type="navItem"
           bg="white"
           colorScheme="whiteAlpha"
-          onClick={() => handleNavClick("alert")}
+          onClick={() => select("alert")}
         >
           <Icon
             as={FontAwesomeIcon}
-            icon={navs[navs.findIndex(nav => nav.key === "alert")].icon}
-            color={isCurrentNav("alert") ? "primary" : "black"}
+            icon={NAV_ICON.alert}
+            color={nav === "alert" ? "primary" : "black"}
           />
         </Button>
       </Flex>
