@@ -14,7 +14,7 @@ export default function Like({
 }: LikeNotice) {
   return (
     <Link href={`/post/${feedId}`} style={{ width: "100%" }}>
-      <HStack w="full" h="50px" cursor="pointer">
+      <HStack w="full" cursor="pointer">
         <ProfileAvatar
           src={senderProfileImageUrl}
           size="40px"
