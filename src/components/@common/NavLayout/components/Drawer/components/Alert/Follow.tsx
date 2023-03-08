@@ -28,12 +28,7 @@ export default function Follow({
   };
 
   return (
-    <HStack
-      onClick={handleFollowNoticeClick}
-      w="full"
-      h="50px"
-      cursor="pointer"
-    >
+    <HStack onClick={handleFollowNoticeClick} w="full" cursor="pointer">
       <ProfileAvatar
         src={senderProfileImageUrl}
         size="40px"
