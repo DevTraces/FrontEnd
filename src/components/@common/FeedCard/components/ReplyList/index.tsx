@@ -26,7 +26,7 @@ export default function ReplyList() {
     handleSubmit,
     register,
     reset,
-    formState: { errors }
+    formState: { errors, isDirty }
   } = useForm<FormData>({ mode: "onChange" });
 
   const { createMutation } = useReply(feedId);
@@ -49,7 +49,7 @@ export default function ReplyList() {
         <ReplyInput
           feedId={feedId}
           errorMessage={errors.content?.message}
-          isInvalid={!!errors.content}
+          isInvalid={!!errors.content || !isDirty}
           onSendClick={handleFormSubmit}
           {...register("content", VALIDATION_RULE.replyContent)}
         />

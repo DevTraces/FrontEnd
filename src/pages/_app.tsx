@@ -1,10 +1,7 @@
 import useApiError from "@/hooks/useAPIError";
-import {
-  ChakraProvider,
-  extendTheme,
-  Portal,
-  Progress
-} from "@chakra-ui/react";
+import theme from "@/styles/global";
+import { ChakraProvider, Portal, Progress } from "@chakra-ui/react";
+import "@fontsource/caveat";
 import {
   QueryCache,
   QueryClient,
@@ -16,22 +13,6 @@ import { useRouter } from "next/router";
 import Script from "next/script";
 import { useEffect, useState } from "react";
 import { RecoilRoot } from "recoil";
-
-const theme = extendTheme({
-  styles: {
-    global: {
-      body: {
-        bg: "gray.100"
-      },
-      ":not(.chakra-dont-set-collapse) > .chakra-collapse": {
-        overflow: "initial !important"
-      }
-    }
-  },
-  colors: {
-    primary: "#B384DA"
-  }
-});
 
 export default function App({ Component, pageProps }: AppProps) {
   const [isRouting, setIsRouting] = useState(false);
@@ -97,6 +78,7 @@ export default function App({ Component, pageProps }: AppProps) {
               position="fixed"
               top={0}
               colorScheme="purple"
+              bg="transparent"
             />
           </Portal>
           <Component {...pageProps} />
