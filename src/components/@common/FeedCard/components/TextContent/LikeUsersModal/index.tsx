@@ -95,8 +95,7 @@ export default function LikeUsersModal({
                     {currentUser.getNickname() !== nickname && (
                       <Button
                         w="100px"
-                        colorScheme={following ? "red" : "blue"}
-                        variant={following ? "outline" : "solid"}
+                        colorScheme={following ? "green" : "blue"}
                         onClick={() => toggleFollow(following, nickname)}
                       >
                         {following ? "팔로잉" : "팔로우"}
