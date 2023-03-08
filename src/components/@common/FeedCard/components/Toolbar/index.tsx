@@ -53,10 +53,9 @@ export default function Toolbar({
   };
 
   return (
-    <Flex justifyContent="space-between" w="full" py="12px" {...restProps}>
+    <Flex justifyContent="space-evenly" w="full" py="12px" {...restProps}>
       <Button
         variant="ghost"
-        colorScheme="none"
         leftIcon={
           <Icon
             as={FontAwesomeIcon}
@@ -77,7 +76,6 @@ export default function Toolbar({
       </Button>
       <Button
         variant="ghost"
-        colorScheme="none"
         leftIcon={
           <Icon
             as={FontAwesomeIcon}
@@ -98,7 +96,6 @@ export default function Toolbar({
       </Button>
       <Button
         variant="ghost"
-        colorScheme="none"
         leftIcon={
           <Icon
             as={FontAwesomeIcon}
@@ -119,7 +116,6 @@ export default function Toolbar({
       </Button>
       <Button
         variant="ghost"
-        colorScheme="none"
         leftIcon={
           <Icon
             as={FontAwesomeIcon}
