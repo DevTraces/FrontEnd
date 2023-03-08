@@ -81,9 +81,11 @@ export default function ProfileInfo({
           <Text fontSize="md" color="gray.500">
             @{nickname}
           </Text>
-          <Text fontSize="md">{description}</Text>
         </Box>
       </HStack>
+      <Text fontSize="md" pl="16px" w="full">
+        {description}
+      </Text>
       <HStack justifyContent="space-between" w="full" p="10px">
         {[
           ["게시물", "posts", totalFeedNumber],

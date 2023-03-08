@@ -8,7 +8,7 @@ export default function APIError() {
   return (
     <>
       <Head>
-        <title>Artbubble | API Error</title>
+        <title>API Error</title>
       </Head>
       <Center>
         <Button onClick={() => router.back()}>요청 다시하기</Button>

@@ -68,7 +68,7 @@ export default function EmailAuth() {
   return (
     <>
       <Head>
-        <title>ArtBubble | Email Authorization</title>
+        <title>이메일 인증</title>
       </Head>
       <FormLayout>
         <Center>

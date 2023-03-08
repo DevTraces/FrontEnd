@@ -61,7 +61,7 @@ export default function SignUp() {
   return (
     <>
       <Head>
-        <title>ArtBubble | Sign Up</title>
+        <title>회원가입</title>
       </Head>
       <FormLayout>
         <Center>

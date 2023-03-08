@@ -70,7 +70,7 @@ export default function ProfileTab({ nickname, selectedTab }: ProfileTabProps) {
           </Tab>
         ))}
       </TabList>
-      <TabPanels overflow="hidden">
+      <TabPanels overflow="hidden" pt="40px">
         {tabList.map(tab => (
           <TabPanel key={tab}>{tabData[tab].tabPanel}</TabPanel>
         ))}
