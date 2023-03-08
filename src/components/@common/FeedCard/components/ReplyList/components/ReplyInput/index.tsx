@@ -4,10 +4,12 @@ import usersKeys from "@/queryKeys/usersKeys";
 import currentUser from "@/utils/currentUser";
 import {
   Icon,
+  IconButton,
   Input,
   InputGroup,
   InputLeftElement,
-  InputRightElement
+  InputRightElement,
+  Tooltip
 } from "@chakra-ui/react";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -31,35 +33,41 @@ export default forwardRef<HTMLInputElement, ReplyInputProps>(
     });
 
     return (
-      <>
-        <InputGroup size="lg">
-          <InputLeftElement>
-            <ProfileAvatar
-              src={profileQuery.data?.profileImageUrl}
-              size="28px"
-              alt="프로필 이미지"
-            />
-          </InputLeftElement>
-          <Input
-            autoComplete="off"
-            variant="filled"
-            bg="white"
-            focusBorderColor="white"
-            placeholder="댓글 달기..."
-            _hover={{ bg: "none" }}
-            ref={ref}
-            {...restProps}
+      <InputGroup size="lg">
+        <InputLeftElement>
+          <ProfileAvatar
+            src={profileQuery.data?.profileImageUrl}
+            size="28px"
+            alt="프로필 이미지"
           />
-          <InputRightElement onClick={onSendClick}>
-            <Icon
-              as={FontAwesomeIcon}
-              icon={faPaperPlane}
-              color={isInvalid ? "gray.300" : "primary"}
+        </InputLeftElement>
+        <Input
+          autoComplete="off"
+          variant="filled"
+          bg="white"
+          focusBorderColor="white"
+          placeholder="댓글 달기..."
+          _hover={{ bg: "none" }}
+          ref={ref}
+          {...restProps}
+        />
+        <InputRightElement onClick={onSendClick}>
+          <Tooltip label={errorMessage} isOpen={isInvalid}>
+            <IconButton
+              variant="ghost"
+              icon={
+                <Icon
+                  cursor="pointer"
+                  as={FontAwesomeIcon}
+                  icon={faPaperPlane}
+                  color={isInvalid ? "gray.300" : "primary"}
+                />
+              }
+              aria-label="댓글 달기"
             />
-          </InputRightElement>
-        </InputGroup>
-        {errorMessage}
-      </>
+          </Tooltip>
+        </InputRightElement>
+      </InputGroup>
     );
   }
 );
