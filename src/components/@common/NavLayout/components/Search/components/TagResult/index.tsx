@@ -20,7 +20,11 @@ export default function TagAutoComplete() {
     <ResultContainer>
       {tagAutoCompleteQuery.data && searchValue.value !== "" ? (
         tagAutoCompleteQuery.data.length === 0 ? (
-          <Text>검색 결과가 없어요</Text>
+          <Text color="gray">
+            {searchValue.value === ""
+              ? "검색어를 입력해주세요"
+              : "일치하는 검색 결과가 없어요"}
+          </Text>
         ) : (
           tagAutoCompleteQuery.data.map(word => (
             <HStack
@@ -43,7 +47,11 @@ export default function TagAutoComplete() {
           ))
         )
       ) : (
-        <Text color="gray">검색어를 입력해주세요</Text>
+        <Text color="gray">
+          {searchValue.value === ""
+            ? "검색어를 입력해주세요"
+            : "일치하는 검색 결과가 없어요"}
+        </Text>
       )}
     </ResultContainer>
   );
