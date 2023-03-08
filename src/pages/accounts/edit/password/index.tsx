@@ -50,7 +50,7 @@ export default function EditPassword() {
   return (
     <>
       <Head>
-        <title>ArtBubble | Sign Up</title>
+        <title>회원가입</title>
       </Head>
       <FormLayout>
         <Center color="black">

@@ -93,7 +93,7 @@ export default function Profile() {
   return (
     <>
       <Head>
-        <title>ArtBubble | Profile</title>
+        <title>프로필 작성</title>
       </Head>
 
       <FormLayout>

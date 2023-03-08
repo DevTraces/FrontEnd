@@ -7,6 +7,8 @@ import { useQuery } from "@tanstack/react-query";
 import Head from "next/head";
 import { GetServerSideProps } from "next/types";
 import getRedirectionServerSideProps from "@/lib/getServerSideProps/redirection";
+import feedAtom from "@/atoms/feedAtom";
+import { RecoilRoot } from "recoil";
 
 type ServerSideProps = {
   query: {
@@ -28,7 +30,16 @@ export default function Feed({ query }: ServerSideProps) {
       </Head>
       <NavLayout>
         <Center mt="40px">
-          {feedQuery.data && <FeedCard feedData={feedQuery.data} />}
+          {feedQuery.data && (
+            <RecoilRoot
+              key={feedId}
+              initializeState={snapshot => {
+                snapshot.set(feedAtom, feedQuery.data);
+              }}
+            >
+              {feedQuery.data && <FeedCard feedData={feedQuery.data} />}
+            </RecoilRoot>
+          )}
         </Center>
       </NavLayout>
     </>

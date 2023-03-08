@@ -33,13 +33,20 @@ export default function Carousel() {
     <Box bg="white" position="relative" overflow="hidden">
       <Flex w={`${boxSize * imageUrls.length}px`} h={`${boxSize}px`}>
         {imageUrls.map((img, i) => (
-          <Box key={img} boxSize={`${boxSize}px`} bgImage={img}>
+          <Box
+            key={img}
+            boxSize={`${boxSize}px`}
+            bgImage={img}
+            bgSize={`${boxSize * 2}px`}
+            bgPos="center"
+            bgRepeat="no-repeat"
+          >
             <Box
               key={img}
               position="relative"
               boxSize={`${boxSize}px`}
               backdropFilter="auto"
-              backdropBlur="25px"
+              backdropBlur="80px"
             >
               <Image
                 src={img}
