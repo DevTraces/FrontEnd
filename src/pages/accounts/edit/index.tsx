@@ -17,6 +17,7 @@ import {
   Box,
   Button,
   Container,
+  Divider,
   Flex,
   Text,
   useToast,
@@ -218,20 +219,6 @@ export default function Setting() {
                 </VStack>
               )}
             </form>
-            <Text w="full" fontSize="16px" lineHeight="40px" color="black">
-              계정 관리
-            </Text>
-            <Box w="full">
-              <Button
-                borderColor="transparent"
-                bg="white"
-                onClick={() => {
-                  router.push("/accounts/edit/password");
-                }}
-              >
-                비밀번호 변경
-              </Button>
-            </Box>
             <Box w="full">
               <Button
                 borderColor="transparent"
@@ -242,18 +229,30 @@ export default function Setting() {
                 로그아웃
               </Button>
             </Box>
-            <Box w="full">
+            <Divider h="40px" />
+            <Text w="full" fontSize="16px" lineHeight="40px" color="black">
+              계정 관리
+            </Text>
+            <Flex w="full" gap="20px">
               <Button
                 borderColor="transparent"
                 bg="white"
-                color="red.500"
+                onClick={() => {
+                  router.push("/accounts/edit/password");
+                }}
+              >
+                비밀번호 변경
+              </Button>
+              <Button
+                variant="ghost"
+                colorScheme="blackAlpha"
                 onClick={() => {
                   router.push("/accounts/edit/withdrawal");
                 }}
               >
-                회원 탈퇴하기
+                회원 탈퇴
               </Button>
-            </Box>
+            </Flex>
           </VStack>
         </Container>
       </NavLayout>
