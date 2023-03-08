@@ -42,7 +42,7 @@ export default function ProfileInfo({
         <ProfileAvatar src={profileImageUrl} size="80px" alt="프로필 이미지" />
 
         <Box w="full">
-          <HStack h="50px" justifyContent="space-between">
+          <HStack justifyContent="space-between">
             <Text fontWeight="bold" fontSize="xl">
               {username}
             </Text>
