@@ -12,8 +12,8 @@ export default function NewPost() {
   const { createMutation } = useFeed();
   const createFeed = (data: EditorPublishData) =>
     createMutation.mutate(data, {
-      onSuccess: () => {
-        router.back();
+      onSuccess: ({ feedId }) => {
+        router.push(`/post/${feedId}`);
       }
     });
 
