@@ -26,7 +26,9 @@ export default function Feed({ query }: ServerSideProps) {
   return (
     <>
       <Head>
-        <title>{`${feedQuery.data?.authorNickname}의 포스트` ?? ""}</title>
+        <title>
+          {feedQuery.data && `${feedQuery.data.authorNickname}의 포스트`}
+        </title>
       </Head>
       <NavLayout>
         <Center mt="40px">
