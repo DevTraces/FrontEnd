@@ -34,7 +34,7 @@ export default function FeedEdit({ query }: ServerSideProps) {
       { feedId: +feedId, data },
       {
         onSuccess: () => {
-          router.push("/feed");
+          router.push(`/post/${feedId}`);
         }
       }
     );
