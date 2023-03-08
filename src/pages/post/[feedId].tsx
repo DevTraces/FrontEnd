@@ -26,7 +26,7 @@ export default function Feed({ query }: ServerSideProps) {
   return (
     <>
       <Head>
-        <title>포스트 {feedQuery.data?.authorNickname ?? ""}</title>
+        <title>{`${feedQuery.data?.authorNickname}의 포스트` ?? ""}</title>
       </Head>
       <NavLayout>
         <Center mt="40px">
