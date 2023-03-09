@@ -227,7 +227,7 @@ queryClient.prefetchQueries({
 | 원인 | 주기적으로, 혹은 조건 별로 accessToken을 갱신해야 함 |
 | 해결 | 응답마다 axios interceptor 정의. 401 에러마다 token 재발급 시도 후 기존 요청 재 시도 |
 
-```null
+```tsx
 instance.interceptors.response.use(
     res => {
       return res.data;
@@ -266,7 +266,7 @@ instance.interceptors.response.use(
 | 원인 | 상황별 핸들링 방법이 컴포넌트 코드에 흩어져 있음 |
 | 해결 | useAPIError 훅에서 API 에러를 핸들링하고, QueryClient의 defaultOptions에서 에러 시 useAPIError에서 정의한 에러 핸들링 함수를 실행하게 함 |
 
-```null
+```tsx
 // _app.tsx
 const { handleError } = useApiError();
 
