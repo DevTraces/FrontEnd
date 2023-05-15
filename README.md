@@ -6,8 +6,6 @@
 
 >💡 특정 테마를 주제로 **SNS**를 만들어보자! → **그림 SNS**
 
-<img width="100px" src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/d3156e99-4f78-4dd4-8b7b-f368f4c3050a/qwerqwer.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20230309%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20230309T022027Z&X-Amz-Expires=86400&X-Amz-Signature=758495cff74222b9155d45d648acaea14bef6302c1cc9f18a31947e2ef6f5f0e&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22qwerqwer.png%22&x-id=GetObject" />
-
 ### [ArtBubble]
 
 예술을 의미하는 단어  **Art**와 SNS 알고리즘에 의해 묶인 사람들을 뜻하는 은어  **Bubble**의 합성어
